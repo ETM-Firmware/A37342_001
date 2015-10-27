@@ -18,6 +18,7 @@
 #define ELECTROMAGNET_CURRENT_RELATIVE_TRIP     MACRO_DEC_TO_CAL_FACTOR_2(.25)        // 25%
 #define ELECTROMAGNET_CURRENT_RELATIVE_FLOOR    2000                                  // 2 Amps
 #define ELECTROMAGNET_CURRENT_TRIP_TIME         50                                    // This is in 10ms Units
+#define ELECTROMAGNET_CURRENT_ABSOLUTE_TRIP_TIME    50                                    // This is in 10ms Units
 
 #define NOMINAL_ELECTROMAGNET_RESISTANCE        1.00                                  // 1 Ohm
 #define ELECTROMAGNET_VOLTAGE_OVER_TRIP         24000                                 // 24 Volts
@@ -25,6 +26,7 @@
 #define ELECTROMAGNET_VOLTAGE_RELATIVE_TRIP     MACRO_DEC_TO_CAL_FACTOR_2(.25)        // 25%
 #define ELECTROMAGNET_VOLTAGE_RELATIVE_FLOOR    2000                                  // 2 Volts
 #define ELECTROMAGNET_VOLTAGE_TRIP_TIME         50                                    // This is in 10ms Units
+#define ELECTROMAGNET_VOLTAGE_ABSOLUTE_TRIP_TIME    50                                    // This is in 10ms Units
 
 
 
@@ -37,6 +39,7 @@
 #define HEATER_CURRENT_RELATIVE_TRIP            MACRO_DEC_TO_CAL_FACTOR_2(.25)        // 25%
 #define HEATER_CURRENT_RELATIVE_FLOOR           2000                                  // 2 Amps
 #define HEATER_CURRENT_TRIP_TIME                50                                    // This is in 10ms Units
+#define HEATER_CURRENT_ABSOLUTE_TRIP_TIME       50                                    // This is in 10ms Units
 
 #define NOMINAL_HEATER_RESISTANCE               1.44                                  // OHM
 #define HEATER_VOLTAGE_OVER_TRIP                24000                                 // 24 Volts
@@ -44,6 +47,7 @@
 #define HEATER_VOLTAGE_RELATIVE_TRIP            MACRO_DEC_TO_CAL_FACTOR_2(.9)        // 90%
 #define HEATER_VOLTAGE_RELATIVE_FLOOR           2000                                  // 2 Volts
 #define HEATER_VOLTAGE_TRIP_TIME                500                                   // This is in 10ms Units
+#define HEATER_VOLTAGE_ABSOLUTE_TRIP_TIME       500                                   // This is in 10ms Units
 
 
 // Configure Local Power Supply Monitors

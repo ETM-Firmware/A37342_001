@@ -1,0 +1,19 @@
+build/default/production/A36926_001.o:  \
+A36926_001.c  \
+A36926_001.h  \
+ ../../ETM_LIBRARY/Version_01/inc/ETM.h  \
+ ../../ETM_LIBRARY/Version_01/inc/ETM_I2C.h  \
+ ../../ETM_LIBRARY/Version_01/inc/ETM_SPI.h  \
+ ../../ETM_LIBRARY/Version_01/inc/ETM_IO_PORTS.h  \
+ ../../ETM_LIBRARY/Version_01/inc/ETM_SCALE.h  \
+ ../../ETM_LIBRARY/Version_01/inc/ETM_EEPROM.h  \
+ ../../ETM_LIBRARY/Version_01/inc/ETM_RC_FILTER.h  \
+ ../../ETM_LIBRARY/Version_01/inc/ETM_ANALOG.h  \
+ ../../ETM_LIBRARY/Version_01/inc/DS3231.h  \
+ ../../ETM_LIBRARY/Version_01/inc/LTC265X.h  \
+ ../../ETM_LIBRARY/Version_01/inc/MCP4822.h  \
+ ../../ETM_LIBRARY/Version_01/inc/ETM_BUFFER_BYTE_64.h  \
+ ../../ETM_LIBRARY/Version_01/inc/P1395_CAN_SLAVE.h  \
+ ../../ETM_LIBRARY/Version_01/inc/P1395_CAN_CORE.h  \
+A36926_001_SETTINGS.h  \
+ FIRMWARE_VERSION.h 

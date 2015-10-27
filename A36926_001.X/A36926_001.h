@@ -15,9 +15,14 @@
 #include <timer.h>
 #include "ETM.h"
 #include "P1395_CAN_SLAVE.h"
-#include "A36444_500_SETTINGS.h"
+#include "A36926_001_SETTINGS.h"
 
 #define FCY_CLK     10000000
+
+extern ETMCanSyncMessage    etm_can_master_sync_message;
+
+
+#define _SYNC_CONTROL_WORD                    *(unsigned int*)&etm_can_master_sync_message.sync_0_control_word
 
 /*
   Hardware Module Resource Usage
@@ -112,20 +117,18 @@
 // ----------------- DIGITAL INPUT PINS --------------- //
 /*
 
-  RA12 - (unused) Fiber Trigger IN
-  RA13 - (unused) Fiber Energy Select
+
+  RD8  - Digital Input 1 - (unused)
+  RD9  - Digital Input 2 - (unused)
+  RD10 - Digital Input 3 - (unused)
+  RD11 - Digital Input 4 - (unused)
+  RD12 - Digital Input 5 - PIC INPUT FLOW PWM 5
+  RD13 - Digital Input 6 - PIN INPUT TEMPERATURE OK
+  RD14 - Digital Input 7 - PIC INPUT HEATER OV OK
+  RD15 - Digital Input 8 - PIC INPUT CROWBAR UP
+
+  RG14 - (unused) Reset Detect
   RA14 - (unused) Auto Inhibit Detect
-  RA15 - (unused) Lambda EOC
-
-  RD8  - (unused) Lambda Not Powered
-  RD9  - PIN INPUT TEMPERATURE OK (formerly) Lambda Over Temp FLT
-  RD10 - PIC INPUT CROWBAR UP     (formerly) Lamdba Interlock FLT
-  RD12 - PIB INPUT HEATER OV OK   (formerly) Lambda Load FLT
-  RD13 - (unused) Lambda Sum FLT
-  RD14 - (unused) Lambda Phase Loss FLT
-  RD15 - (unused)Lambda HV ON Readback
-
-  RG14 - Reset Detect
 
   Analog Input Pins
 
@@ -136,20 +139,28 @@
 
   RB0 PROGRAM
   RB1 PROGRAM
-  RB3  - Analog Input - unused
-  RB4  - Analog Input - unused
-  RB5  - Analog Input - PIC ADC MAGNET IMON
-  RB6  - Analog Input - PIC ADC HEATER IMON
-  RB12 - Analog Input - unused
-  RB13 - Analog Input - unused
-  RB14 - Analog Input - unused
-  RB15 - Analog Input - unused
+  RB2  - Analog Input - PIC ADC MAGNET IMON
+  RB3  - Analog Input - PIC ADC HEATER IMON
+  RB4  - Analog Input - PIC ADC MAGNET VMON
+  RB5  - Analog Input - PIC ADC HEATER VMON
+  RB6 -  Analog Input - PIC_ADC_+15V_MON
+  RB7 -  Analog Input - PIC_ADC_-15V_MON
+  RB8 -  Analog Input - PIC_ADC_5V_MON
+  RB9 -  Analog Input - PIC_ADC_TEST_DAC
+  RB10 -  Analog Input - unused
+  RB11 -  Analog Input - unused
+  RB12 -  Analog Input - unused
+  RB13 -  Analog Input - unused
+  RB14 -  Digital Output - TEST_POINT_F
+  RB15 -  Analog Input - unused
+ 
 
   RF0 CAN 1
   RF1 CAN 1
-  RF6 SPI 1
-  RF7 SPI 1
-  RF8 SPI 1
+
+  RG6 SPI 2
+  RG7 SPI 2
+  RG8 SPI 2
 
   RG2 I2C
   RG3 I2C
@@ -164,38 +175,83 @@
 //   ------------------  Digital Output Pins ---------------
 /*
 
-  RD11 - Lamdba Voltage Select
-  RD0 - (unused) Lambda Inhibit (This is also Output Compare 1 - If we want to use that module to generate Inhibit signal)
-  RD1 - HEATER MAGNET DISABLE     (formerly) Lambda Enable
+  RD0  - #PIC Digital Out 1 - (unused) Lambda Inhibit
+  RD1  - #PIC Digital Out 2 - (unused)
+  RD2  - Lamdba Voltage Select - (unused)
+  RD3  - HEATER MAGNET DISABLE (PIC RELAY OUT)
 
-
-  RA7 - LED Operational
-  RB8 - Test Point E
-  RB9 - Test Point F
-  RF4 - Test Point A
-  RF5 - Test Point B
-  RG0 - Test Point C
-  RG1 - Test Point D
+  RA6  - Enable 15V Supply
+  RA7  - LED Operational
   RG12 - LED A RED
   RG13 - LED B GREEN
 
+  RF2  - Test Point D
+  RF3  - Test Point E
+  RF6  - Test Point A
+  RF7  - Test Point B
+  RF8  - Test Point C
+  RB14 - Test Point F
 */
+  
+//   ------------------  Unconnected Pins ---------------
+/*
+  RA12
+  RA13
+  RA15
 
+  RB10
+  RB11
+  RB12
+  RB13
+  RB15
 
-#define A36444_500_TRISA_VALUE 0b1111011000000000
-#define A36444_500_TRISB_VALUE 0b1111000001111011
-#define A36444_500_TRISC_VALUE 0b0000000000000010
-#define A36444_500_TRISD_VALUE 0b1111011100000000
-#define A36444_500_TRISF_VALUE 0b0000000111000011
-#define A36444_500_TRISG_VALUE 0b1100000000001100
+  RC2
+  RC3
+  RC4
+  RC13
+  RC14
 
+  RD4
+  RD5
+  RD6
+  RD7
+
+  RF4
+  RF5
+ 
+  RG0               
+  RG1
+  RG9
+*/
+// x -> not connected  n -> connected not used  o-> used outputs  i-> used inputs  h-> hw module  s-> sw module
+
+#define A36926_001_TRISA_VALUE 0b1111111100111111
+#define A36926_001_TRISB_VALUE 0b1011111111111111
+#define A36926_001_TRISC_VALUE 0b0111111111111111
+#define A36926_001_TRISD_VALUE 0b1111111111110111
+#define A36926_001_TRISF_VALUE 0b1111111000110011
+#define A36926_001_TRISG_VALUE 0b1100111111111111
+
+//#define A36926_001_TRISA_VALUE 0bxnxx yhhy ooyy yyyy
+//#define A36926_001_TRISB_VALUE 0bxoxx xxii iiii iihh
+//#define A36926_001_TRISC_VALUE 0boxxy yyyy yyyx xxsy
+//#define A36926_001_TRISD_VALUE 0biiii nnnn xxxx 0nnn
+//#define A36926_001_TRISF_VALUE 0byyyy yyyo ooxx oohh
+//#define A36926_001_TRISG_VALUE 0bsnoo yyxh hhyy hhxx
+//
+//#define A36926_TRISA_VALUE 0b1111111110111111
+//#define A36926_TRISB_VALUE 0b1011111111111111
+//#define A36926_TRISC_VALUE 0b1111111111111111
+//#define A36926_TRISD_VALUE 0b1111111111110000
+//#define A36926_TRISF_VALUE 0b1111111100110011
+//#define A36926_TRISG_VALUE 0b1100111111111111
 
 
 // -------- Digital Input Pins ----------//
-#define PIN_PIC_INPUT_TEMPERATURE_OK          PIC_DIG_IN_1
-#define PIN_PIC_INPUT_CROWBAR_UP              PIC_DIG_IN_2
-#define PIN_PIC_INPUT_HEATER_OV_OK            PIC_DIG_IN_3
-//#define PIN_FIBER_ENERGY_SELECT               _RA13 pin14
+#define PIN_PIC_FLOW_PWM_5                    PIC_DIG_IN_5  //What is this input for? -hkw
+#define PIN_PIC_INPUT_TEMPERATURE_OK          PIC_DIG_IN_6
+#define PIN_PIC_INPUT_HEATER_OV_OK            PIC_DIG_IN_7
+#define PIN_PIC_INPUT_CROWBAR_UP              PIC_DIG_IN_8
 
 
 #define PIN_RESET_DETECT                      RESET_DETECT
@@ -211,11 +267,11 @@
 
 #define PIN_HEATER_MAGNET_DISABLE             PIC_RELAY_OUT //now pin 63
 #define PIN_SELECT_DAC_C_D                    PIC_OUTPUT_LAMBDA_SELECT // now pin 62
+#define PIN_15V_ENABLE                        PIC_15V_SUPPLY_ENABLE
 
 #define PIN_LED_OPERATIONAL_GREEN             LED_OPERATIONAL
 #define PIN_LED_A_RED                         LED_A_RED
 #define PIN_LED_B_GREEN                       LED_B_GREEN  // This is is configured by the CAN module to flash on CAN Bus activity
-PIN_LED_B_GREEN
 #define PIN_OUT_TP_A                          TEST_POINT_A
 #define PIN_OUT_TP_B                          TEST_POINT_B
 #define PIN_OUT_TP_C                          TEST_POINT_C
@@ -233,35 +289,45 @@ PIN_LED_B_GREEN
 
 // ----------------- ANALOG INPUT PINS ---------------- //
 /*
-   AN3 - (unused) Lambda Vmon
-   AN4 - (unused) Lambda Heat Sink Temp
-   AN5 - Magnet Imon       (formerly) Lambda VPeak
-   AN6 - Heater Imon       (formerly) Lambda Imon
+  BASE ANALOG CONFIGURATION
+  PIC_ADC_AN1  is on AN2
+  PIC_ADC_AN2  is on AN3
+  PIC_ADC_AN3  is on AN4
+  PIC_ADC_AN4  is on AN5
 
-   AN12 - (unused) ADC Test Input
-   AN13 - (unused) 5V Mon
-   AN14 - (unused) +15V Mon
-   AN15 - (unused) -15V Mon
+  PIC_ADC_+15V_MON is on AN6
+  PIC_ADC_-15V_MON is on AN7
+  PIC_ADC_5V_MON   is on AN8
+  PIC_ADC_TEST_DAC is on AN9
+*/
+
+/*
+  PIC_ADC_AN1  - PIC ADC MAGNET IMON
+  PIC_ADC_AN2  - PIC ADC HEATER IMON
+  PIC_ADC_AN3  - PIC ADC MAGNET VMON
+  PIC_ADC_AN4  - PIC ADC HEATER VMON
 
 */
 
 /*
   This sets up the ADC to work as following
-  AUTO Sampeling
+  AUTO Sampling
   External Vref+/Vref-
-  With 10MHz System Clock, ADC Clock is 450ns, Sample Time is 6 ADC Clock so total sample time is 9.0uS
-  Conversion rate of 111KHz (13.888 Khz per Channel), 138 Samples per 10mS interrupt
+  With 10MHz System Clock, ADC Clock is 450ns, Sample Time is 4 ADC Clock so total sample time is 8.1uS
+  Conversion rate of 123.46KHz (15.432 Khz per Channel), 154 Samples per 10mS interrupt
   8 Samples per Interrupt, use alternating buffers
   Scan Through Selected Inputs
 
 */
 
+//New Version
+
 #define ADCON1_SETTING          (ADC_MODULE_OFF & ADC_IDLE_STOP & ADC_FORMAT_INTG & ADC_CLK_AUTO & ADC_AUTO_SAMPLING_ON)
 #define ADCON2_SETTING          (ADC_VREF_EXT_EXT & ADC_SCAN_ON & ADC_SAMPLES_PER_INT_8 & ADC_ALT_BUF_ON & ADC_ALT_INPUT_OFF)
-#define ADCHS_SETTING           (ADC_CH0_POS_SAMPLEA_AN5 & ADC_CH0_NEG_SAMPLEA_VREFN & ADC_CH0_POS_SAMPLEB_AN6 & ADC_CH0_NEG_SAMPLEB_VREFN)
-#define ADPCFG_SETTING          (ENABLE_AN3_ANA & ENABLE_AN4_ANA & ENABLE_AN5_ANA & ENABLE_AN6_ANA & ENABLE_AN12_ANA & ENABLE_AN13_ANA & ENABLE_AN14_ANA & ENABLE_AN15_ANA)
+#define ADCHS_SETTING           (ADC_CH0_POS_SAMPLEA_AN2 & ADC_CH0_NEG_SAMPLEA_VREFN & ADC_CH0_POS_SAMPLEB_AN2 & ADC_CH0_NEG_SAMPLEB_VREFN)
+#define ADPCFG_SETTING          (ENABLE_AN2_ANA & ENABLE_AN3_ANA & ENABLE_AN4_ANA & ENABLE_AN5_ANA & ENABLE_AN6_ANA & ENABLE_AN7_ANA & ENABLE_AN8_ANA & ENABLE_AN9_ANA)
 
-#define ADCSSL_SETTING          (SKIP_SCAN_AN0 & SKIP_SCAN_AN1 & SKIP_SCAN_AN2 & SKIP_SCAN_AN3 & SKIP_SCAN_AN4 & SKIP_SCAN_AN7 & SKIP_SCAN_AN8 & SKIP_SCAN_AN9 & SKIP_SCAN_AN10 & SKIP_SCAN_AN11 & SKIP_SCAN_AN12 & SKIP_SCAN_AN13 & SKIP_SCAN_AN14 & SKIP_SCAN_AN15)
+#define ADCSSL_SETTING          (SKIP_SCAN_AN0 & SKIP_SCAN_AN1 & SKIP_SCAN_AN10 & SKIP_SCAN_AN11 & SKIP_SCAN_AN12 & SKIP_SCAN_AN13 & SKIP_SCAN_AN14 & SKIP_SCAN_AN15)
 #define ADCON3_SETTING          (ADC_SAMPLE_TIME_4 & ADC_CONV_CLK_SYSTEM & ADC_CONV_CLK_9Tcy2)
 
 
@@ -283,9 +349,13 @@ typedef struct {
 
   AnalogInput analog_input_heater_voltage;
   AnalogInput analog_input_heater_current;
-
   AnalogInput analog_input_electromagnet_voltage;
   AnalogInput analog_input_electromagnet_current;
+
+  AnalogInput analog_input_5v_mon;                    // 1mV per LSB
+  AnalogInput analog_input_15v_mon;                   // 1mV per LSB
+  AnalogInput analog_input_neg_15v_mon;               // 1mV per LSB
+  AnalogInput analog_input_pic_adc_test_dac;          // 62.5uV per LSB
 
   AnalogOutput analog_output_heater_current;
   AnalogOutput analog_output_electromagnet_current;
@@ -307,10 +377,10 @@ extern HeaterMagnetControlData global_data_A36926_001;
 
 
 
-#define _STATUS_MAGNET_OFF_READBACK                     _NOT_LOGGED_0     //Should these be warnings? HKW
-#define _STATUS_HEATER_OFF_READBACK                     _NOT_LOGGED_1
-#define _STATUS_OUTPUT_RELAY_OPEN                       _NOT_LOGGED_2
-#define _STATUS_PERMA_FAULTED                           _NOT_LOGGED_3
+#define _STATUS_MAGNET_OFF_READBACK                     _WARNING_0     //Should these be warnings? HKW
+#define _STATUS_HEATER_OFF_READBACK                     _WARNING_1
+#define _STATUS_OUTPUT_RELAY_OPEN                       _NOT_LOGGED_0
+#define _STATUS_PERMA_FAULTED                           _NOT_LOGGED_1
 
 
 #define _FAULT_HEATER_OVER_CURRENT_ABSOLUTE             _FAULT_0
