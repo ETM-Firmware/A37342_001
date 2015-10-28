@@ -22,8 +22,6 @@
 extern ETMCanSyncMessage    etm_can_master_sync_message;
 
 
-#define _SYNC_CONTROL_WORD                    *(unsigned int*)&etm_can_master_sync_message.sync_0_control_word
-
 /*
   Hardware Module Resource Usage
 
@@ -42,14 +40,14 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
 
 // ---------- BASE A36926 I/O CONFIGURATION ----------------- //
 
-#define PIC_DIG_IN_1      _RD8      //used  Temp
-#define PIC_DIG_IN_2      _RD9      //used  Crwbr
-#define PIC_DIG_IN_3      _RD10     //used  Htr OV OK
+#define PIC_DIG_IN_1      _RD8      
+#define PIC_DIG_IN_2      _RD9      
+#define PIC_DIG_IN_3      _RD10     
 #define PIC_DIG_IN_4      _RD11
 #define PIC_DIG_IN_5      _RD12
-#define PIC_DIG_IN_6      _RD13
-#define PIC_DIG_IN_7      _RD14
-#define PIC_DIG_IN_8      _RD15
+#define PIC_DIG_IN_6      _RD13     //used  Temp
+#define PIC_DIG_IN_7      _RD14     //used  Htr OV OK
+#define PIC_DIG_IN_8      _RD15     //used  Crwbr
 
 #define AUTO_INHIBIT_DETECT          _RA14   // This is INT3
 #define RESET_DETECT                 _RG14
@@ -76,64 +74,22 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
 
 
 
-/*
-  BASE ANALOG CONFIGURATION
-  PIC_ADC_AN1  is on AN2
-  PIC_ADC_AN2  is on AN3
-  PIC_ADC_AN3  is on AN4
-  PIC_ADC_AN4  is on AN5
-
-  PIC_ADC_+15V_MON is on AN6
-  PIC_ADC_-15V_MON is on AN7
-  PIC_ADC_5V_MON   is on AN8
-  PIC_ADC_TEST_DAC is on AN9
-*/
-
-
-// Pins that must be configured as outputs
-/*
-  A6,A7
-  B14
-  C
-  D0,D1,D2,D3
-  F2,F3,F6,F7,F8
-  G12,G13
-*/
-
-#define A36926_TRISA_VALUE 0b1111111110111111
-#define A36926_TRISB_VALUE 0b1011111111111111
-#define A36926_TRISC_VALUE 0b1111111111111111
-#define A36926_TRISD_VALUE 0b1111111111110000
-#define A36926_TRISF_VALUE 0b1111111100110011
-#define A36926_TRISG_VALUE 0b1100111111111111
-
-
-//original code here
-
-// ----------------- IO PIN CONFIGURATION -------------------- //
-// All unused pins will be set to outputs and logic zero
-// LAT values default to 0 at startup so they do not need to be manually set
-
 // ----------------- DIGITAL INPUT PINS --------------- //
 /*
-
 
   RD8  - Digital Input 1 - (unused)
   RD9  - Digital Input 2 - (unused)
   RD10 - Digital Input 3 - (unused)
   RD11 - Digital Input 4 - (unused)
-  RD12 - Digital Input 5 - PIC INPUT FLOW PWM 5
+  RD12 - Digital Input 5 - (unused)
   RD13 - Digital Input 6 - PIN INPUT TEMPERATURE OK
   RD14 - Digital Input 7 - PIC INPUT HEATER OV OK
   RD15 - Digital Input 8 - PIC INPUT CROWBAR UP
 
-  RG14 - (unused) Reset Detect
-  RA14 - (unused) Auto Inhibit Detect
-
-  Analog Input Pins
+  RA14 - Digital Input - Auto Inhibit Detect (unused)
 
 
-  Pins that are overidden by a hardware module and should be left as inputs during port configuration
+  -- Pins that are overidden by a hardware module and should be left as inputs during port configuration --
   RA9  ADC VREF-
   RA10 ADC VREF+
 
@@ -153,7 +109,6 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
   RB13 -  Analog Input - unused
   RB14 -  Digital Output - TEST_POINT_F
   RB15 -  Analog Input - unused
- 
 
   RF0 CAN 1
   RF1 CAN 1
@@ -169,86 +124,71 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
   RC1  (DAC LDAC)
   RG15 (DAC CS/LD)
 
-
 */
 
 //   ------------------  Digital Output Pins ---------------
 /*
 
-  RD0  - #PIC Digital Out 1 - (unused) Lambda Inhibit
-  RD1  - #PIC Digital Out 2 - (unused)
-  RD2  - Lamdba Voltage Select - (unused)
+  RC15  - Clock Out                 (unused)     (set as input)
+
+  RD0  - #PIC Digital Out 1         (unused)
+  RD1  - #PIC Digital Out 2         (unused)
+  RD2  - Lamdba Voltage Select      (unused)     (set as input)
   RD3  - HEATER MAGNET DISABLE (PIC RELAY OUT)
 
   RA6  - Enable 15V Supply
   RA7  - LED Operational
   RG12 - LED A RED
   RG13 - LED B GREEN
+  RG14 - Reset Detect               (unused)     (set as input)
 
-  RF2  - Test Point D
-  RF3  - Test Point E
-  RF6  - Test Point A
-  RF7  - Test Point B
-  RF8  - Test Point C
-  RB14 - Test Point F
+  RF2  - Test Point D               (unused)     (set as input)
+  RF3  - Test Point E               (unused)     (set as input)
+  RF6  - Test Point A               (unused)     (set as input)
+  RF7  - Test Point B               (unused)     (set as input)
+  RF8  - Test Point C               (unused)     (set as input)
+  RB14 - Test Point F               (unused)     (set as input)
 */
-  
-//   ------------------  Unconnected Pins ---------------
+
+// Pins that must be configured as outputs
 /*
-  RA12
-  RA13
-  RA15
-
-  RB10
-  RB11
-  RB12
-  RB13
-  RB15
-
-  RC2
-  RC3
-  RC4
-  RC13
-  RC14
-
-  RD4
-  RD5
-  RD6
-  RD7
-
-  RF4
-  RF5
- 
-  RG0               
-  RG1
-  RG9
+  A6,A7
+  D0,D1,D3
+  G12,G13
 */
-// x -> not connected  n -> connected not used  o-> used outputs  i-> used inputs  h-> hw module  s-> sw module
 
-#define A36926_001_TRISA_VALUE 0b1111111100111111
-#define A36926_001_TRISB_VALUE 0b1011111111111111
-#define A36926_001_TRISC_VALUE 0b0111111111111111
-#define A36926_001_TRISD_VALUE 0b1111111111110111
-#define A36926_001_TRISF_VALUE 0b1111111000110011
+//   ------------------  Unconnected Pins (set as inputs) ---------------
+/*
+  RA12, RA13, RA15
+  RB10, RB11, RB12, RB13, RB15
+  RC2, RC3, RC4, RC13, RC14
+  RD4, RD5, RD6, RD7
+  RF4, RF5
+  RG0, RG1, RG9
+ 
+*/
+
+
+#define A36926_001_TRISA_VALUE 0b1111111100111111    //check on RA6 for 15V supply enable - hkw
+#define A36926_001_TRISB_VALUE 0b1111111111111111
+#define A36926_001_TRISC_VALUE 0b1111111111111111
+#define A36926_001_TRISD_VALUE 0b1111111111110100
+#define A36926_001_TRISF_VALUE 0b1111111111111111
 #define A36926_001_TRISG_VALUE 0b1100111111111111
 
-//#define A36926_001_TRISA_VALUE 0bxnxx yhhy ooyy yyyy
-//#define A36926_001_TRISB_VALUE 0bxoxx xxii iiii iihh
-//#define A36926_001_TRISC_VALUE 0boxxy yyyy yyyx xxsy
-//#define A36926_001_TRISD_VALUE 0biiii nnnn xxxx 0nnn
-//#define A36926_001_TRISF_VALUE 0byyyy yyyo ooxx oohh
-//#define A36926_001_TRISG_VALUE 0bsnoo yyxh hhyy hhxx
-//
-//#define A36926_TRISA_VALUE 0b1111111110111111
-//#define A36926_TRISB_VALUE 0b1011111111111111
-//#define A36926_TRISC_VALUE 0b1111111111111111
-//#define A36926_TRISD_VALUE 0b1111111111110000
-//#define A36926_TRISF_VALUE 0b1111111100110011
-//#define A36926_TRISG_VALUE 0b1100111111111111
+// x-> not connected  o-> used outputs  u-> unused output  n-> unused input  i-> inputs  h-> hw module  s-> sw module
+
+//#define A36926_001_TRISA_VALUE 0bxnxx 1hh1 oo11 1111
+//#define A36926_001_TRISB_VALUE 0bxuxx xxii iiii iihh
+//#define A36926_001_TRISC_VALUE 0buxx1 1111 111x xxs1
+//#define A36926_001_TRISD_VALUE 0biiin nnnn xxxx oxuu
+//#define A36926_001_TRISF_VALUE 0b1111 111u uuxx uuhh
+//#define A36926_001_TRISG_VALUE 0bsuoo 11xh hh11 hhxx
+
 
 
 // -------- Digital Input Pins ----------//
-#define PIN_PIC_FLOW_PWM_5                    PIC_DIG_IN_5  //What is this input for? -hkw
+
 #define PIN_PIC_INPUT_TEMPERATURE_OK          PIC_DIG_IN_6
 #define PIN_PIC_INPUT_HEATER_OV_OK            PIC_DIG_IN_7
 #define PIN_PIC_INPUT_CROWBAR_UP              PIC_DIG_IN_8
@@ -320,8 +260,6 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
 
 */
 
-//New Version
-
 #define ADCON1_SETTING          (ADC_MODULE_OFF & ADC_IDLE_STOP & ADC_FORMAT_INTG & ADC_CLK_AUTO & ADC_AUTO_SAMPLING_ON)
 #define ADCON2_SETTING          (ADC_VREF_EXT_EXT & ADC_SCAN_ON & ADC_SAMPLES_PER_INT_8 & ADC_ALT_BUF_ON & ADC_ALT_INPUT_OFF)
 #define ADCHS_SETTING           (ADC_CH0_POS_SAMPLEA_AN2 & ADC_CH0_NEG_SAMPLEA_VREFN & ADC_CH0_POS_SAMPLEB_AN2 & ADC_CH0_NEG_SAMPLEB_VREFN)
@@ -329,7 +267,6 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
 
 #define ADCSSL_SETTING          (SKIP_SCAN_AN0 & SKIP_SCAN_AN1 & SKIP_SCAN_AN10 & SKIP_SCAN_AN11 & SKIP_SCAN_AN12 & SKIP_SCAN_AN13 & SKIP_SCAN_AN14 & SKIP_SCAN_AN15)
 #define ADCON3_SETTING          (ADC_SAMPLE_TIME_4 & ADC_CONV_CLK_SYSTEM & ADC_CONV_CLK_9Tcy2)
-
 
 /*
    TMR3 Configuration
@@ -377,7 +314,7 @@ extern HeaterMagnetControlData global_data_A36926_001;
 
 
 
-#define _STATUS_MAGNET_OFF_READBACK                     _WARNING_0     //Should these be warnings? HKW
+#define _STATUS_MAGNET_OFF_READBACK                     _WARNING_0     //Should these be warnings? -hkw
 #define _STATUS_HEATER_OFF_READBACK                     _WARNING_1
 #define _STATUS_OUTPUT_RELAY_OPEN                       _NOT_LOGGED_0
 #define _STATUS_PERMA_FAULTED                           _NOT_LOGGED_1

@@ -154,6 +154,10 @@ void EnableHeaterMagnetOutputs(void) {
 
 
 void DoA36926_001(void) {
+
+  unsigned int spi_error_count;
+  unsigned int scale_error_count;
+
   ETMCanSlaveDoCan();
 
 
@@ -179,9 +183,7 @@ void DoA36926_001(void) {
 //    local_debug_data.debug_4 = _SYNC_CONTROL_WORD;
 //    local_debug_data.debug_5 = global_data_A36444_500.analog_output_electromagnet_current.dac_setting_scaled_and_calibrated;
 //    local_debug_data.debug_6 = global_data_A36444_500.analog_output_heater_current.dac_setting_scaled_and_calibrated;
-//
 //    local_debug_data.debug_7 = global_data_A36444_500.accumulator_counter;
-//
 //    local_debug_data.debug_8 = global_data_A36444_500.analog_input_electromagnet_current.adc_accumulator;
 //    local_debug_data.debug_9 = global_data_A36444_500.analog_input_heater_current.adc_accumulator;
 //    local_debug_data.debug_A = global_data_A36444_500.analog_input_electromagnet_current.filtered_adc_reading;
@@ -191,32 +193,37 @@ void DoA36926_001(void) {
 //    local_debug_data.debug_E = ADCBUFA;
 //    local_debug_data.debug_F = ADCBUFB;
 
+    spi_error_count = etm_spi1_error_count + etm_spi2_error_count;
+    scale_error_count = etm_scale_saturation_etmscalefactor2_count + etm_scale_saturation_etmscalefactor16_count;
+
     ETMCanSlaveSetDebugRegister(0x0, global_data_A36926_001.startup_count);
     ETMCanSlaveSetDebugRegister(0x1, global_data_A36926_001.fault_active);
     ETMCanSlaveSetDebugRegister(0x2, global_data_A36926_001.power_up_test_timer);
     ETMCanSlaveSetDebugRegister(0x3, global_data_A36926_001.control_state);
-//    ETMCanSlaveSetDebugRegister(0x4, 0);
+//    ETMCanSlaveSetDebugRegister(0x4, ETMCanSlaveGetSyncMsgECBState());
+    ETMCanSlaveSetDebugRegister(0x4, scale_error_count);
     ETMCanSlaveSetDebugRegister(0x5, global_data_A36926_001.analog_output_electromagnet_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x6, global_data_A36926_001.analog_output_heater_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x7, global_data_A36926_001.accumulator_counter);
     ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator);
     ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.analog_input_heater_current.adc_accumulator);
-    ETMCanSlaveSetDebugRegister(0xA, global_data_A36926_001.analog_input_electromagnet_current.filtered_adc_reading);
-    ETMCanSlaveSetDebugRegister(0xB, global_data_A36926_001.analog_input_heater_current.filtered_adc_reading);
+    ETMCanSlaveSetDebugRegister(0xA, etm_i2c1_error_count);
+    ETMCanSlaveSetDebugRegister(0xB, spi_error_count);
     ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xD, global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xE, global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xF, global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated);
 
-        // Update all the logging data
-    slave_board_data.log_data[0] = global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated;
-    slave_board_data.log_data[1] = global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated;
-    slave_board_data.log_data[2] = global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated;
-    slave_board_data.log_data[3] = ETMCanSlaveGetPulseCount();
-    slave_board_data.log_data[4] = global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated;
-//    slave_board_data.log_data[5] = global_data_A36926.analog_input_lambda_imon.reading_scaled_and_calibrated;
-//    slave_board_data.log_data[6] = global_data_A36926.analog_input_lambda_vmon.reading_scaled_and_calibrated;
-//    slave_board_data.log_data[7] = global_data_A36926.eoc_not_reached_count;
+        // Update logging data
+    slave_board_data.log_data[0] = global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated;
+    slave_board_data.log_data[1] = global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated;
+    slave_board_data.log_data[2] = global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated;
+    slave_board_data.log_data[3] = global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated;
+    //slave_board_data.log_data[4] = 0;
+    slave_board_data.log_data[5] = global_data_A36926_001.analog_output_electromagnet_current.set_point;
+    //slave_board_data.log_data[6] = 0;
+    slave_board_data.log_data[7] = global_data_A36926_001.analog_output_heater_current.set_point;
+    slave_board_data.log_data[8] = ETMCanSlaveGetPulseCount();
 
 
     if (global_data_A36926_001.control_state == STATE_POWER_UP_TEST) {
@@ -228,10 +235,7 @@ void DoA36926_001(void) {
     ////local_debug_data.spi_bus_error_count = etm_spi1_error_count + etm_spi2_error_count;
     ////local_debug_data.scale_error_count = etm_scale_saturation_etmscalefactor2_count + etm_scale_saturation_etmscalefactor16_count;
 
-    //etm_can_slave_debug_data.i2c_bus_error_count = 0;
-    //etm_can_slave_debug_data.spi_bus_error_count = etm_spi1_error_count + etm_spi2_error_count;
-    //etm_can_slave_debug_data.scale_error_count = etm_scale_saturation_etmscalefactor2_count + etm_scale_saturation_etmscalefactor16_count;
-
+    
     // If the system is faulted or inhibited set the red LED
     if (_CONTROL_NOT_READY) {
       PIN_LED_A_RED = OLL_LED_ON;
@@ -351,17 +355,12 @@ void DoA36926_001(void) {
 void InitializeA36926_001(void) {
   unsigned int startup_counter;
 
-  //etm_can_my_configuration.firmware_major_rev = FIRMWARE_AGILE_REV;
-  //etm_can_my_configuration.firmware_branch = FIRMWARE_BRANCH;
-  //etm_can_my_configuration.firmware_minor_rev = FIRMWARE_MINOR_REV;
-
+ 
   // Initialize the status register and load the inhibit and fault masks
   _FAULT_REGISTER = 0;
   _CONTROL_REGISTER = 0;
   _WARNING_REGISTER = 0;
   _NOT_LOGGED_REGISTER = 0;
-  // etm_can_status_register.data_word_A = 0x0000;
-  // etm_can_status_register.data_word_B = 0x0000;
 
 
   global_data_A36926_001.analog_output_electromagnet_current.set_point = 0;
@@ -644,52 +643,6 @@ void __attribute__((interrupt, no_auto_psv)) _ADCInterrupt(void) {
   }
 }
 
-//void __attribute__((interrupt, no_auto_psv)) _ADCInterrupt(void) {
-//  _ADIF = 0;
-//
-//  if (global_data_A36926_001.adc_ignore_current_sample) {
-//    // There was a pulse durring the sample sequence.  Throw the data away!!!
-//    global_data_A36926_001.adc_ignore_current_sample = 0;
-//  } else {
-//    // Copy Data From Buffer to RAM
-//    if (_BUFS) {
-//      // read ADCBUF 0-7
-//      global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator += ADCBUF0 + ADCBUF2 + ADCBUF4 + ADCBUF6;
-//      global_data_A36926_001.analog_input_heater_current.adc_accumulator        += ADCBUF1 + ADCBUF3 + ADCBUF5 + ADCBUF7;
-//      //global_data_A36926_001.analog_input_electromagnet_voltage.adc_accumulator += ADCBUF2 + ADCBUF6;
-//      //global_data_A36926_001.analog_input_heater_voltage.adc_accumulator        += ADCBUF3 + ADCBUF7;
-//    } else {
-//      // read ADCBUF 8-15
-//      global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator += ADCBUF8 + ADCBUFA + ADCBUFC + ADCBUFE;
-//      global_data_A36926_001.analog_input_heater_current.adc_accumulator        += ADCBUF9 + ADCBUFB + ADCBUFD + ADCBUFF;
-//      //global_data_A36926_001.analog_input_electromagnet_voltage.adc_accumulator += ADCBUFA + ADCBUFE;
-//      //global_data_A36926_001.analog_input_heater_voltage.adc_accumulator        += ADCBUFB + ADCBUFF;
-//    }
-//
-//    global_data_A36926_001.accumulator_counter += 4;
-//
-//    if (global_data_A36926_001.accumulator_counter >= 256) {
-//
-//      global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator >>= 4;  // This is now a 16 bit number average of previous 256 samples
-//      global_data_A36926_001.analog_input_electromagnet_current.filtered_adc_reading = global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator;
-//      global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator = 0;
-//
-//      //global_data_A36926_001.analog_input_electromagnet_voltage.adc_accumulator >>= 4;  // This is now a 16 bit number average of previous 256 samples
-//      //global_data_A36926_001.analog_input_electromagnet_voltage.filtered_adc_reading = global_data_A36926_001.analog_input_electromagnet_voltage.adc_accumulator;
-//      //global_data_A36926_001.analog_input_electromagnet_voltage.adc_accumulator = 0;
-//
-//      global_data_A36926_001.analog_input_heater_current.adc_accumulator >>= 4;  // This is now a 16 bit number average of previous 256 samples
-//      global_data_A36926_001.analog_input_heater_current.filtered_adc_reading = global_data_A36926_001.analog_input_heater_current.adc_accumulator;
-//      global_data_A36926_001.analog_input_heater_current.adc_accumulator = 0;
-//
-//      //global_data_A36926_001.analog_input_heater_voltage.adc_accumulator >>= 4;  // This is now a 16 bit number average of previous 256 samples
-//      //global_data_A36926_001.analog_input_heater_voltage.filtered_adc_reading = global_data_A36926_001.analog_input_heater_voltage.adc_accumulator;
-//      //global_data_A36926_001.analog_input_heater_voltage.adc_accumulator = 0;
-//
-//      global_data_A36926_001.accumulator_counter = 0;
-//    }
-//  }
-//}
 
 void ETMCanSlaveExecuteCMDBoardSpecific(ETMCanMessage* message_ptr) {
   unsigned int index_word;
