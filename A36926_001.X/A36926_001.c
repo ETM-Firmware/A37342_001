@@ -414,8 +414,8 @@ void InitializeA36926_001(void) {
   #define SERIAL_NUMBER 100
 
   // Initialize the Can module
-  ETMCanSlaveInitialize(CAN_PORT_1, FCY_CLK, ETM_CAN_ADDR_HEATER_MAGNET_BOARD, _PIN_RG13, 4);
-  ETMCanSlaveLoadConfiguration(36926, 1, AGILE_REV, FIRMWARE_AGILE_REV, FIRMWARE_BRANCH, FIRMWARE_MINOR_REV, SERIAL_NUMBER);
+  ETMCanSlaveInitialize(CAN_PORT_1, FCY_CLK, ETM_CAN_ADDR_HEATER_MAGNET_BOARD, _PIN_RG13, 4, _PIN_RG13, _PIN_RG13);
+  ETMCanSlaveLoadConfiguration(36926, 1, FIRMWARE_AGILE_REV, FIRMWARE_BRANCH, FIRMWARE_MINOR_REV);
 
 
 
@@ -650,9 +650,24 @@ void ETMCanSlaveExecuteCMDBoardSpecific(ETMCanMessage* message_ptr) {
   index_word = message_ptr->word3;
   switch (index_word)
     {
-      /*
-	Place all board specific commands here
-      */
+    case ETM_CAN_REGISTER_HEATER_MAGNET_SET_1_CURRENT_SET_POINT:
+//      value = ETMScaleFactor16(message_ptr->word1, CAN_scale_table[CAN_SET_EKSET].fixed_scale, 0);
+      global_data_A36926_001.can_heater_current_set_point = message_ptr->word1;
+//      SetEk(value);
+//      value = ETMScaleFactor16(message_ptr->word0, CAN_scale_table[CAN_SET_EFSET].fixed_scale, 0);
+      global_data_A36926_001.can_magnet_current_set_point = message_ptr->word0;  //magnet
+//      SetEf(value);
+//      _CONTROL_NOT_CONFIGURED = AreAnyReferenceNotConfigured();
+      
+     
+      _CONTROL_NOT_CONFIGURED = 0;
+      
+      break;
+
+    default:
+//      local_can_errors.invalid_index++;
+      break;
+
 
     }
 }

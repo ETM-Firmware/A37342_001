@@ -13,6 +13,7 @@ A36926_001.h  \
  ../../ETM_LIBRARY/Version_01/inc/LTC265X.h  \
  ../../ETM_LIBRARY/Version_01/inc/MCP4822.h  \
  ../../ETM_LIBRARY/Version_01/inc/ETM_BUFFER_BYTE_64.h  \
+ ../../ETM_LIBRARY/Version_01/inc/ETM_DIGITAL.h  \
  ../../ETM_LIBRARY/Version_01/inc/P1395_CAN_SLAVE.h  \
  ../../ETM_LIBRARY/Version_01/inc/P1395_CAN_CORE.h  \
 A36926_001_SETTINGS.h  \
