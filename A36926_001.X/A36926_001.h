@@ -298,8 +298,8 @@ typedef struct {
   AnalogOutput analog_output_heater_current;
   AnalogOutput analog_output_electromagnet_current;
 
-  unsigned int can_magnet_current_set_point;         // This is the pulse top set point set over the can interface
-  unsigned int can_heater_current_set_point;    // This is the heater voltage set point set over the can interface
+  unsigned int can_magnet_current_set_point;         // This is the magnet current set point set over the can interface
+  unsigned int can_heater_current_set_point;    // This is the heater current set point set over the can interface
 
   unsigned int  accumulator_counter;
 

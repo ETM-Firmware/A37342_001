@@ -205,14 +205,14 @@ void DoA36926_001(void) {
     ETMCanSlaveSetDebugRegister(0x5, global_data_A36926_001.analog_output_electromagnet_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x6, global_data_A36926_001.analog_output_heater_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x7, global_data_A36926_001.accumulator_counter);
-    ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator);
-    ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.analog_input_heater_current.adc_accumulator);
-    ETMCanSlaveSetDebugRegister(0xA, etm_i2c1_error_count);
-    ETMCanSlaveSetDebugRegister(0xB, spi_error_count);
-    ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
-    ETMCanSlaveSetDebugRegister(0xD, global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);
-    ETMCanSlaveSetDebugRegister(0xE, global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated);
-    ETMCanSlaveSetDebugRegister(0xF, global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated);
+    ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);//adc_accumulator);
+    ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);//adc_accumulator);
+    ETMCanSlaveSetDebugRegister(0xA, global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated);//etm_i2c1_error_count);
+    ETMCanSlaveSetDebugRegister(0xB, global_data_A36926_001.analog_input_5v_mon.reading_scaled_and_calibrated);//spi_error_count);
+    ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_output_heater_current.set_point);//global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
+    ETMCanSlaveSetDebugRegister(0xD, global_data_A36926_001.analog_output_electromagnet_current.set_point);//global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);
+    ETMCanSlaveSetDebugRegister(0xE, global_data_A36926_001.can_heater_current_set_point);//global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated);
+    ETMCanSlaveSetDebugRegister(0xF, global_data_A36926_001.can_magnet_current_set_point);//global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated);
 
         // Update logging data
     slave_board_data.log_data[0] = global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated;
@@ -310,7 +310,7 @@ void DoA36926_001(void) {
       }
       if (ETMAnalogCheckUnderRelative(&global_data_A36926_001.analog_input_heater_current)) {
 	_FAULT_HEATER_UNDER_CURRENT_RELATIVE = 1;
-	global_data_A36926_001.fault_active = 1;
+	//global_data_A36926_001.fault_active = 1;//for test -hkw
       }
 
       if (ETMAnalogCheckOverAbsolute(&global_data_A36926_001.analog_input_electromagnet_current)) {
@@ -327,7 +327,7 @@ void DoA36926_001(void) {
       }
       if (ETMAnalogCheckUnderRelative(&global_data_A36926_001.analog_input_electromagnet_current)) {
 	_FAULT_MAGNET_UNDER_CURRENT_RELATIVE = 1;
-	global_data_A36926_001.fault_active = 1;
+	//global_data_A36926_001.fault_active = 1;//for test -hkw
       }
     } else {
       global_data_A36926_001.analog_input_electromagnet_current.target_value = 0;
@@ -336,6 +336,9 @@ void DoA36926_001(void) {
 
     // Set DAC outputs
     if ((global_data_A36926_001.control_state == STATE_OPERATE) || (global_data_A36926_001.control_state == STATE_POWER_UP_TEST)) {
+      ETMAnalogSetOutput(&global_data_A36926_001.analog_output_heater_current, global_data_A36926_001.can_heater_current_set_point);
+      ETMAnalogSetOutput(&global_data_A36926_001.analog_output_electromagnet_current, global_data_A36926_001.can_magnet_current_set_point);
+
       ETMAnalogScaleCalibrateDACSetting(&global_data_A36926_001.analog_output_heater_current);
       ETMAnalogScaleCalibrateDACSetting(&global_data_A36926_001.analog_output_electromagnet_current);
 
