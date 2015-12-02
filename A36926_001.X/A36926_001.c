@@ -1,6 +1,7 @@
 #include "A36926_001.h"
 #include "FIRMWARE_VERSION.h"
 
+
 // This is firmware for the Magnet Supply Test Board
 
 _FOSC(ECIO & CSW_FSCM_OFF);
@@ -13,6 +14,8 @@ _FGS(CODE_PROT_OFF);
 _FICD(PGD);
 
 
+
+
 LTC265X U14_LTC2654;
 HeaterMagnetControlData global_data_A36926_001;
 
@@ -23,6 +26,7 @@ void EnableHeaterMagnetOutputs(void);
 void InitializeA36926_001(void);
 void DoStateMachine(void);
 void DoA36926_001(void);
+void Reset_EEPROM_I2C(unsigned long SCLpin, unsigned long SDApin);
 
 
 #define STATE_STARTUP                0x10
@@ -207,12 +211,12 @@ void DoA36926_001(void) {
     ETMCanSlaveSetDebugRegister(0x7, global_data_A36926_001.accumulator_counter);
     ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);//adc_accumulator);
     ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);//adc_accumulator);
-    ETMCanSlaveSetDebugRegister(0xA, global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated);//etm_i2c1_error_count);
+    ETMCanSlaveSetDebugRegister(0xA, global_data_A36926_001.analog_input_heater_voltage.filtered_adc_reading);//etm_i2c1_error_count);
     ETMCanSlaveSetDebugRegister(0xB, global_data_A36926_001.analog_input_5v_mon.reading_scaled_and_calibrated);//spi_error_count);
     ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_output_heater_current.set_point);//global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xD, global_data_A36926_001.analog_output_electromagnet_current.set_point);//global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xE, global_data_A36926_001.can_heater_current_set_point);//global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated);
-    ETMCanSlaveSetDebugRegister(0xF, global_data_A36926_001.can_magnet_current_set_point);//global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated);
+    ETMCanSlaveSetDebugRegister(0xF, ETMAnalogCheckEEPromInitialized());//global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated);
 
         // Update logging data
     slave_board_data.log_data[0] = global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated;
@@ -258,6 +262,7 @@ void DoA36926_001(void) {
     ETMAnalogScaleCalibrateADCReading(&global_data_A36926_001.analog_input_heater_current);
     ETMAnalogScaleCalibrateADCReading(&global_data_A36926_001.analog_input_electromagnet_voltage);
     ETMAnalogScaleCalibrateADCReading(&global_data_A36926_001.analog_input_heater_voltage);
+    ETMAnalogScaleCalibrateADCReading(&global_data_A36926_001.analog_input_5v_mon);
 
 // -------------------- CHECK FOR FAULTS ------------------- //
 
@@ -353,6 +358,7 @@ void DoA36926_001(void) {
     }
 
   }
+ // Nop();
 }
 
 void InitializeA36926_001(void) {
@@ -410,17 +416,20 @@ void InitializeA36926_001(void) {
   // Initialize LTC DAC
   SetupLTC265X(&U14_LTC2654, ETM_SPI_PORT_2, FCY_CLK, LTC265X_SPI_2_5_M_BIT, _PIN_RG15, _PIN_RC1);
 
+  //function that resets i2c bus
+  Reset_EEPROM_I2C(_PIN_RG2, _PIN_RG3);
+
   // Initialize the External EEprom
   ETMEEPromConfigureExternalDevice(EEPROM_SIZE_8K_BYTES, FCY_CLK, 400000, EEPROM_I2C_ADDRESS_0, 1);
 
   #define AGILE_REV 'A'
   #define SERIAL_NUMBER 100
-
+ 
   // Initialize the Can module
   ETMCanSlaveInitialize(CAN_PORT_1, FCY_CLK, ETM_CAN_ADDR_HEATER_MAGNET_BOARD, _PIN_RG13, 4, _PIN_RG13, _PIN_RG13);
   ETMCanSlaveLoadConfiguration(36926, 1, FIRMWARE_AGILE_REV, FIRMWARE_BRANCH, FIRMWARE_MINOR_REV);
 
-
+ 
 
   // Initialize the Analog Input * Output Scaling
   ETMAnalogInitializeOutput(&global_data_A36926_001.analog_output_electromagnet_current,
@@ -473,7 +482,7 @@ void InitializeA36926_001(void) {
                            ELECTROMAGNET_VOLTAGE_ABSOLUTE_TRIP_TIME);
 
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_heater_voltage,
-			   MACRO_DEC_TO_SCALE_FACTOR_16(.6250),
+			   MACRO_DEC_TO_SCALE_FACTOR_16(.4690),
 			   OFFSET_ZERO,
 			   ANALOG_INPUT_4,
 			   HEATER_VOLTAGE_OVER_TRIP,
@@ -481,7 +490,7 @@ void InitializeA36926_001(void) {
 			   HEATER_VOLTAGE_RELATIVE_TRIP,
 			   HEATER_VOLTAGE_RELATIVE_FLOOR,
 			   HEATER_VOLTAGE_TRIP_TIME,
-                           HEATER_VOLTAGE_ABSOLUTE_TRIP_TIME);
+                           HEATER_VOLTAGE_ABSOLUTE_TRIP_TIME); //changed scale from .6250
 
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_5v_mon,
                            MACRO_DEC_TO_SCALE_FACTOR_16(.12500),
@@ -569,6 +578,56 @@ void InitializeA36926_001(void) {
   _CONTROL_SELF_CHECK_ERROR = 0;
 
 }
+
+void Reset_EEPROM_I2C(unsigned long SCLpin, unsigned long SDApin) {
+/* This function resets the i2c slave and master in case of communication disruptions
+   It sends a start condition, followed by nine high bits and a start and stop condition
+*/
+  unsigned int tris_storeA = TRISA;
+  unsigned int tris_storeB = TRISB;
+  unsigned int tris_storeC = TRISC;
+  unsigned int tris_storeD = TRISD;
+  unsigned int tris_storeF = TRISF;
+  unsigned int tris_storeG = TRISG;
+
+  char i;
+
+  ETMPinTrisOutput(SCLpin);
+  ETMPinTrisInput(SDApin); 
+  ETMSetPin(SCLpin);
+  __delay32(20);  //2us
+  ETMPinTrisOutput(SDApin); //generate start
+  ETMClearPin(SDApin);
+  __delay32(20);  //2us
+  ETMClearPin(SCLpin);
+  ETMPinTrisInput(SDApin);
+  __delay32(20);  //2us
+
+  for (i=0; i<8; i++){
+    ETMSetPin(SCLpin); //generate 8 '1's
+    __delay32(20);  //2us
+    ETMClearPin(SCLpin);
+    __delay32(20);  //2us
+  }
+
+  ETMSetPin(SCLpin); //9th '1'
+  __delay32(20);  //2us
+  ETMPinTrisOutput(SDApin);  //  generate start
+  ETMClearPin(SDApin);
+  __delay32(20);  //2us
+  ETMPinTrisInput(SDApin); //generate stop
+  __delay32(20);  //2us
+
+
+  TRISA = tris_storeA;
+  TRISB = tris_storeB;
+  TRISC = tris_storeC;
+  TRISD = tris_storeD;
+  TRISF = tris_storeF;
+  TRISG = tris_storeG;
+
+}
+
 
 void __attribute__((interrupt, no_auto_psv)) _ADCInterrupt(void) {
   _ADIF = 0;

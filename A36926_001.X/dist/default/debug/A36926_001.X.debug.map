@@ -6,7 +6,7 @@ Tool Name:
 Command:
   -p30F6014A \
   -o \
-  dist/default/production/A36926_001.X.production.elf \
+  dist/default/debug/A36926_001.X.debug.elf \
   -Lc:/program files (x86)/microchip/xc16/v1.23/bin/bin/.. \
   -Lc:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib \
   -Lc:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib/PIC24E \
@@ -21,12 +21,19 @@ Command:
   -Lc:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../support/dsPIC33E/gld \
   -Lc:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib/dsPIC33F \
   -Lc:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../support/dsPIC33F/gld \
-  build/default/production/A36926_001.o \
+  build/default/debug/A36926_001.o \
   ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a \
   ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a \
   ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a \
+  -TC:\Users\VARIAN\AppData\Local\Temp\tmp00000a70.00 \
+  -TC:\Users\VARIAN\AppData\Local\Temp\tmp00000a70.01 \
+  -TC:\Users\VARIAN\AppData\Local\Temp\tmp00000a70.02 \
+  -TC:\Users\VARIAN\AppData\Local\Temp\tmp00000a70.03 \
   --defsym=__MPLAB_BUILD=1 \
-  -Tp30F6014A.gld.00 \
+  --defsym=__MPLAB_DEBUG=1 \
+  --defsym=__DEBUG=1 \
+  --defsym=__MPLAB_DEBUGGER_ICD3=1 \
+  -Tp30F6014A.gld.04 \
   --stack=16 \
   --check-sections \
   --data-init \
@@ -38,7 +45,7 @@ Command:
   --stackguard=16 \
   --no-force-link \
   --smart-io \
-  -Map=dist/default/production/A36926_001.X.production.map \
+  -Map=dist/default/debug/A36926_001.X.debug.map \
   --report-mem \
   -start-group \
   --library=pic30-elf \
@@ -49,29 +56,29 @@ Command:
 Archive member included because of file (symbol)
 
 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
-                              build/default/production/A36926_001.o (_slave_board_data)
+                              build/default/debug/A36926_001.o (_slave_board_data)
 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_CORE.o)
                               ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o) (_ETMCanBufferNotEmpty)
 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
-                              build/default/production/A36926_001.o (_ETMEEPromConfigureExternalDevice)
+                              build/default/debug/A36926_001.o (_ETMEEPromConfigureExternalDevice)
 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
-                              build/default/production/A36926_001.o (_ETMAnalogInitializeInput)
+                              build/default/debug/A36926_001.o (_ETMAnalogInitializeInput)
 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
                               ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o) (_ConfigureI2C)
 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_IO_PORTS.o)
-                              build/default/production/A36926_001.o (_ETMSetPin)
+                              build/default/debug/A36926_001.o (_ETMSetPin)
 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SCALE.o)
-                              build/default/production/A36926_001.o (_etm_scale_saturation_etmscalefactor2_count)
+                              build/default/debug/A36926_001.o (_etm_scale_saturation_etmscalefactor2_count)
 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
-                              build/default/production/A36926_001.o (_etm_spi1_error_count)
+                              build/default/debug/A36926_001.o (_etm_spi1_error_count)
 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
-                              build/default/production/A36926_001.o (_SetupLTC265X)
+                              build/default/debug/A36926_001.o (_SetupLTC265X)
 c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libpic30-elf.a(crt0_standard.o)
                               (__resetPRI)
 c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libpic30-elf.a(data_init_standard.o)
                               c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libpic30-elf.a(crt0_standard.o) (__data_init_standard)
 c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libpic30-elf.a(delay32.eo)
-                              build/default/production/A36926_001.o (___delay32)
+                              build/default/debug/A36926_001.o (___delay32)
 c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libm-elf.a(udivsi3.eo)
                               ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o) (___udivsi3)
 
@@ -120,11 +127,15 @@ Data Memory  [Origin = 0x800, Length = 0x2000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0           0x3e4  (996)
-_03AA9900564bca1f            0xbe4                   0             0x4  (4)
-.nbss                        0xbe8                   0            0x10  (16)
+reserve_data_0x800           0x800                0x20            0x20  (32)
+reserve_data_0x820           0x820                 0x2             0x2  (2)
+reserve_data_0x822           0x822                 0x2             0x2  (2)
+reserve_data_0x824           0x824                0x2c            0x2c  (44)
+.nbss                        0x850                   0           0x3e4  (996)
+_03AA9900564bca1f            0xc34                   0             0x4  (4)
+.nbss                        0xc38                   0            0x10  (16)
 
-                        Total data memory used (bytes):          0x3f8  (1016) 12%
+                        Total data memory used (bytes):          0x448  (1096) 13%
 
 
 Dynamic Memory Usage
@@ -132,82 +143,82 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0xbf8                              0x1c08  (7176)
+stack                        0xc48                              0x1bb8  (7096)
 
-                        Maximum dynamic memory (bytes):         0x1c08  (7176)
+                        Maximum dynamic memory (bytes):         0x1bb8  (7096)
 
 
 External Symbols in Data Memory (by address):
 
-                    0x0800                  _slave_board_data
-                    0x0868                  _etm_can_slave_debug_data
-                    0x08b8                  _etm_can_slave_sync_message
-                    0x08c0                  _etm_can_slave_rx_message_buffer
-                    0x0968                  _etm_can_slave_tx_message_buffer
-                    0x0a10                  _slave_data_log_index
-                    0x0a12                  _slave_data_log_sub_index
-                    0x0a14                  _previous_ready_status
-                    0x0a16                  _can_params
-                    0x0a24                  _CXEC_ptr
-                    0x0a26                  _CXINTF_ptr
-                    0x0a28                  _CXRX0CON_ptr
-                    0x0a2a                  _CXRX1CON_ptr
-                    0x0a2c                  _CXTX0CON_ptr
-                    0x0a2e                  _CXTX1CON_ptr
-                    0x0a30                  _CXTX2CON_ptr
-                    0x0a32                  _test0
-                    0x0a34                  _test1
-                    0x0a36                  _test2
-                    0x0a38                  _test3
-                    0x0a3a                  _U14_LTC2654
-                    0x0a4e                  _global_data_A36926_001
-                    0x0bde                  _etm_spi_loop_timeout
-                    0x0be0                  _etm_spi1_error_count
-                    0x0be2                  _etm_spi2_error_count
-                    0x0be4                  _etm_can_persistent_data
-                    0x0be8                  _external_eeprom
-                    0x0bec                  _etm_i2c1_error_count
-                    0x0bee                  _etm_i2c_loop_timeout
-                    0x0bf0                  _etm_scale_saturation_etmscalefactor2_count
-                    0x0bf2                  _etm_scale_saturation_etmscalefactor16_count
-                    0x0bf4                  _LTC265X_single_channel_error_count
-                    0x0bf6                  _LTC265X_all_channel_error_count
+                    0x0850                  _slave_board_data
+                    0x08b8                  _etm_can_slave_debug_data
+                    0x0908                  _etm_can_slave_sync_message
+                    0x0910                  _etm_can_slave_rx_message_buffer
+                    0x09b8                  _etm_can_slave_tx_message_buffer
+                    0x0a60                  _slave_data_log_index
+                    0x0a62                  _slave_data_log_sub_index
+                    0x0a64                  _previous_ready_status
+                    0x0a66                  _can_params
+                    0x0a74                  _CXEC_ptr
+                    0x0a76                  _CXINTF_ptr
+                    0x0a78                  _CXRX0CON_ptr
+                    0x0a7a                  _CXRX1CON_ptr
+                    0x0a7c                  _CXTX0CON_ptr
+                    0x0a7e                  _CXTX1CON_ptr
+                    0x0a80                  _CXTX2CON_ptr
+                    0x0a82                  _test0
+                    0x0a84                  _test1
+                    0x0a86                  _test2
+                    0x0a88                  _test3
+                    0x0a8a                  _U14_LTC2654
+                    0x0a9e                  _global_data_A36926_001
+                    0x0c2e                  _etm_spi_loop_timeout
+                    0x0c30                  _etm_spi1_error_count
+                    0x0c32                  _etm_spi2_error_count
+                    0x0c34                  _etm_can_persistent_data
+                    0x0c38                  _external_eeprom
+                    0x0c3c                  _etm_i2c1_error_count
+                    0x0c3e                  _etm_i2c_loop_timeout
+                    0x0c40                  _etm_scale_saturation_etmscalefactor2_count
+                    0x0c42                  _etm_scale_saturation_etmscalefactor16_count
+                    0x0c44                  _LTC265X_single_channel_error_count
+                    0x0c46                  _LTC265X_all_channel_error_count
 
 External Symbols in Data Memory (by name):
 
-                    0x0a24                  _CXEC_ptr
-                    0x0a26                  _CXINTF_ptr
-                    0x0a28                  _CXRX0CON_ptr
-                    0x0a2a                  _CXRX1CON_ptr
-                    0x0a2c                  _CXTX0CON_ptr
-                    0x0a2e                  _CXTX1CON_ptr
-                    0x0a30                  _CXTX2CON_ptr
-                    0x0bf6                  _LTC265X_all_channel_error_count
-                    0x0bf4                  _LTC265X_single_channel_error_count
-                    0x0a3a                  _U14_LTC2654
-                    0x0a16                  _can_params
-                    0x0be4                  _etm_can_persistent_data
-                    0x0868                  _etm_can_slave_debug_data
-                    0x08c0                  _etm_can_slave_rx_message_buffer
-                    0x08b8                  _etm_can_slave_sync_message
-                    0x0968                  _etm_can_slave_tx_message_buffer
-                    0x0bec                  _etm_i2c1_error_count
-                    0x0bee                  _etm_i2c_loop_timeout
-                    0x0bf2                  _etm_scale_saturation_etmscalefactor16_count
-                    0x0bf0                  _etm_scale_saturation_etmscalefactor2_count
-                    0x0be0                  _etm_spi1_error_count
-                    0x0be2                  _etm_spi2_error_count
-                    0x0bde                  _etm_spi_loop_timeout
-                    0x0be8                  _external_eeprom
-                    0x0a4e                  _global_data_A36926_001
-                    0x0a14                  _previous_ready_status
-                    0x0800                  _slave_board_data
-                    0x0a10                  _slave_data_log_index
-                    0x0a12                  _slave_data_log_sub_index
-                    0x0a32                  _test0
-                    0x0a34                  _test1
-                    0x0a36                  _test2
-                    0x0a38                  _test3
+                    0x0a74                  _CXEC_ptr
+                    0x0a76                  _CXINTF_ptr
+                    0x0a78                  _CXRX0CON_ptr
+                    0x0a7a                  _CXRX1CON_ptr
+                    0x0a7c                  _CXTX0CON_ptr
+                    0x0a7e                  _CXTX1CON_ptr
+                    0x0a80                  _CXTX2CON_ptr
+                    0x0c46                  _LTC265X_all_channel_error_count
+                    0x0c44                  _LTC265X_single_channel_error_count
+                    0x0a8a                  _U14_LTC2654
+                    0x0a66                  _can_params
+                    0x0c34                  _etm_can_persistent_data
+                    0x08b8                  _etm_can_slave_debug_data
+                    0x0910                  _etm_can_slave_rx_message_buffer
+                    0x0908                  _etm_can_slave_sync_message
+                    0x09b8                  _etm_can_slave_tx_message_buffer
+                    0x0c3c                  _etm_i2c1_error_count
+                    0x0c3e                  _etm_i2c_loop_timeout
+                    0x0c42                  _etm_scale_saturation_etmscalefactor16_count
+                    0x0c40                  _etm_scale_saturation_etmscalefactor2_count
+                    0x0c30                  _etm_spi1_error_count
+                    0x0c32                  _etm_spi2_error_count
+                    0x0c2e                  _etm_spi_loop_timeout
+                    0x0c38                  _external_eeprom
+                    0x0a9e                  _global_data_A36926_001
+                    0x0a64                  _previous_ready_status
+                    0x0850                  _slave_board_data
+                    0x0a60                  _slave_data_log_index
+                    0x0a62                  _slave_data_log_sub_index
+                    0x0a82                  _test0
+                    0x0a84                  _test1
+                    0x0a86                  _test2
+                    0x0a88                  _test3
 
 External Symbols in Program Memory (by address):
 
@@ -452,11 +463,34 @@ FICD             0xf8000c           0x000002
 
 Linker script and memory map
 
-LOAD build/default/production/A36926_001.o
+LOAD build/default/debug/A36926_001.o
 LOAD ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a
 LOAD ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a
 LOAD ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a
+
+reserve_data_0x800
+                    0x0800         0x20
+                    0x0820                  . = 0x20
+ *fill*             0x0800         0x2000
+
+reserve_data_0x820
+                    0x0820          0x2
+                    0x0822                  . = 0x2
+ *fill*             0x0820          0x200
+
+reserve_data_0x822
+                    0x0822          0x2
+                    0x0824                  . = 0x2
+ *fill*             0x0822          0x200
+
+reserve_data_0x824
+                    0x0824         0x2c
+                    0x0850                  . = 0x2c
+ *fill*             0x0824         0x2c00
                     0x0001                  __MPLAB_BUILD = 0x1
+                    0x0001                  __MPLAB_DEBUG = 0x1
+                    0x0001                  __DEBUG = 0x1
+                    0x0001                  __MPLAB_DEBUGGER_ICD3 = 0x1
 LOAD c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib/dsPIC30F\libp30F6014A-elf.a
 LOAD c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libfx-elf.a
                     0x8005c0                  __FUID0 = 0x8005c0
@@ -520,15 +554,15 @@ __FUID3
 
 __FOSC            0xf80000          0x2
  *(__FOSC.sec*)
- __FOSC.sec       0xf80000          0x2 build/default/production/A36926_001.o
+ __FOSC.sec       0xf80000          0x2 build/default/debug/A36926_001.o
 
 __FWDT            0xf80002          0x2
  *(__FWDT.sec*)
- __FWDT.sec       0xf80002          0x2 build/default/production/A36926_001.o
+ __FWDT.sec       0xf80002          0x2 build/default/debug/A36926_001.o
 
 __FBORPOR         0xf80004          0x2
  *(__FBORPOR.sec*)
- __FBORPOR.sec    0xf80004          0x2 build/default/production/A36926_001.o
+ __FBORPOR.sec    0xf80004          0x2 build/default/debug/A36926_001.o
 
 __FBS             0xf80006          0x2
  *(__FBS.sec*)
@@ -547,7 +581,7 @@ __FGS             0xf8000a          0x2
 
 __FICD            0xf8000c          0x2
  *(__FICD.sec*)
- __FICD.sec       0xf8000c          0x2 build/default/production/A36926_001.o
+ __FICD.sec       0xf8000c          0x2 build/default/debug/A36926_001.o
 
 user_eedata
  *(user_eedata)
@@ -560,7 +594,7 @@ userdata
 
 .debug_info       0x000000       0x81ea
  *(.debug_info)
- .debug_info      0x000000       0x2557 build/default/production/A36926_001.o
+ .debug_info      0x000000       0x2557 build/default/debug/A36926_001.o
  .debug_info      0x002557       0x37e1 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
  .debug_info      0x005d38         0xa3 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_CORE.o)
  .debug_info      0x005ddb        0x69f ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
@@ -574,7 +608,7 @@ userdata
 
 .debug_abbrev     0x000000        0xa33
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x1f6 build/default/production/A36926_001.o
+ .debug_abbrev    0x000000        0x1f6 build/default/debug/A36926_001.o
  .debug_abbrev    0x0001f6        0x212 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
  .debug_abbrev    0x000408         0x14 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_CORE.o)
  .debug_abbrev    0x00041c        0x161 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
@@ -587,7 +621,7 @@ userdata
 
 .debug_line       0x000000       0x39fc
  *(.debug_line)
- .debug_line      0x000000        0xc22 build/default/production/A36926_001.o
+ .debug_line      0x000000        0xc22 build/default/debug/A36926_001.o
  .debug_line      0x000c22       0x1274 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
  .debug_line      0x001e96         0xde ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_CORE.o)
  .debug_line      0x001f74        0x563 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
@@ -600,7 +634,7 @@ userdata
 
 .debug_frame      0x000000        0x674
  *(.debug_frame)
- .debug_frame     0x000000        0x1ac build/default/production/A36926_001.o
+ .debug_frame     0x000000        0x1ac build/default/debug/A36926_001.o
  .debug_frame     0x0001ac        0x264 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
  .debug_frame     0x000410         0x64 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
  .debug_frame     0x000474         0xc4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
@@ -610,7 +644,7 @@ userdata
 
 .debug_str        0x000000        0x894
  *(.debug_str)
- .debug_str       0x000000        0x192 build/default/production/A36926_001.o
+ .debug_str       0x000000        0x192 build/default/debug/A36926_001.o
  .debug_str       0x000192        0x2f9 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
  .debug_str       0x00048b         0x9d ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
  .debug_str       0x000528        0x1d4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
@@ -628,7 +662,7 @@ userdata
                   0x000000        0xc6d
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000        0x16a build/default/production/A36926_001.o
+                  0x000000        0x16a build/default/debug/A36926_001.o
  .debug_pubnames
                   0x00016a        0x672 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
  .debug_pubnames
@@ -648,7 +682,7 @@ userdata
 .debug_aranges    0x000000         0xf0
  *(.debug_aranges)
  .debug_aranges
-                  0x000000         0x18 build/default/production/A36926_001.o
+                  0x000000         0x18 build/default/debug/A36926_001.o
  .debug_aranges
                   0x000018         0x18 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
  .debug_aranges
@@ -1807,7 +1841,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libpic30-elf.
 LOAD c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libm-elf.a
 LOAD c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libc-elf.a
 END GROUP
-OUTPUT(dist/default/production/A36926_001.X.production.elf elf32-pic30)
+OUTPUT(dist/default/debug/A36926_001.X.debug.elf elf32-pic30)
 LOAD FBS
 LOAD FSS
 LOAD FGS
@@ -1816,7 +1850,7 @@ LOAD data_init
 .debug_pubtypes
                   0x0000f0        0x6e4
  .debug_pubtypes
-                  0x0000f0        0x242 build/default/production/A36926_001.o
+                  0x0000f0        0x242 build/default/debug/A36926_001.o
  .debug_pubtypes
                   0x000332        0x322 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
  .debug_pubtypes
@@ -1833,7 +1867,7 @@ LOAD data_init
 __c30_signature
                   0x0007d4         0x42
  __c30_signature
-                  0x0007d4          0x6 build/default/production/A36926_001.o
+                  0x0007d4          0x6 build/default/debug/A36926_001.o
  __c30_signature
                   0x0007da          0x6 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
  __c30_signature
@@ -1855,54 +1889,54 @@ __c30_signature
  __c30_signature
                   0x000810          0x6 c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libm-elf.a(udivsi3.eo)
 
-.nbss               0x0800        0x3e4
- .nbss              0x0800        0x23a ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
-                    0x0800                  _slave_board_data
-                    0x0868                  _etm_can_slave_debug_data
-                    0x08b8                  _etm_can_slave_sync_message
-                    0x08c0                  _etm_can_slave_rx_message_buffer
-                    0x0968                  _etm_can_slave_tx_message_buffer
-                    0x0a10                  _slave_data_log_index
-                    0x0a12                  _slave_data_log_sub_index
-                    0x0a14                  _previous_ready_status
-                    0x0a16                  _can_params
-                    0x0a24                  _CXEC_ptr
-                    0x0a26                  _CXINTF_ptr
-                    0x0a28                  _CXRX0CON_ptr
-                    0x0a2a                  _CXRX1CON_ptr
-                    0x0a2c                  _CXTX0CON_ptr
-                    0x0a2e                  _CXTX1CON_ptr
-                    0x0a30                  _CXTX2CON_ptr
-                    0x0a32                  _test0
-                    0x0a34                  _test1
-                    0x0a36                  _test2
-                    0x0a38                  _test3
- .nbss              0x0a3a        0x1a4 build/default/production/A36926_001.o
-                    0x0a3a                  _U14_LTC2654
-                    0x0a4e                  _global_data_A36926_001
- .nbss              0x0bde          0x6 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
-                    0x0bde                  _etm_spi_loop_timeout
-                    0x0be0                  _etm_spi1_error_count
-                    0x0be2                  _etm_spi2_error_count
+.nbss               0x0850        0x3e4
+ .nbss              0x0850        0x23a ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
+                    0x0850                  _slave_board_data
+                    0x08b8                  _etm_can_slave_debug_data
+                    0x0908                  _etm_can_slave_sync_message
+                    0x0910                  _etm_can_slave_rx_message_buffer
+                    0x09b8                  _etm_can_slave_tx_message_buffer
+                    0x0a60                  _slave_data_log_index
+                    0x0a62                  _slave_data_log_sub_index
+                    0x0a64                  _previous_ready_status
+                    0x0a66                  _can_params
+                    0x0a74                  _CXEC_ptr
+                    0x0a76                  _CXINTF_ptr
+                    0x0a78                  _CXRX0CON_ptr
+                    0x0a7a                  _CXRX1CON_ptr
+                    0x0a7c                  _CXTX0CON_ptr
+                    0x0a7e                  _CXTX1CON_ptr
+                    0x0a80                  _CXTX2CON_ptr
+                    0x0a82                  _test0
+                    0x0a84                  _test1
+                    0x0a86                  _test2
+                    0x0a88                  _test3
+ .nbss              0x0a8a        0x1a4 build/default/debug/A36926_001.o
+                    0x0a8a                  _U14_LTC2654
+                    0x0a9e                  _global_data_A36926_001
+ .nbss              0x0c2e          0x6 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
+                    0x0c2e                  _etm_spi_loop_timeout
+                    0x0c30                  _etm_spi1_error_count
+                    0x0c32                  _etm_spi2_error_count
 
 _03AA9900564bca1f
-                    0x0be4          0x4
+                    0x0c34          0x4
  _03AA9900564bca1f
-                    0x0be4          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
-                    0x0be4                  _etm_can_persistent_data
+                    0x0c34          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
+                    0x0c34                  _etm_can_persistent_data
 
-.nbss               0x0be8         0x10
- .nbss              0x0be8          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
-                    0x0be8                  _external_eeprom
- .nbss              0x0bec          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
-                    0x0bec                  _etm_i2c1_error_count
-                    0x0bee                  _etm_i2c_loop_timeout
- .nbss              0x0bf0          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SCALE.o)
-                    0x0bf0                  _etm_scale_saturation_etmscalefactor2_count
-                    0x0bf2                  _etm_scale_saturation_etmscalefactor16_count
- .nbss              0x0bf4          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
-                    0x0bf4                  _LTC265X_single_channel_error_count
-                    0x0bf6                  _LTC265X_all_channel_error_count
+.nbss               0x0c38         0x10
+ .nbss              0x0c38          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
+                    0x0c38                  _external_eeprom
+ .nbss              0x0c3c          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
+                    0x0c3c                  _etm_i2c1_error_count
+                    0x0c3e                  _etm_i2c_loop_timeout
+ .nbss              0x0c40          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SCALE.o)
+                    0x0c40                  _etm_scale_saturation_etmscalefactor2_count
+                    0x0c42                  _etm_scale_saturation_etmscalefactor16_count
+ .nbss              0x0c44          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
+                    0x0c44                  _LTC265X_single_channel_error_count
+                    0x0c46                  _LTC265X_all_channel_error_count
 
 .const              0x81ba         0x40 load address 0x0001ba  
  .const             0x81ba         0x40 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
@@ -1948,7 +1982,7 @@ _03AA9900564bca1f
                   0x000dfc                  _ETMCanSlaveGetSyncMsgPulseSyncFaultLED
                   0x000e16                  _ETMCanSlaveGetSyncMsgECBState
                   0x000e22                  _ETMCanSlaveIncrementInvalidIndex
- .text            0x000e2e        0x8d2 build/default/production/A36926_001.o
+ .text            0x000e2e        0x8d2 build/default/debug/A36926_001.o
                   0x000e2e                  _main
                   0x000e38                  _DoStateMachine
                   0x000f44                  _DisableHeaterMagnetOutputs
