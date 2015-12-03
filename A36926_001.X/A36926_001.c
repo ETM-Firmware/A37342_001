@@ -206,17 +206,19 @@ void DoA36926_001(void) {
     ETMCanSlaveSetDebugRegister(0x3, global_data_A36926_001.control_state);
 //    ETMCanSlaveSetDebugRegister(0x4, ETMCanSlaveGetSyncMsgECBState());
     ETMCanSlaveSetDebugRegister(0x4, scale_error_count);
+//    ETMCanSlaveSetDebugRegister(0x4, ADCBUF0);
+//    ETMCanSlaveSetDebugRegister(0x5, ADCBUF8);
     ETMCanSlaveSetDebugRegister(0x5, global_data_A36926_001.analog_output_electromagnet_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x6, global_data_A36926_001.analog_output_heater_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x7, global_data_A36926_001.accumulator_counter);
-    ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);//adc_accumulator);
-    ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);//adc_accumulator);
-    ETMCanSlaveSetDebugRegister(0xA, global_data_A36926_001.analog_input_heater_voltage.filtered_adc_reading);//etm_i2c1_error_count);
-    ETMCanSlaveSetDebugRegister(0xB, global_data_A36926_001.analog_input_5v_mon.reading_scaled_and_calibrated);//spi_error_count);
+    ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator);
+    ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator);
+    ETMCanSlaveSetDebugRegister(0xA, etm_i2c1_error_count);
+    ETMCanSlaveSetDebugRegister(0xB, spi_error_count);
     ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_output_heater_current.set_point);//global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xD, global_data_A36926_001.analog_output_electromagnet_current.set_point);//global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xE, global_data_A36926_001.can_heater_current_set_point);//global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated);
-    ETMCanSlaveSetDebugRegister(0xF, ETMAnalogCheckEEPromInitialized());//global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated);
+    ETMCanSlaveSetDebugRegister(0xF, global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated);
 
         // Update logging data
     slave_board_data.log_data[0] = global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated;
@@ -315,7 +317,7 @@ void DoA36926_001(void) {
       }
       if (ETMAnalogCheckUnderRelative(&global_data_A36926_001.analog_input_heater_current)) {
 	_FAULT_HEATER_UNDER_CURRENT_RELATIVE = 1;
-	//global_data_A36926_001.fault_active = 1;//for test -hkw
+	global_data_A36926_001.fault_active = 1;
       }
 
       if (ETMAnalogCheckOverAbsolute(&global_data_A36926_001.analog_input_electromagnet_current)) {
@@ -332,7 +334,7 @@ void DoA36926_001(void) {
       }
       if (ETMAnalogCheckUnderRelative(&global_data_A36926_001.analog_input_electromagnet_current)) {
 	_FAULT_MAGNET_UNDER_CURRENT_RELATIVE = 1;
-	//global_data_A36926_001.fault_active = 1;//for test -hkw
+	global_data_A36926_001.fault_active = 1;
       }
     } else {
       global_data_A36926_001.analog_input_electromagnet_current.target_value = 0;
@@ -449,7 +451,7 @@ void InitializeA36926_001(void) {
 			    0);
 
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_electromagnet_current,
-			   MACRO_DEC_TO_SCALE_FACTOR_16(.6250),
+			   MACRO_DEC_TO_SCALE_FACTOR_16(1.563),
 			   OFFSET_ZERO,
 			   ANALOG_INPUT_1,
 			   ELECTROMAGNET_CURRENT_OVER_TRIP,
@@ -457,10 +459,10 @@ void InitializeA36926_001(void) {
 			   ELECTROMAGNET_CURRENT_RELATIVE_TRIP,
 			   ELECTROMAGNET_CURRENT_RELATIVE_FLOOR,
 			   ELECTROMAGNET_CURRENT_TRIP_TIME,
-                           ELECTROMAGNET_CURRENT_ABSOLUTE_TRIP_TIME);
+                           ELECTROMAGNET_CURRENT_ABSOLUTE_TRIP_TIME); //changed scale from .6250
 
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_heater_current,
-			   MACRO_DEC_TO_SCALE_FACTOR_16(.6250),
+			   MACRO_DEC_TO_SCALE_FACTOR_16(1.563),
 			   OFFSET_ZERO,
 			   ANALOG_INPUT_2,
 			   HEATER_CURRENT_OVER_TRIP,
@@ -468,10 +470,10 @@ void InitializeA36926_001(void) {
 			   HEATER_CURRENT_RELATIVE_TRIP,
 			   HEATER_CURRENT_RELATIVE_FLOOR,
 			   HEATER_CURRENT_TRIP_TIME,
-                           HEATER_CURRENT_ABSOLUTE_TRIP_TIME);
+                           HEATER_CURRENT_ABSOLUTE_TRIP_TIME); //changed scale from .6250
 
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_electromagnet_voltage,
-			   MACRO_DEC_TO_SCALE_FACTOR_16(.6250),
+			   MACRO_DEC_TO_SCALE_FACTOR_16(.4690),
 			   OFFSET_ZERO,
 			   ANALOG_INPUT_3,
 			   ELECTROMAGNET_VOLTAGE_OVER_TRIP,
@@ -479,7 +481,7 @@ void InitializeA36926_001(void) {
 			   ELECTROMAGNET_VOLTAGE_RELATIVE_TRIP,
 			   ELECTROMAGNET_VOLTAGE_RELATIVE_FLOOR,
 			   ELECTROMAGNET_VOLTAGE_TRIP_TIME,
-                           ELECTROMAGNET_VOLTAGE_ABSOLUTE_TRIP_TIME);
+                           ELECTROMAGNET_VOLTAGE_ABSOLUTE_TRIP_TIME);  //changed scale from .6250
 
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_heater_voltage,
 			   MACRO_DEC_TO_SCALE_FACTOR_16(.4690),
@@ -536,6 +538,10 @@ void InitializeA36926_001(void) {
                            NO_COUNTER,
                            NO_COUNTER);
 
+//  Test voltage
+//   WriteLTC265XTwoChannels(&U14_LTC2654,
+//			      LTC265X_WRITE_AND_UPDATE_DAC_B, 0x4000,
+//			      LTC265X_WRITE_AND_UPDATE_DAC_D, 0x0000);
 
   // Flash LEDs at Startup
   startup_counter = 0;
@@ -713,15 +719,11 @@ void ETMCanSlaveExecuteCMDBoardSpecific(ETMCanMessage* message_ptr) {
   switch (index_word)
     {
     case ETM_CAN_REGISTER_HEATER_MAGNET_SET_1_CURRENT_SET_POINT:
-//      value = ETMScaleFactor16(message_ptr->word1, CAN_scale_table[CAN_SET_EKSET].fixed_scale, 0);
+
       global_data_A36926_001.can_heater_current_set_point = message_ptr->word1;
-//      SetEk(value);
-//      value = ETMScaleFactor16(message_ptr->word0, CAN_scale_table[CAN_SET_EFSET].fixed_scale, 0);
+
       global_data_A36926_001.can_magnet_current_set_point = message_ptr->word0;  //magnet
-//      SetEf(value);
-//      _CONTROL_NOT_CONFIGURED = AreAnyReferenceNotConfigured();
-      
-     
+
       _CONTROL_NOT_CONFIGURED = 0;
       
       break;
