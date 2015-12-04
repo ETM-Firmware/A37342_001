@@ -19,8 +19,7 @@ _FICD(PGD);
 LTC265X U14_LTC2654;
 HeaterMagnetControlData global_data_A36926_001;
 unsigned int counts = 0;
-unsigned int operated = 0;
-
+unsigned int fast_counts = 0;
 
 void DisableHeaterMagnetOutputs(void);
 void EnableHeaterMagnetOutputs(void);
@@ -169,12 +168,12 @@ void DoA36926_001(void) {
 
   ETMCanSlaveDoCan();
 
-
-  // Check the status of these pins every time through the loop
-//  if (PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV) {     //why was checked twice? -hkw
-//    _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
-//    global_data_A36926_001.fault_active = 1;
-//  }
+  fast_counts++;
+  // Check the status of these pins every time through the loop      //why checked twice? -hkw
+  if ((PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV)&&(fast_counts > 20000)) {     //wait 20000 fxn calls, up to 12000
+    _FAULT_HW_HEATER_OVER_VOLTAGE = 1;                                             //counted for startup with false fault
+    global_data_A36926_001.fault_active = 1;
+  }
   /*
   if (PIN_PIC_INPUT_TEMPERATURE_OK == ILL_TEMP_SWITCH_FAULT) {
     _FAULT_HW_TEMPERATURE_SWITCH = 1;
@@ -210,10 +209,7 @@ void DoA36926_001(void) {
     ETMCanSlaveSetDebugRegister(0x2, global_data_A36926_001.power_up_test_timer);
     ETMCanSlaveSetDebugRegister(0x3, global_data_A36926_001.control_state);
 //    ETMCanSlaveSetDebugRegister(0x4, ETMCanSlaveGetSyncMsgECBState());
-//    ETMCanSlaveSetDebugRegister(0x4, scale_error_count);
-    ETMCanSlaveSetDebugRegister(0x4, operated);
-//    ETMCanSlaveSetDebugRegister(0x4, ADCBUF0);
-//    ETMCanSlaveSetDebugRegister(0x5, ADCBUF8);
+    ETMCanSlaveSetDebugRegister(0x4, scale_error_count);
     ETMCanSlaveSetDebugRegister(0x5, global_data_A36926_001.analog_output_electromagnet_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x6, global_data_A36926_001.analog_output_heater_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x7, global_data_A36926_001.accumulator_counter);
@@ -221,9 +217,9 @@ void DoA36926_001(void) {
     ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator);
     ETMCanSlaveSetDebugRegister(0xA, etm_i2c1_error_count);
     ETMCanSlaveSetDebugRegister(0xB, spi_error_count);
-    ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_output_heater_current.set_point);//global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
-    ETMCanSlaveSetDebugRegister(0xD, global_data_A36926_001.analog_output_electromagnet_current.set_point);//global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);
-    ETMCanSlaveSetDebugRegister(0xE, global_data_A36926_001.can_heater_current_set_point);//global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated);
+    ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
+    ETMCanSlaveSetDebugRegister(0xD, global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);
+    ETMCanSlaveSetDebugRegister(0xE, global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xF, global_data_A36926_001.analog_input_heater_voltage.reading_scaled_and_calibrated);
 
         // Update logging data
@@ -275,11 +271,11 @@ void DoA36926_001(void) {
 // -------------------- CHECK FOR FAULTS ------------------- //
 
     global_data_A36926_001.fault_active = 0;
-
-//    if (PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV) {
-//      _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
-//      global_data_A36926_001.fault_active = 1;
-//    }
+    counts++;
+    if ((PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV)&&(counts > 30)) {  //wait 30 because up to 20 needed for startup
+      _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
+      global_data_A36926_001.fault_active = 1;
+    }
     /*
     if (PIN_PIC_INPUT_TEMPERATURE_OK == ILL_TEMP_SWITCH_FAULT) {
       _FAULT_HW_TEMPERATURE_SWITCH = 1;
