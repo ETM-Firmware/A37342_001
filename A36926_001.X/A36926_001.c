@@ -18,6 +18,9 @@ _FICD(PGD);
 
 LTC265X U14_LTC2654;
 HeaterMagnetControlData global_data_A36926_001;
+unsigned int counts = 0;
+unsigned int operated = 0;
+
 
 void DisableHeaterMagnetOutputs(void);
 void EnableHeaterMagnetOutputs(void);
@@ -80,9 +83,10 @@ void DoStateMachine(void) {
     EnableHeaterMagnetOutputs();
     while (global_data_A36926_001.control_state == STATE_POWER_UP_TEST) {
       DoA36926_001();
-
+      
       if (global_data_A36926_001.power_up_test_timer >= TIME_POWER_UP_TEST) {
 	// We passed the warmup time without a fault, clear the startup counter
+
 	global_data_A36926_001.startup_count = 0;
 	global_data_A36926_001.power_up_test_timer = TIME_POWER_UP_TEST;
 	// We can moce to the operate sate if there are no latched faults or if the reset is active
@@ -105,6 +109,7 @@ void DoStateMachine(void) {
   case STATE_OPERATE:
     _CONTROL_NOT_READY = 0;
     _FAULT_REGISTER = 0;
+    
     while (global_data_A36926_001.control_state == STATE_OPERATE) {
       DoA36926_001();
 
@@ -166,10 +171,10 @@ void DoA36926_001(void) {
 
 
   // Check the status of these pins every time through the loop
-  if (PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV) {
-    _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
-    global_data_A36926_001.fault_active = 1;
-  }
+//  if (PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV) {     //why was checked twice? -hkw
+//    _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
+//    global_data_A36926_001.fault_active = 1;
+//  }
   /*
   if (PIN_PIC_INPUT_TEMPERATURE_OK == ILL_TEMP_SWITCH_FAULT) {
     _FAULT_HW_TEMPERATURE_SWITCH = 1;
@@ -205,7 +210,8 @@ void DoA36926_001(void) {
     ETMCanSlaveSetDebugRegister(0x2, global_data_A36926_001.power_up_test_timer);
     ETMCanSlaveSetDebugRegister(0x3, global_data_A36926_001.control_state);
 //    ETMCanSlaveSetDebugRegister(0x4, ETMCanSlaveGetSyncMsgECBState());
-    ETMCanSlaveSetDebugRegister(0x4, scale_error_count);
+//    ETMCanSlaveSetDebugRegister(0x4, scale_error_count);
+    ETMCanSlaveSetDebugRegister(0x4, operated);
 //    ETMCanSlaveSetDebugRegister(0x4, ADCBUF0);
 //    ETMCanSlaveSetDebugRegister(0x5, ADCBUF8);
     ETMCanSlaveSetDebugRegister(0x5, global_data_A36926_001.analog_output_electromagnet_current.dac_setting_scaled_and_calibrated);
@@ -270,11 +276,10 @@ void DoA36926_001(void) {
 
     global_data_A36926_001.fault_active = 0;
 
-
-    if (PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV) {
-      _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
-      global_data_A36926_001.fault_active = 1;
-    }
+//    if (PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV) {
+//      _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
+//      global_data_A36926_001.fault_active = 1;
+//    }
     /*
     if (PIN_PIC_INPUT_TEMPERATURE_OK == ILL_TEMP_SWITCH_FAULT) {
       _FAULT_HW_TEMPERATURE_SWITCH = 1;
@@ -435,7 +440,7 @@ void InitializeA36926_001(void) {
 
   // Initialize the Analog Input * Output Scaling
   ETMAnalogInitializeOutput(&global_data_A36926_001.analog_output_electromagnet_current,
-			    MACRO_DEC_TO_SCALE_FACTOR_16(1.6),
+			    MACRO_DEC_TO_SCALE_FACTOR_16(1.311),
 			    OFFSET_ZERO,
 			    ANALOG_OUTPUT_0,
 			    ELECTROMAGNET_MAX_IPROG,
@@ -443,7 +448,7 @@ void InitializeA36926_001(void) {
 			    0);
 
   ETMAnalogInitializeOutput(&global_data_A36926_001.analog_output_heater_current,
-			    MACRO_DEC_TO_SCALE_FACTOR_16(1.6),
+			    MACRO_DEC_TO_SCALE_FACTOR_16(1.311),
 			    OFFSET_ZERO,
 			    ANALOG_OUTPUT_2,
 			    HEATER_MAX_IPROG,

@@ -136,7 +136,7 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
   RD2  - Lamdba Voltage Select      (unused)     (set as input)
   RD3  - HEATER MAGNET DISABLE (PIC RELAY OUT)
 
-  RA6  - Enable 15V Supply
+  RA6  - Enable 15V Supply                       (set as input for enable)
   RA7  - LED Operational
   RG12 - LED A RED
   RG13 - LED B GREEN
@@ -169,7 +169,7 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
 */
 
 
-#define A36926_001_TRISA_VALUE 0b1111111100111111    //check on RA6 for 15V supply enable - hkw
+#define A36926_001_TRISA_VALUE 0b1111111101111111    
 #define A36926_001_TRISB_VALUE 0b1111111111111111
 #define A36926_001_TRISC_VALUE 0b1111111111111111
 #define A36926_001_TRISD_VALUE 0b1111111111110100
@@ -196,7 +196,7 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
 
 #define PIN_RESET_DETECT                      RESET_DETECT
 
-#define ILL_HEATER_OV                         1
+#define ILL_HEATER_OV                         0
 #define ILL_TEMP_SWITCH_FAULT                 0
 #define ILL_RELAY_OPEN                        1
 #define ILL_ENERGY_SELECT_WATER_FLOW_OK       1
