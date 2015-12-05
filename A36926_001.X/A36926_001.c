@@ -169,9 +169,9 @@ void DoA36926_001(void) {
   ETMCanSlaveDoCan();
 
   fast_counts++;
-  // Check the status of these pins every time through the loop      //why checked twice? -hkw
-  if ((PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV)&&(fast_counts > 20000)) {     //wait 20000 fxn calls, up to 12000
-    _FAULT_HW_HEATER_OVER_VOLTAGE = 1;                                             //counted for startup with false fault
+  // Check the status of these pins every time through the loop     
+  if ((PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV) && (global_data_A36926_001.control_state == STATE_OPERATE)) {
+    _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
     global_data_A36926_001.fault_active = 1;
   }
   /*
@@ -270,18 +270,17 @@ void DoA36926_001(void) {
 
 // -------------------- CHECK FOR FAULTS ------------------- //
 
-    global_data_A36926_001.fault_active = 0;
-    counts++;
-    if ((PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV)&&(counts > 30)) {  //wait 30 because up to 20 needed for startup
-      _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
-      global_data_A36926_001.fault_active = 1;
-    }
-    /*
+//    global_data_A36926_001.fault_active = 0;
+//    if ((PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV)&&(global_data_A36926_001.control_state == STATE_OPERATE)) {
+//      _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
+//      global_data_A36926_001.fault_active = 1;
+//    }
+    
     if (PIN_PIC_INPUT_TEMPERATURE_OK == ILL_TEMP_SWITCH_FAULT) {
       _FAULT_HW_TEMPERATURE_SWITCH = 1;
       global_data_A36926_001.fault_active = 1;
     }
-    */
+    
     // DPARKER check SYNC message for coolant flow and fault if there is a problem
     if (ETMCanSlaveGetSyncMsgCoolingFault()) {
       _FAULT_COOLANT_FAULT = 1;
