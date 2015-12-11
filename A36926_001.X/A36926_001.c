@@ -270,7 +270,8 @@ void DoA36926_001(void) {
 
 // -------------------- CHECK FOR FAULTS ------------------- //
 
-//    global_data_A36926_001.fault_active = 0;
+    global_data_A36926_001.fault_active = 0;
+
 //    if ((PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV)&&(global_data_A36926_001.control_state == STATE_OPERATE)) {
 //      _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
 //      global_data_A36926_001.fault_active = 1;
