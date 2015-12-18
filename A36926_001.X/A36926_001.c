@@ -2,6 +2,11 @@
 #include "FIRMWARE_VERSION.h"
 
 
+unsigned int running_persistent __attribute__ ((persistent));
+unsigned int do_fast_startup;
+unsigned int setup_done;
+#define PERSISTENT_TEST 0xCFD1
+
 // This is firmware for the Magnet Supply Test Board
 
 _FOSC(ECIO & CSW_FSCM_OFF);
@@ -31,12 +36,12 @@ void DoA36926_001(void);
 void Reset_EEPROM_I2C(unsigned long SCLpin, unsigned long SDApin);
 
 
-#define STATE_STARTUP                0x10
-#define STATE_WAITING_FOR_CONFIG     0x20
-#define STATE_POWER_UP_TEST          0x30
-#define STATE_OPERATE                0x40
-#define STATE_FAULT                  0x50
-#define STATE_FAULT_NO_RECOVERY      0x60
+#define STATE_STARTUP                10
+#define STATE_WAITING_FOR_CONFIG     20
+#define STATE_POWER_UP_TEST          30
+#define STATE_OPERATE                40
+#define STATE_FAULT                  50
+#define STATE_FAULT_NO_RECOVERY      60
 
 int main(void) {
   global_data_A36926_001.control_state = STATE_STARTUP;
@@ -54,32 +59,59 @@ void DoStateMachine(void) {
   switch (global_data_A36926_001.control_state) {
 
   case STATE_STARTUP:
+    if (running_persistent == PERSISTENT_TEST) {
+      do_fast_startup = 1;
+    } else {
+      do_fast_startup = 0;
+    }
+    running_persistent = 0;
     InitializeA36926_001();
     _CONTROL_NOT_READY = 1;
     _CONTROL_NOT_CONFIGURED = 1;
     global_data_A36926_001.startup_count = 0;
     global_data_A36926_001.control_state = STATE_WAITING_FOR_CONFIG;
+    if (do_fast_startup) {
+      _CONTROL_NOT_READY = 0;
+      _FAULT_REGISTER = 0;
+      EnableHeaterMagnetOutputs();
+      _CONTROL_NOT_CONFIGURED = 0;
+      setup_done = 0;
+      while (setup_done == 0) {
+	DoA36926_001();
+      }
+      ETMAnalogSetOutput(&global_data_A36926_001.analog_output_heater_current, global_data_A36926_001.can_heater_current_set_point);
+      ETMAnalogSetOutput(&global_data_A36926_001.analog_output_electromagnet_current, global_data_A36926_001.can_magnet_current_set_point);
+      ETMAnalogScaleCalibrateDACSetting(&global_data_A36926_001.analog_output_heater_current);
+      ETMAnalogScaleCalibrateDACSetting(&global_data_A36926_001.analog_output_electromagnet_current);	  
+      SetupLTC265X(&U14_LTC2654, ETM_SPI_PORT_2, FCY_CLK, LTC265X_SPI_2_5_M_BIT, _PIN_RG15, _PIN_RC1);
+      
+      WriteLTC265XTwoChannels(&U14_LTC2654,
+			      LTC265X_WRITE_AND_UPDATE_DAC_A, global_data_A36926_001.analog_output_electromagnet_current.dac_setting_scaled_and_calibrated,
+			      LTC265X_WRITE_AND_UPDATE_DAC_C, global_data_A36926_001.analog_output_heater_current.dac_setting_scaled_and_calibrated);
+      
+      global_data_A36926_001.control_state = STATE_OPERATE;      
+    }
     break;
 
 
   case STATE_WAITING_FOR_CONFIG:
     _CONTROL_NOT_READY = 1;
-    DisableHeaterMagnetOutputs();
+    running_persistent = 0;
     while (global_data_A36926_001.control_state == STATE_WAITING_FOR_CONFIG) {
       DoA36926_001();
-
       if (_CONTROL_NOT_CONFIGURED == 0) {
 	global_data_A36926_001.control_state = STATE_POWER_UP_TEST;
       }
     }
     break;
-
+    
 
   case STATE_POWER_UP_TEST:
-    global_data_A36926_001.startup_count++;
+     global_data_A36926_001.startup_count++;
     _CONTROL_NOT_READY = 1;
     global_data_A36926_001.power_up_test_timer = 0;
     EnableHeaterMagnetOutputs();
+    running_persistent = 0;
     while (global_data_A36926_001.control_state == STATE_POWER_UP_TEST) {
       DoA36926_001();
       
@@ -108,10 +140,9 @@ void DoStateMachine(void) {
   case STATE_OPERATE:
     _CONTROL_NOT_READY = 0;
     _FAULT_REGISTER = 0;
-    
+    running_persistent = PERSISTENT_TEST;
     while (global_data_A36926_001.control_state == STATE_OPERATE) {
       DoA36926_001();
-
       if (global_data_A36926_001.fault_active) {
 	global_data_A36926_001.control_state = STATE_FAULT;
       }
@@ -122,6 +153,7 @@ void DoStateMachine(void) {
   case STATE_FAULT:
     DisableHeaterMagnetOutputs();
     _CONTROL_NOT_READY = 1;
+    running_persistent = 0;
     while (global_data_A36926_001.control_state == STATE_FAULT) {
       DoA36926_001();
 
@@ -135,6 +167,7 @@ void DoStateMachine(void) {
     DisableHeaterMagnetOutputs();
     _CONTROL_NOT_READY = 1;
     _STATUS_PERMA_FAULTED = 1;
+    running_persistent = 0;
     while (global_data_A36926_001.control_state == STATE_FAULT_NO_RECOVERY) {
       DoA36926_001();
     }
@@ -169,11 +202,14 @@ void DoA36926_001(void) {
   ETMCanSlaveDoCan();
 
   fast_counts++;
-  // Check the status of these pins every time through the loop     
-  if ((PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV) && (global_data_A36926_001.control_state == STATE_OPERATE)) {
+  // Check the status of these pins every time through the loop
+  /*
+    DPARKER TESTING
+    if ((PIN_PIC_INPUT_HEATER_OV_OK == ILL_HEATER_OV) && (global_data_A36926_001.control_state == STATE_OPERATE)) {
     _FAULT_HW_HEATER_OVER_VOLTAGE = 1;
     global_data_A36926_001.fault_active = 1;
-  }
+    }
+  */
   /*
   if (PIN_PIC_INPUT_TEMPERATURE_OK == ILL_TEMP_SWITCH_FAULT) {
     _FAULT_HW_TEMPERATURE_SWITCH = 1;
@@ -184,22 +220,6 @@ void DoA36926_001(void) {
     // Timer has expired so execute the scheduled code (should be once every 10ms unless the configuration file is changes
     _T3IF = 0;
 
-//    local_debug_data.debug_0 = global_data_A36444_500.startup_count;
-//    local_debug_data.debug_1 = global_data_A36444_500.fault_active;
-//    local_debug_data.debug_2 = global_data_A36444_500.power_up_test_timer;
-//    local_debug_data.debug_3 = global_data_A36444_500.control_state;
-//    local_debug_data.debug_4 = _SYNC_CONTROL_WORD;
-//    local_debug_data.debug_5 = global_data_A36444_500.analog_output_electromagnet_current.dac_setting_scaled_and_calibrated;
-//    local_debug_data.debug_6 = global_data_A36444_500.analog_output_heater_current.dac_setting_scaled_and_calibrated;
-//    local_debug_data.debug_7 = global_data_A36444_500.accumulator_counter;
-//    local_debug_data.debug_8 = global_data_A36444_500.analog_input_electromagnet_current.adc_accumulator;
-//    local_debug_data.debug_9 = global_data_A36444_500.analog_input_heater_current.adc_accumulator;
-//    local_debug_data.debug_A = global_data_A36444_500.analog_input_electromagnet_current.filtered_adc_reading;
-//    local_debug_data.debug_B = global_data_A36444_500.analog_input_heater_current.filtered_adc_reading;
-//    local_debug_data.debug_C = ADCBUF8;
-//    local_debug_data.debug_D = ADCBUF9;
-//    local_debug_data.debug_E = ADCBUFA;
-//    local_debug_data.debug_F = ADCBUFB;
 
     spi_error_count = etm_spi1_error_count + etm_spi2_error_count;
     scale_error_count = etm_scale_saturation_etmscalefactor2_count + etm_scale_saturation_etmscalefactor16_count;
@@ -213,8 +233,8 @@ void DoA36926_001(void) {
     ETMCanSlaveSetDebugRegister(0x5, global_data_A36926_001.analog_output_electromagnet_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x6, global_data_A36926_001.analog_output_heater_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x7, global_data_A36926_001.accumulator_counter);
-    ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator);
-    ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.analog_input_electromagnet_current.adc_accumulator);
+    ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.can_heater_current_set_point);
+    ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.can_magnet_current_set_point);
     ETMCanSlaveSetDebugRegister(0xA, etm_i2c1_error_count);
     ETMCanSlaveSetDebugRegister(0xB, spi_error_count);
     ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
@@ -317,8 +337,8 @@ void DoA36926_001(void) {
 	global_data_A36926_001.fault_active = 1;
       }
       if (ETMAnalogCheckUnderRelative(&global_data_A36926_001.analog_input_heater_current)) {
-	_FAULT_HEATER_UNDER_CURRENT_RELATIVE = 1;
-	global_data_A36926_001.fault_active = 1;
+	//_FAULT_HEATER_UNDER_CURRENT_RELATIVE = 1;
+	//global_data_A36926_001.fault_active = 1;
       }
 
       if (ETMAnalogCheckOverAbsolute(&global_data_A36926_001.analog_input_electromagnet_current)) {
@@ -334,8 +354,8 @@ void DoA36926_001(void) {
 	global_data_A36926_001.fault_active = 1;
       }
       if (ETMAnalogCheckUnderRelative(&global_data_A36926_001.analog_input_electromagnet_current)) {
-	_FAULT_MAGNET_UNDER_CURRENT_RELATIVE = 1;
-	global_data_A36926_001.fault_active = 1;
+	//_FAULT_MAGNET_UNDER_CURRENT_RELATIVE = 1;
+	//global_data_A36926_001.fault_active = 1;
       }
     } else {
       global_data_A36926_001.analog_input_electromagnet_current.target_value = 0;
@@ -415,18 +435,20 @@ void InitializeA36926_001(void) {
   _ADIE = 1;
   _ADON = 1;
 
-
-  // Initialize LTC DAC
-  SetupLTC265X(&U14_LTC2654, ETM_SPI_PORT_2, FCY_CLK, LTC265X_SPI_2_5_M_BIT, _PIN_RG15, _PIN_RC1);
-
+  if (do_fast_startup) {
+    // Do Not Adjust the DAC right now
+    EnableHeaterMagnetOutputs();
+  } else {
+    // Initialize LTC DAC
+    SetupLTC265X(&U14_LTC2654, ETM_SPI_PORT_2, FCY_CLK, LTC265X_SPI_2_5_M_BIT, _PIN_RG15, _PIN_RC1);
+    DisableHeaterMagnetOutputs();
+  }
+  
   //function that resets i2c bus
-  Reset_EEPROM_I2C(_PIN_RG2, _PIN_RG3);
+  // DPARKER REMOVE FOR NOW Reset_EEPROM_I2C(_PIN_RG2, _PIN_RG3);
 
   // Initialize the External EEprom
   ETMEEPromConfigureExternalDevice(EEPROM_SIZE_8K_BYTES, FCY_CLK, 400000, EEPROM_I2C_ADDRESS_0, 1);
-
-  #define AGILE_REV 'A'
-  #define SERIAL_NUMBER 100
  
   // Initialize the Can module
   ETMCanSlaveInitialize(CAN_PORT_1, FCY_CLK, ETM_CAN_ADDR_HEATER_MAGNET_BOARD, _PIN_RG13, 4, _PIN_RG13, _PIN_RG13);
@@ -438,7 +460,7 @@ void InitializeA36926_001(void) {
   ETMAnalogInitializeOutput(&global_data_A36926_001.analog_output_electromagnet_current,
 			    MACRO_DEC_TO_SCALE_FACTOR_16(1.311),
 			    OFFSET_ZERO,
-			    ANALOG_OUTPUT_0,
+			    ANALOG_OUTPUT_NO_CALIBRATION,
 			    ELECTROMAGNET_MAX_IPROG,
 			    ELECTROMAGNET_MIN_IPROG,
 			    0);
@@ -446,7 +468,7 @@ void InitializeA36926_001(void) {
   ETMAnalogInitializeOutput(&global_data_A36926_001.analog_output_heater_current,
 			    MACRO_DEC_TO_SCALE_FACTOR_16(1.311),
 			    OFFSET_ZERO,
-			    ANALOG_OUTPUT_2,
+			    ANALOG_OUTPUT_NO_CALIBRATION,
 			    HEATER_MAX_IPROG,
 			    HEATER_MIN_IPROG,
 			    0);
@@ -454,7 +476,7 @@ void InitializeA36926_001(void) {
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_electromagnet_current,
 			   MACRO_DEC_TO_SCALE_FACTOR_16(1.563),
 			   OFFSET_ZERO,
-			   ANALOG_INPUT_1,
+			   ANALOG_INPUT_NO_CALIBRATION,
 			   ELECTROMAGNET_CURRENT_OVER_TRIP,
 			   ELECTROMAGNET_CURRENT_UNDER_TRIP,
 			   ELECTROMAGNET_CURRENT_RELATIVE_TRIP,
@@ -465,7 +487,7 @@ void InitializeA36926_001(void) {
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_heater_current,
 			   MACRO_DEC_TO_SCALE_FACTOR_16(1.563),
 			   OFFSET_ZERO,
-			   ANALOG_INPUT_2,
+			   ANALOG_INPUT_NO_CALIBRATION,
 			   HEATER_CURRENT_OVER_TRIP,
 			   HEATER_CURRENT_UNDER_TRIP,
 			   HEATER_CURRENT_RELATIVE_TRIP,
@@ -476,7 +498,7 @@ void InitializeA36926_001(void) {
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_electromagnet_voltage,
 			   MACRO_DEC_TO_SCALE_FACTOR_16(.4690),
 			   OFFSET_ZERO,
-			   ANALOG_INPUT_3,
+			   ANALOG_INPUT_NO_CALIBRATION,
 			   ELECTROMAGNET_VOLTAGE_OVER_TRIP,
 			   ELECTROMAGNET_VOLTAGE_UNDER_TRIP,
 			   ELECTROMAGNET_VOLTAGE_RELATIVE_TRIP,
@@ -487,7 +509,7 @@ void InitializeA36926_001(void) {
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_heater_voltage,
 			   MACRO_DEC_TO_SCALE_FACTOR_16(.4690),
 			   OFFSET_ZERO,
-			   ANALOG_INPUT_4,
+			   ANALOG_INPUT_NO_CALIBRATION,
 			   HEATER_VOLTAGE_OVER_TRIP,
 			   HEATER_VOLTAGE_UNDER_TRIP,
 			   HEATER_VOLTAGE_RELATIVE_TRIP,
@@ -498,7 +520,7 @@ void InitializeA36926_001(void) {
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_5v_mon,
                            MACRO_DEC_TO_SCALE_FACTOR_16(.12500),
                            OFFSET_ZERO,
-                           ANALOG_INPUT_5,
+                           ANALOG_INPUT_NO_CALIBRATION,
                            PWR_5V_OVER_FLT,
                            PWR_5V_UNDER_FLT,
                            NO_TRIP_SCALE,
@@ -509,7 +531,7 @@ void InitializeA36926_001(void) {
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_15v_mon,
                            MACRO_DEC_TO_SCALE_FACTOR_16(.25063),
                            OFFSET_ZERO,
-                           ANALOG_INPUT_6,
+                           ANALOG_INPUT_NO_CALIBRATION,
                            PWR_15V_OVER_FLT,
                            PWR_15V_UNDER_FLT,
                            NO_TRIP_SCALE,
@@ -520,7 +542,7 @@ void InitializeA36926_001(void) {
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_neg_15v_mon,
                            MACRO_DEC_TO_SCALE_FACTOR_16(.06250),
                            OFFSET_ZERO,
-                           ANALOG_INPUT_7,
+                           ANALOG_INPUT_NO_CALIBRATION,
                            PWR_NEG_15V_OVER_FLT,
                            PWR_NEG_15V_UNDER_FLT,
                            NO_TRIP_SCALE,
@@ -531,7 +553,7 @@ void InitializeA36926_001(void) {
   ETMAnalogInitializeInput(&global_data_A36926_001.analog_input_pic_adc_test_dac,
                            MACRO_DEC_TO_SCALE_FACTOR_16(1),
                            OFFSET_ZERO,
-                           ANALOG_INPUT_8,
+                           ANALOG_INPUT_NO_CALIBRATION,
                            ADC_DAC_TEST_OVER_FLT,
                            ADC_DAC_TEST_UNDER_FLT,
                            NO_TRIP_SCALE,
@@ -544,39 +566,43 @@ void InitializeA36926_001(void) {
 //			      LTC265X_WRITE_AND_UPDATE_DAC_B, 0x4000,
 //			      LTC265X_WRITE_AND_UPDATE_DAC_D, 0x0000);
 
-  // Flash LEDs at Startup
-  startup_counter = 0;
-  while (startup_counter <= 400) {  // 4 Seconds total
-    ETMCanSlaveDoCan();
-    if (_T3IF) {
-      _T3IF =0;
-      startup_counter++;
-    }
-    switch (((startup_counter >> 4) & 0b11)) {
 
-    case 0:
-      PIN_LED_OPERATIONAL_GREEN = !OLL_LED_ON;
-      PIN_LED_A_RED = !OLL_LED_ON;
-      PIN_LED_B_GREEN = !OLL_LED_ON;
-      break;
-
-    case 1:
-      PIN_LED_OPERATIONAL_GREEN = OLL_LED_ON;
-      PIN_LED_A_RED = !OLL_LED_ON;
-      PIN_LED_B_GREEN = !OLL_LED_ON;
-      break;
-
-    case 2:
-      PIN_LED_OPERATIONAL_GREEN = OLL_LED_ON;
-      PIN_LED_A_RED = OLL_LED_ON;
-      PIN_LED_B_GREEN = !OLL_LED_ON;
-      break;
-
-    case 3:
-      PIN_LED_OPERATIONAL_GREEN = OLL_LED_ON;
-      PIN_LED_A_RED = OLL_LED_ON;
-      PIN_LED_B_GREEN = OLL_LED_ON;
-      break;
+  if (!do_fast_startup) {
+    
+    // Flash LEDs at Startup
+    startup_counter = 0;
+    while (startup_counter <= 400) {  // 4 Seconds total
+      ETMCanSlaveDoCan();
+      if (_T3IF) {
+	_T3IF =0;
+	startup_counter++;
+      }
+      switch (((startup_counter >> 4) & 0b11)) {
+	
+      case 0:
+	PIN_LED_OPERATIONAL_GREEN = !OLL_LED_ON;
+	PIN_LED_A_RED = !OLL_LED_ON;
+	PIN_LED_B_GREEN = !OLL_LED_ON;
+	break;
+	
+      case 1:
+	PIN_LED_OPERATIONAL_GREEN = OLL_LED_ON;
+	PIN_LED_A_RED = !OLL_LED_ON;
+	PIN_LED_B_GREEN = !OLL_LED_ON;
+	break;
+	
+      case 2:
+	PIN_LED_OPERATIONAL_GREEN = OLL_LED_ON;
+	PIN_LED_A_RED = OLL_LED_ON;
+	PIN_LED_B_GREEN = !OLL_LED_ON;
+	break;
+	
+      case 3:
+	PIN_LED_OPERATIONAL_GREEN = OLL_LED_ON;
+	PIN_LED_A_RED = OLL_LED_ON;
+	PIN_LED_B_GREEN = OLL_LED_ON;
+	break;
+      }
     }
   }
 
@@ -720,13 +746,10 @@ void ETMCanSlaveExecuteCMDBoardSpecific(ETMCanMessage* message_ptr) {
   switch (index_word)
     {
     case ETM_CAN_REGISTER_HEATER_MAGNET_SET_1_CURRENT_SET_POINT:
-
       global_data_A36926_001.can_heater_current_set_point = message_ptr->word1;
-
       global_data_A36926_001.can_magnet_current_set_point = message_ptr->word0;  //magnet
-
       _CONTROL_NOT_CONFIGURED = 0;
-      
+      setup_done = 1;
       break;
 
     default:

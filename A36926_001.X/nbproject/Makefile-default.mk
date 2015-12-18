@@ -83,7 +83,7 @@ MP_LINKER_FILE_OPTION=,--script=p30F6014A.gld
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 ${OBJECTDIR}/A36926_001.o: A36926_001.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR} 
+	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/A36926_001.o.d 
 	@${RM} ${OBJECTDIR}/A36926_001.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  A36926_001.c  -o ${OBJECTDIR}/A36926_001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/A36926_001.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1    -omf=elf -I"../../ETM_LIBRARY/Version_01/inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
@@ -91,7 +91,7 @@ ${OBJECTDIR}/A36926_001.o: A36926_001.c  nbproject/Makefile-${CND_CONF}.mk
 	
 else
 ${OBJECTDIR}/A36926_001.o: A36926_001.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR} 
+	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/A36926_001.o.d 
 	@${RM} ${OBJECTDIR}/A36926_001.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  A36926_001.c  -o ${OBJECTDIR}/A36926_001.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/A36926_001.o.d"        -g -omf=elf -I"../../ETM_LIBRARY/Version_01/inc" -O0 -msmart-io=1 -Wall -msfr-warn=off
@@ -116,12 +116,12 @@ endif
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 dist/${CND_CONF}/${IMAGE_TYPE}/A36926_001.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk  ../../ETM_LIBRARY/Version_01/lib/ETM_LINAC_CAN.a ../../ETM_LIBRARY/Version_01/lib/ETM_EEPROM_EXTERNAL.a ../../ETM_LIBRARY/Version_01/lib/ETM_CORE.a  
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_CC} $(MP_EXTRA_LD_PRE)  -o dist/${CND_CONF}/${IMAGE_TYPE}/A36926_001.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}    ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a  -mcpu=$(MP_PROCESSOR_OPTION)        -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -omf=elf  -mreserve=data@0x800:0x81F -mreserve=data@0x820:0x821 -mreserve=data@0x822:0x823 -mreserve=data@0x824:0x84F   -Wl,,--defsym=__MPLAB_BUILD=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_ICD3=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem$(MP_EXTRA_LD_POST) 
+	${MP_CC} $(MP_EXTRA_LD_PRE)  -o dist/${CND_CONF}/${IMAGE_TYPE}/A36926_001.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}    ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a  -mcpu=$(MP_PROCESSOR_OPTION)        -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -omf=elf -I"../../ETM_LIBRARY/Version_01/inc"  -mreserve=data@0x800:0x81F -mreserve=data@0x820:0x821 -mreserve=data@0x822:0x823 -mreserve=data@0x824:0x84F   -Wl,,--defsym=__MPLAB_BUILD=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_ICD3=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem$(MP_EXTRA_LD_POST) 
 	
 else
 dist/${CND_CONF}/${IMAGE_TYPE}/A36926_001.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk  ../../ETM_LIBRARY/Version_01/lib/ETM_LINAC_CAN.a ../../ETM_LIBRARY/Version_01/lib/ETM_EEPROM_EXTERNAL.a ../../ETM_LIBRARY/Version_01/lib/ETM_CORE.a 
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_CC} $(MP_EXTRA_LD_PRE)  -o dist/${CND_CONF}/${IMAGE_TYPE}/A36926_001.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}    ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a  -mcpu=$(MP_PROCESSOR_OPTION)        -omf=elf -Wl,,--defsym=__MPLAB_BUILD=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem$(MP_EXTRA_LD_POST) 
+	${MP_CC} $(MP_EXTRA_LD_PRE)  -o dist/${CND_CONF}/${IMAGE_TYPE}/A36926_001.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}    ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a  -mcpu=$(MP_PROCESSOR_OPTION)        -omf=elf -I"../../ETM_LIBRARY/Version_01/inc" -Wl,,--defsym=__MPLAB_BUILD=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem$(MP_EXTRA_LD_POST) 
 	${MP_CC_DIR}\\xc16-bin2hex dist/${CND_CONF}/${IMAGE_TYPE}/A36926_001.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} -a  -omf=elf  
 	
 endif
