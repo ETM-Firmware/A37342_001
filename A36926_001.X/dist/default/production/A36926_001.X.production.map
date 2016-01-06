@@ -109,11 +109,11 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100                0xba           0x117  (279)
 .const                       0x1ba                0x40            0x60  (96)
-.text                        0x1fa              0x2d1a          0x43a7  (17319)
-.dinit                      0x2f14                0x2c            0x42  (66)
-.init.delay32               0x2f40                0x1c            0x2a  (42)
+.text                        0x1fa              0x2d34          0x43ce  (17358)
+.dinit                      0x2f2e                0x2c            0x42  (66)
+.init.delay32               0x2f5a                0x1c            0x2a  (42)
 
-                     Total program memory used (bytes):         0x458a  (17802) 12%
+                     Total program memory used (bytes):         0x45b1  (17841) 12%
 
 
 Data Memory  [Origin = 0x800, Length = 0x2000]
@@ -121,9 +121,9 @@ Data Memory  [Origin = 0x800, Length = 0x2000]
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
 .nbss                        0x800                   0           0x3ec  (1004)
-_03C0A90056678276            0xbec                   0             0x4  (4)
+_03C269605672e544            0xbec                   0             0x4  (4)
 .nbss                        0xbf0                   0            0x10  (16)
-_03C3F3C0567098bc            0xc00                   0             0x2  (2)
+_037E7420568d9f9f            0xc00                   0             0x2  (2)
 
                         Total data memory used (bytes):          0x402  (1026) 12%
 
@@ -258,126 +258,128 @@ External Symbols in Program Memory (by address):
                   0x000d38                  _ETMCanSlaveGetSyncMsgHighSpeedLogging
                   0x000d50                  _ETMCanSlaveGetSyncMsgPulseSyncDisableHV
                   0x000d68                  _ETMCanSlaveGetSyncMsgPulseSyncDisableXray
-                  0x000d80                  _ETMCanSlaveGetSyncMsgCoolingFault
-                  0x000d98                  _ETMCanSlaveGetSyncMsgClearDebug
-                  0x000db2                  _ETMCanSlaveGetSyncMsgPulseSyncWarmupLED
-                  0x000dcc                  _ETMCanSlaveGetSyncMsgPulseSyncStandbyLED
-                  0x000de6                  _ETMCanSlaveGetSyncMsgPulseSyncReadyLED
-                  0x000e00                  _ETMCanSlaveGetSyncMsgPulseSyncFaultLED
-                  0x000e1a                  _ETMCanSlaveGetSyncMsgECBState
-                  0x000e26                  _ETMCanSlaveIncrementInvalidIndex
-                  0x000e32                  _main
-                  0x000e3c                  _DoStateMachine
-                  0x001024                  _DisableHeaterMagnetOutputs
-                  0x001034                  _EnableHeaterMagnetOutputs
-                  0x001044                  _DoA36926_001
-                  0x001256                  _InitializeA36926_001
-                  0x001496                  _Reset_EEPROM_I2C
-                  0x001560                  __ADCInterrupt
-                  0x00178e                  _ETMCanSlaveExecuteCMDBoardSpecific
-                  0x0017bc                  __DefaultInterrupt
-                  0x0017c8                  _ETMEEPromConfigureExternalDevice
-                  0x0017f8                  _ETMEEPromWriteWord
-                  0x001902                  _ETMEEPromReadWord
-                  0x001a52                  _ETMEEPromWritePage
-                  0x001b8e                  _ETMEEPromReadPage
-                  0x001d9a                  _SetupLTC265X
-                  0x001e56                  _ClearOutputsLTC265X
-                  0x001e7a                  _WriteLTC265X
-                  0x001f7c                  _WriteLTC265XTwoChannels
-                  0x002104                  _WriteLTC2656AllDacChannels
-                  0x002276                  _ETMAnalogInitializeInput
-                  0x002350                  _ETMAnalogInitializeOutput
-                  0x0023ea                  _ETMAnalogScaleCalibrateDACSetting
-                  0x00246e                  _ETMAnalogScaleCalibrateADCReading
-                  0x0024bc                  _ETMAnalogSetOutput
-                  0x0024ec                  _ETMAnalogCheckOverAbsolute
-                  0x002540                  _ETMAnalogCheckUnderAbsolute
-                  0x002594                  _ETMAnalogCheckOverRelative
-                  0x00261e                  _ETMAnalogCheckUnderRelative
-                  0x0026a4                  _ETMAnalogCheckEEPromInitialized
-                  0x0026be                  _ETMAnalogLoadDefaultCalibration
-                  0x00270a                  _ConfigureSPI
-                  0x0028a0                  _SendAndReceiveSPI
-                  0x002a02                  _ConfigureI2C
-                  0x002a7e                  _WaitForI2CBusIdle
-                  0x002ac0                  _GenerateI2CStart
-                  0x002b02                  _GenerateI2CRestart
-                  0x002b44                  _WriteByteI2C
-                  0x002bb2                  _ReadByteI2C
-                  0x002c24                  _GenerateI2CStop
-                  0x002c66                  _GenerateACK
-                  0x002caa                  _GenerateNACK
-                  0x002cee                  _ETMCanBufferRowsAvailable
-                  0x002cfa                  _ETMCanBufferNotEmpty
-                  0x002d04                  _ETMCanRXMessageBuffer
-                  0x002d3e                  _ETMCanRXMessage
-                  0x002d66                  _ETMCanAddMessageToBuffer
-                  0x002d96                  _ETMCanReadMessageFromBuffer
-                  0x002dc8                  _ETMCanTXMessageBuffer
-                  0x002df4                  _ETMCanTXMessage
-                  0x002e08                  _ETMCanBufferInitialize
-                  0x002e12                  _ETMSetPin
-                  0x002e34                  _ETMClearPin
-                  0x002e58                  _ETMPinTrisInput
-                  0x002e7a                  _ETMPinTrisOutput
-                  0x002e9e                  _ETMReadPinLatch
-                  0x002ec0                  _ETMScaleFactor2
-                  0x002eea                  _ETMScaleFactor16
-                  0x002f40                  ___delay32
+                  0x000d80                  _ETMCanSlaveGetSyncMsgSystemHVDisable
+                  0x000d9a                  _ETMCanSlaveGetSyncMsgCoolingFault
+                  0x000db2                  _ETMCanSlaveGetSyncMsgClearDebug
+                  0x000dcc                  _ETMCanSlaveGetSyncMsgPulseSyncWarmupLED
+                  0x000de6                  _ETMCanSlaveGetSyncMsgPulseSyncStandbyLED
+                  0x000e00                  _ETMCanSlaveGetSyncMsgPulseSyncReadyLED
+                  0x000e1a                  _ETMCanSlaveGetSyncMsgPulseSyncFaultLED
+                  0x000e34                  _ETMCanSlaveGetSyncMsgECBState
+                  0x000e40                  _ETMCanSlaveIncrementInvalidIndex
+                  0x000e4c                  _main
+                  0x000e56                  _DoStateMachine
+                  0x00103e                  _DisableHeaterMagnetOutputs
+                  0x00104e                  _EnableHeaterMagnetOutputs
+                  0x00105e                  _DoA36926_001
+                  0x001270                  _InitializeA36926_001
+                  0x0014b0                  _Reset_EEPROM_I2C
+                  0x00157a                  __ADCInterrupt
+                  0x0017a8                  _ETMCanSlaveExecuteCMDBoardSpecific
+                  0x0017d6                  __DefaultInterrupt
+                  0x0017e2                  _ETMEEPromConfigureExternalDevice
+                  0x001812                  _ETMEEPromWriteWord
+                  0x00191c                  _ETMEEPromReadWord
+                  0x001a6c                  _ETMEEPromWritePage
+                  0x001ba8                  _ETMEEPromReadPage
+                  0x001db4                  _SetupLTC265X
+                  0x001e70                  _ClearOutputsLTC265X
+                  0x001e94                  _WriteLTC265X
+                  0x001f96                  _WriteLTC265XTwoChannels
+                  0x00211e                  _WriteLTC2656AllDacChannels
+                  0x002290                  _ETMAnalogInitializeInput
+                  0x00236a                  _ETMAnalogInitializeOutput
+                  0x002404                  _ETMAnalogScaleCalibrateDACSetting
+                  0x002488                  _ETMAnalogScaleCalibrateADCReading
+                  0x0024d6                  _ETMAnalogSetOutput
+                  0x002506                  _ETMAnalogCheckOverAbsolute
+                  0x00255a                  _ETMAnalogCheckUnderAbsolute
+                  0x0025ae                  _ETMAnalogCheckOverRelative
+                  0x002638                  _ETMAnalogCheckUnderRelative
+                  0x0026be                  _ETMAnalogCheckEEPromInitialized
+                  0x0026d8                  _ETMAnalogLoadDefaultCalibration
+                  0x002724                  _ConfigureSPI
+                  0x0028ba                  _SendAndReceiveSPI
+                  0x002a1c                  _ConfigureI2C
+                  0x002a98                  _WaitForI2CBusIdle
+                  0x002ada                  _GenerateI2CStart
+                  0x002b1c                  _GenerateI2CRestart
+                  0x002b5e                  _WriteByteI2C
+                  0x002bcc                  _ReadByteI2C
+                  0x002c3e                  _GenerateI2CStop
+                  0x002c80                  _GenerateACK
+                  0x002cc4                  _GenerateNACK
+                  0x002d08                  _ETMCanBufferRowsAvailable
+                  0x002d14                  _ETMCanBufferNotEmpty
+                  0x002d1e                  _ETMCanRXMessageBuffer
+                  0x002d58                  _ETMCanRXMessage
+                  0x002d80                  _ETMCanAddMessageToBuffer
+                  0x002db0                  _ETMCanReadMessageFromBuffer
+                  0x002de2                  _ETMCanTXMessageBuffer
+                  0x002e0e                  _ETMCanTXMessage
+                  0x002e22                  _ETMCanBufferInitialize
+                  0x002e2c                  _ETMSetPin
+                  0x002e4e                  _ETMClearPin
+                  0x002e72                  _ETMPinTrisInput
+                  0x002e94                  _ETMPinTrisOutput
+                  0x002eb8                  _ETMReadPinLatch
+                  0x002eda                  _ETMScaleFactor2
+                  0x002f04                  _ETMScaleFactor16
+                  0x002f5a                  ___delay32
                   0xf80006                  __FBS.sec
                   0xf80008                  __FSS.sec
                   0xf8000a                  __FGS.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x001e56                  _ClearOutputsLTC265X
-                  0x002a02                  _ConfigureI2C
-                  0x00270a                  _ConfigureSPI
-                  0x001024                  _DisableHeaterMagnetOutputs
-                  0x001044                  _DoA36926_001
+                  0x001e70                  _ClearOutputsLTC265X
+                  0x002a1c                  _ConfigureI2C
+                  0x002724                  _ConfigureSPI
+                  0x00103e                  _DisableHeaterMagnetOutputs
+                  0x00105e                  _DoA36926_001
                   0x000bda                  _DoCanInterrupt
-                  0x000e3c                  _DoStateMachine
-                  0x0026a4                  _ETMAnalogCheckEEPromInitialized
-                  0x0024ec                  _ETMAnalogCheckOverAbsolute
-                  0x002594                  _ETMAnalogCheckOverRelative
-                  0x002540                  _ETMAnalogCheckUnderAbsolute
-                  0x00261e                  _ETMAnalogCheckUnderRelative
-                  0x002276                  _ETMAnalogInitializeInput
-                  0x002350                  _ETMAnalogInitializeOutput
-                  0x0026be                  _ETMAnalogLoadDefaultCalibration
-                  0x00246e                  _ETMAnalogScaleCalibrateADCReading
-                  0x0023ea                  _ETMAnalogScaleCalibrateDACSetting
-                  0x0024bc                  _ETMAnalogSetOutput
-                  0x002d66                  _ETMCanAddMessageToBuffer
-                  0x002e08                  _ETMCanBufferInitialize
-                  0x002cfa                  _ETMCanBufferNotEmpty
-                  0x002cee                  _ETMCanBufferRowsAvailable
-                  0x002d3e                  _ETMCanRXMessage
-                  0x002d04                  _ETMCanRXMessageBuffer
-                  0x002d96                  _ETMCanReadMessageFromBuffer
+                  0x000e56                  _DoStateMachine
+                  0x0026be                  _ETMAnalogCheckEEPromInitialized
+                  0x002506                  _ETMAnalogCheckOverAbsolute
+                  0x0025ae                  _ETMAnalogCheckOverRelative
+                  0x00255a                  _ETMAnalogCheckUnderAbsolute
+                  0x002638                  _ETMAnalogCheckUnderRelative
+                  0x002290                  _ETMAnalogInitializeInput
+                  0x00236a                  _ETMAnalogInitializeOutput
+                  0x0026d8                  _ETMAnalogLoadDefaultCalibration
+                  0x002488                  _ETMAnalogScaleCalibrateADCReading
+                  0x002404                  _ETMAnalogScaleCalibrateDACSetting
+                  0x0024d6                  _ETMAnalogSetOutput
+                  0x002d80                  _ETMCanAddMessageToBuffer
+                  0x002e22                  _ETMCanBufferInitialize
+                  0x002d14                  _ETMCanBufferNotEmpty
+                  0x002d08                  _ETMCanBufferRowsAvailable
+                  0x002d58                  _ETMCanRXMessage
+                  0x002d1e                  _ETMCanRXMessageBuffer
+                  0x002db0                  _ETMCanReadMessageFromBuffer
                   0x000a24                  _ETMCanSlaveCheckForTimeOut
                   0x000aac                  _ETMCanSlaveClearDebug
                   0x00052a                  _ETMCanSlaveDoCan
                   0x000a62                  _ETMCanSlaveDoSync
                   0x0005f6                  _ETMCanSlaveExecuteCMD
-                  0x00178e                  _ETMCanSlaveExecuteCMDBoardSpecific
+                  0x0017a8                  _ETMCanSlaveExecuteCMDBoardSpecific
                   0x000662                  _ETMCanSlaveExecuteCMDCommon
                   0x000d16                  _ETMCanSlaveGetComFaultStatus
                   0x000d0c                  _ETMCanSlaveGetPulseCount
                   0x000cf8                  _ETMCanSlaveGetPulseLevel
-                  0x000d98                  _ETMCanSlaveGetSyncMsgClearDebug
-                  0x000d80                  _ETMCanSlaveGetSyncMsgCoolingFault
-                  0x000e1a                  _ETMCanSlaveGetSyncMsgECBState
+                  0x000db2                  _ETMCanSlaveGetSyncMsgClearDebug
+                  0x000d9a                  _ETMCanSlaveGetSyncMsgCoolingFault
+                  0x000e34                  _ETMCanSlaveGetSyncMsgECBState
                   0x000d38                  _ETMCanSlaveGetSyncMsgHighSpeedLogging
                   0x000d50                  _ETMCanSlaveGetSyncMsgPulseSyncDisableHV
                   0x000d68                  _ETMCanSlaveGetSyncMsgPulseSyncDisableXray
-                  0x000e00                  _ETMCanSlaveGetSyncMsgPulseSyncFaultLED
-                  0x000de6                  _ETMCanSlaveGetSyncMsgPulseSyncReadyLED
-                  0x000dcc                  _ETMCanSlaveGetSyncMsgPulseSyncStandbyLED
-                  0x000db2                  _ETMCanSlaveGetSyncMsgPulseSyncWarmupLED
+                  0x000e1a                  _ETMCanSlaveGetSyncMsgPulseSyncFaultLED
+                  0x000e00                  _ETMCanSlaveGetSyncMsgPulseSyncReadyLED
+                  0x000de6                  _ETMCanSlaveGetSyncMsgPulseSyncStandbyLED
+                  0x000dcc                  _ETMCanSlaveGetSyncMsgPulseSyncWarmupLED
                   0x000d20                  _ETMCanSlaveGetSyncMsgResetEnable
-                  0x000e26                  _ETMCanSlaveIncrementInvalidIndex
+                  0x000d80                  _ETMCanSlaveGetSyncMsgSystemHVDisable
+                  0x000e40                  _ETMCanSlaveIncrementInvalidIndex
                   0x0001fa                  _ETMCanSlaveInitialize
                   0x0004ea                  _ETMCanSlaveLoadConfiguration
                   0x0009b0                  _ETMCanSlaveLogData
@@ -391,44 +393,44 @@ External Symbols in Program Memory (by name):
                   0x000cd8                  _ETMCanSlaveSetDebugRegister
                   0x000d02                  _ETMCanSlaveSetPulseLevelLow
                   0x00071a                  _ETMCanSlaveTimedTransmit
-                  0x002df4                  _ETMCanTXMessage
-                  0x002dc8                  _ETMCanTXMessageBuffer
-                  0x002e34                  _ETMClearPin
-                  0x0017c8                  _ETMEEPromConfigureExternalDevice
-                  0x001b8e                  _ETMEEPromReadPage
-                  0x001902                  _ETMEEPromReadWord
-                  0x001a52                  _ETMEEPromWritePage
-                  0x0017f8                  _ETMEEPromWriteWord
-                  0x002e58                  _ETMPinTrisInput
-                  0x002e7a                  _ETMPinTrisOutput
-                  0x002e9e                  _ETMReadPinLatch
-                  0x002eea                  _ETMScaleFactor16
-                  0x002ec0                  _ETMScaleFactor2
-                  0x002e12                  _ETMSetPin
-                  0x001034                  _EnableHeaterMagnetOutputs
-                  0x002c66                  _GenerateACK
-                  0x002b02                  _GenerateI2CRestart
-                  0x002ac0                  _GenerateI2CStart
-                  0x002c24                  _GenerateI2CStop
-                  0x002caa                  _GenerateNACK
-                  0x001256                  _InitializeA36926_001
-                  0x002bb2                  _ReadByteI2C
-                  0x001496                  _Reset_EEPROM_I2C
-                  0x0028a0                  _SendAndReceiveSPI
-                  0x001d9a                  _SetupLTC265X
-                  0x002a7e                  _WaitForI2CBusIdle
-                  0x002b44                  _WriteByteI2C
-                  0x002104                  _WriteLTC2656AllDacChannels
-                  0x001e7a                  _WriteLTC265X
-                  0x001f7c                  _WriteLTC265XTwoChannels
-                  0x001560                  __ADCInterrupt
+                  0x002e0e                  _ETMCanTXMessage
+                  0x002de2                  _ETMCanTXMessageBuffer
+                  0x002e4e                  _ETMClearPin
+                  0x0017e2                  _ETMEEPromConfigureExternalDevice
+                  0x001ba8                  _ETMEEPromReadPage
+                  0x00191c                  _ETMEEPromReadWord
+                  0x001a6c                  _ETMEEPromWritePage
+                  0x001812                  _ETMEEPromWriteWord
+                  0x002e72                  _ETMPinTrisInput
+                  0x002e94                  _ETMPinTrisOutput
+                  0x002eb8                  _ETMReadPinLatch
+                  0x002f04                  _ETMScaleFactor16
+                  0x002eda                  _ETMScaleFactor2
+                  0x002e2c                  _ETMSetPin
+                  0x00104e                  _EnableHeaterMagnetOutputs
+                  0x002c80                  _GenerateACK
+                  0x002b1c                  _GenerateI2CRestart
+                  0x002ada                  _GenerateI2CStart
+                  0x002c3e                  _GenerateI2CStop
+                  0x002cc4                  _GenerateNACK
+                  0x001270                  _InitializeA36926_001
+                  0x002bcc                  _ReadByteI2C
+                  0x0014b0                  _Reset_EEPROM_I2C
+                  0x0028ba                  _SendAndReceiveSPI
+                  0x001db4                  _SetupLTC265X
+                  0x002a98                  _WaitForI2CBusIdle
+                  0x002b5e                  _WriteByteI2C
+                  0x00211e                  _WriteLTC2656AllDacChannels
+                  0x001e94                  _WriteLTC265X
+                  0x001f96                  _WriteLTC265XTwoChannels
+                  0x00157a                  __ADCInterrupt
                   0x000b76                  __C1Interrupt
                   0x000ba8                  __C2Interrupt
-                  0x0017bc                  __DefaultInterrupt
+                  0x0017d6                  __DefaultInterrupt
                   0xf80006                  __FBS.sec
                   0xf8000a                  __FGS.sec
                   0xf80008                  __FSS.sec
-                  0x002f40                  ___delay32
+                  0x002f5a                  ___delay32
                   0x00019a                  ___udivsi3
                   0x00013c                  __data_init
                   0x00013c                  __data_init_standard
@@ -436,7 +438,7 @@ External Symbols in Program Memory (by name):
                   0x000100                  __resetPRI
                   0x0001ba                  _default_calibration_data
                   0x0001da                  _default_zero_data
-                  0x000e32                  _main
+                  0x000e4c                  _main
 
 Memory Configuration
 
@@ -569,18 +571,18 @@ userdata
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x8296
+.debug_info       0x000000       0x82da
  *(.debug_info)
  .debug_info      0x000000       0x2603 build/default/production/A36926_001.o
- .debug_info      0x002603       0x37e1 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
- .debug_info      0x005de4         0xa3 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_CORE.o)
- .debug_info      0x005e87        0x69f ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
- .debug_info      0x006526        0x7d6 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
- .debug_info      0x006cfc        0x80c ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
- .debug_info      0x007508         0x9c ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_IO_PORTS.o)
- .debug_info      0x0075a4         0x99 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SCALE.o)
- .debug_info      0x00763d        0x7d4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
- .debug_info      0x007e11        0x485 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
+ .debug_info      0x002603       0x3825 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
+ .debug_info      0x005e28         0xa3 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_CORE.o)
+ .debug_info      0x005ecb        0x69f ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
+ .debug_info      0x00656a        0x7d6 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
+ .debug_info      0x006d40        0x80c ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
+ .debug_info      0x00754c         0x9c ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_IO_PORTS.o)
+ .debug_info      0x0075e8         0x99 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SCALE.o)
+ .debug_info      0x007681        0x7d4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
+ .debug_info      0x007e55        0x485 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0xa44
@@ -596,28 +598,28 @@ userdata
  .debug_abbrev    0x00085e         0xf8 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
  .debug_abbrev    0x000956         0xee ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
 
-.debug_line       0x000000       0x3ad4
+.debug_line       0x000000       0x3b09
  *(.debug_line)
  .debug_line      0x000000        0xcf2 build/default/production/A36926_001.o
- .debug_line      0x000cf2       0x127c ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
- .debug_line      0x001f6e         0xde ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_CORE.o)
- .debug_line      0x00204c        0x563 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
- .debug_line      0x0025af        0x537 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
- .debug_line      0x002ae6        0x592 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
- .debug_line      0x003078         0x99 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_IO_PORTS.o)
- .debug_line      0x003111         0x63 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SCALE.o)
- .debug_line      0x003174        0x3f7 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
- .debug_line      0x00356b        0x569 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
+ .debug_line      0x000cf2       0x12b1 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
+ .debug_line      0x001fa3         0xde ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_CORE.o)
+ .debug_line      0x002081        0x563 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
+ .debug_line      0x0025e4        0x537 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
+ .debug_line      0x002b1b        0x592 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
+ .debug_line      0x0030ad         0x99 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_IO_PORTS.o)
+ .debug_line      0x003146         0x63 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SCALE.o)
+ .debug_line      0x0031a9        0x3f7 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
+ .debug_line      0x0035a0        0x569 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
 
-.debug_frame      0x000000        0x690
+.debug_frame      0x000000        0x6a0
  *(.debug_frame)
  .debug_frame     0x000000        0x1c8 build/default/production/A36926_001.o
- .debug_frame     0x0001c8        0x264 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
- .debug_frame     0x00042c         0x64 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
- .debug_frame     0x000490         0xc4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
- .debug_frame     0x000554         0xa4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
- .debug_frame     0x0005f8         0x34 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
- .debug_frame     0x00062c         0x64 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
+ .debug_frame     0x0001c8        0x274 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
+ .debug_frame     0x00043c         0x64 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
+ .debug_frame     0x0004a0         0xc4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
+ .debug_frame     0x000564         0xa4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
+ .debug_frame     0x000608         0x34 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
+ .debug_frame     0x00063c         0x64 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
 
 .debug_str        0x000000        0x8e3
  *(.debug_str)
@@ -636,22 +638,22 @@ userdata
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0xcc2
+                  0x000000        0xceb
  *(.debug_pubnames)
  .debug_pubnames
                   0x000000        0x1bf build/default/production/A36926_001.o
  .debug_pubnames
-                  0x0001bf        0x672 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
+                  0x0001bf        0x69b ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
  .debug_pubnames
-                  0x000831         0xa5 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
+                  0x00085a         0xa5 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
  .debug_pubnames
-                  0x0008d6        0x1a9 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
+                  0x0008ff        0x1a9 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
  .debug_pubnames
-                  0x000a7f         0xed ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
+                  0x000aa8         0xed ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
  .debug_pubnames
-                  0x000b6c         0x84 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
+                  0x000b95         0x84 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
  .debug_pubnames
-                  0x000bf0         0xd2 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
+                  0x000c19         0xd2 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
 
 .debug_ranges
  *(.debug_ranges)
@@ -680,132 +682,132 @@ userdata
                   0x0000d8         0x18 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
 
 .ivt              0x000004         0x7c
-                  0x000004          0x4 LONG 0x17bc DEFINED (__ReservedTrap0)?ABSOLUTE (__ReservedTrap0):ABSOLUTE (__DefaultInterrupt)
-                  0x000006          0x4 LONG 0x17bc DEFINED (__OscillatorFail)?ABSOLUTE (__OscillatorFail):ABSOLUTE (__DefaultInterrupt)
-                  0x000008          0x4 LONG 0x17bc DEFINED (__AddressError)?ABSOLUTE (__AddressError):ABSOLUTE (__DefaultInterrupt)
-                  0x00000a          0x4 LONG 0x17bc DEFINED (__StackError)?ABSOLUTE (__StackError):ABSOLUTE (__DefaultInterrupt)
-                  0x00000c          0x4 LONG 0x17bc DEFINED (__MathError)?ABSOLUTE (__MathError):ABSOLUTE (__DefaultInterrupt)
-                  0x00000e          0x4 LONG 0x17bc DEFINED (__ReservedTrap5)?ABSOLUTE (__ReservedTrap5):ABSOLUTE (__DefaultInterrupt)
-                  0x000010          0x4 LONG 0x17bc DEFINED (__ReservedTrap6)?ABSOLUTE (__ReservedTrap6):ABSOLUTE (__DefaultInterrupt)
-                  0x000012          0x4 LONG 0x17bc DEFINED (__ReservedTrap7)?ABSOLUTE (__ReservedTrap7):ABSOLUTE (__DefaultInterrupt)
-                  0x000014          0x4 LONG 0x17bc DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000016          0x4 LONG 0x17bc DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000018          0x4 LONG 0x17bc DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00001a          0x4 LONG 0x17bc DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00001c          0x4 LONG 0x17bc DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00001e          0x4 LONG 0x17bc DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000020          0x4 LONG 0x17bc DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000022          0x4 LONG 0x17bc DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000024          0x4 LONG 0x17bc DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000026          0x4 LONG 0x17bc DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000028          0x4 LONG 0x17bc DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00002a          0x4 LONG 0x1560 DEFINED (__ADCInterrupt)?ABSOLUTE (__ADCInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00002c          0x4 LONG 0x17bc DEFINED (__NVMInterrupt)?ABSOLUTE (__NVMInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00002e          0x4 LONG 0x17bc DEFINED (__SI2CInterrupt)?ABSOLUTE (__SI2CInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000030          0x4 LONG 0x17bc DEFINED (__MI2CInterrupt)?ABSOLUTE (__MI2CInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000032          0x4 LONG 0x17bc DEFINED (__CNInterrupt)?ABSOLUTE (__CNInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000034          0x4 LONG 0x17bc DEFINED (__INT1Interrupt)?ABSOLUTE (__INT1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000036          0x4 LONG 0x17bc DEFINED (__IC7Interrupt)?ABSOLUTE (__IC7Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000038          0x4 LONG 0x17bc DEFINED (__IC8Interrupt)?ABSOLUTE (__IC8Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00003a          0x4 LONG 0x17bc DEFINED (__OC3Interrupt)?ABSOLUTE (__OC3Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00003c          0x4 LONG 0x17bc DEFINED (__OC4Interrupt)?ABSOLUTE (__OC4Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00003e          0x4 LONG 0x17bc DEFINED (__T4Interrupt)?ABSOLUTE (__T4Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000040          0x4 LONG 0x17bc DEFINED (__T5Interrupt)?ABSOLUTE (__T5Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000042          0x4 LONG 0x17bc DEFINED (__INT2Interrupt)?ABSOLUTE (__INT2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000044          0x4 LONG 0x17bc DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000046          0x4 LONG 0x17bc DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000048          0x4 LONG 0x17bc DEFINED (__SPI2Interrupt)?ABSOLUTE (__SPI2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000004          0x4 LONG 0x17d6 DEFINED (__ReservedTrap0)?ABSOLUTE (__ReservedTrap0):ABSOLUTE (__DefaultInterrupt)
+                  0x000006          0x4 LONG 0x17d6 DEFINED (__OscillatorFail)?ABSOLUTE (__OscillatorFail):ABSOLUTE (__DefaultInterrupt)
+                  0x000008          0x4 LONG 0x17d6 DEFINED (__AddressError)?ABSOLUTE (__AddressError):ABSOLUTE (__DefaultInterrupt)
+                  0x00000a          0x4 LONG 0x17d6 DEFINED (__StackError)?ABSOLUTE (__StackError):ABSOLUTE (__DefaultInterrupt)
+                  0x00000c          0x4 LONG 0x17d6 DEFINED (__MathError)?ABSOLUTE (__MathError):ABSOLUTE (__DefaultInterrupt)
+                  0x00000e          0x4 LONG 0x17d6 DEFINED (__ReservedTrap5)?ABSOLUTE (__ReservedTrap5):ABSOLUTE (__DefaultInterrupt)
+                  0x000010          0x4 LONG 0x17d6 DEFINED (__ReservedTrap6)?ABSOLUTE (__ReservedTrap6):ABSOLUTE (__DefaultInterrupt)
+                  0x000012          0x4 LONG 0x17d6 DEFINED (__ReservedTrap7)?ABSOLUTE (__ReservedTrap7):ABSOLUTE (__DefaultInterrupt)
+                  0x000014          0x4 LONG 0x17d6 DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000016          0x4 LONG 0x17d6 DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000018          0x4 LONG 0x17d6 DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00001a          0x4 LONG 0x17d6 DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00001c          0x4 LONG 0x17d6 DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00001e          0x4 LONG 0x17d6 DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000020          0x4 LONG 0x17d6 DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000022          0x4 LONG 0x17d6 DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000024          0x4 LONG 0x17d6 DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000026          0x4 LONG 0x17d6 DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000028          0x4 LONG 0x17d6 DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00002a          0x4 LONG 0x157a DEFINED (__ADCInterrupt)?ABSOLUTE (__ADCInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00002c          0x4 LONG 0x17d6 DEFINED (__NVMInterrupt)?ABSOLUTE (__NVMInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00002e          0x4 LONG 0x17d6 DEFINED (__SI2CInterrupt)?ABSOLUTE (__SI2CInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000030          0x4 LONG 0x17d6 DEFINED (__MI2CInterrupt)?ABSOLUTE (__MI2CInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000032          0x4 LONG 0x17d6 DEFINED (__CNInterrupt)?ABSOLUTE (__CNInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000034          0x4 LONG 0x17d6 DEFINED (__INT1Interrupt)?ABSOLUTE (__INT1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000036          0x4 LONG 0x17d6 DEFINED (__IC7Interrupt)?ABSOLUTE (__IC7Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000038          0x4 LONG 0x17d6 DEFINED (__IC8Interrupt)?ABSOLUTE (__IC8Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00003a          0x4 LONG 0x17d6 DEFINED (__OC3Interrupt)?ABSOLUTE (__OC3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00003c          0x4 LONG 0x17d6 DEFINED (__OC4Interrupt)?ABSOLUTE (__OC4Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00003e          0x4 LONG 0x17d6 DEFINED (__T4Interrupt)?ABSOLUTE (__T4Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000040          0x4 LONG 0x17d6 DEFINED (__T5Interrupt)?ABSOLUTE (__T5Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000042          0x4 LONG 0x17d6 DEFINED (__INT2Interrupt)?ABSOLUTE (__INT2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000044          0x4 LONG 0x17d6 DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000046          0x4 LONG 0x17d6 DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000048          0x4 LONG 0x17d6 DEFINED (__SPI2Interrupt)?ABSOLUTE (__SPI2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00004a          0x4 LONG 0xb76 DEFINED (__C1Interrupt)?ABSOLUTE (__C1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00004c          0x4 LONG 0x17bc DEFINED (__IC3Interrupt)?ABSOLUTE (__IC3Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00004e          0x4 LONG 0x17bc DEFINED (__IC4Interrupt)?ABSOLUTE (__IC4Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000050          0x4 LONG 0x17bc DEFINED (__IC5Interrupt)?ABSOLUTE (__IC5Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000052          0x4 LONG 0x17bc DEFINED (__IC6Interrupt)?ABSOLUTE (__IC6Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000054          0x4 LONG 0x17bc DEFINED (__OC5Interrupt)?ABSOLUTE (__OC5Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000056          0x4 LONG 0x17bc DEFINED (__OC6Interrupt)?ABSOLUTE (__OC6Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000058          0x4 LONG 0x17bc DEFINED (__OC7Interrupt)?ABSOLUTE (__OC7Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00005a          0x4 LONG 0x17bc DEFINED (__OC8Interrupt)?ABSOLUTE (__OC8Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00005c          0x4 LONG 0x17bc DEFINED (__INT3Interrupt)?ABSOLUTE (__INT3Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00005e          0x4 LONG 0x17bc DEFINED (__INT4Interrupt)?ABSOLUTE (__INT4Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00004c          0x4 LONG 0x17d6 DEFINED (__IC3Interrupt)?ABSOLUTE (__IC3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00004e          0x4 LONG 0x17d6 DEFINED (__IC4Interrupt)?ABSOLUTE (__IC4Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000050          0x4 LONG 0x17d6 DEFINED (__IC5Interrupt)?ABSOLUTE (__IC5Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000052          0x4 LONG 0x17d6 DEFINED (__IC6Interrupt)?ABSOLUTE (__IC6Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000054          0x4 LONG 0x17d6 DEFINED (__OC5Interrupt)?ABSOLUTE (__OC5Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000056          0x4 LONG 0x17d6 DEFINED (__OC6Interrupt)?ABSOLUTE (__OC6Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000058          0x4 LONG 0x17d6 DEFINED (__OC7Interrupt)?ABSOLUTE (__OC7Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00005a          0x4 LONG 0x17d6 DEFINED (__OC8Interrupt)?ABSOLUTE (__OC8Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00005c          0x4 LONG 0x17d6 DEFINED (__INT3Interrupt)?ABSOLUTE (__INT3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00005e          0x4 LONG 0x17d6 DEFINED (__INT4Interrupt)?ABSOLUTE (__INT4Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000060          0x4 LONG 0xba8 DEFINED (__C2Interrupt)?ABSOLUTE (__C2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000062          0x4 LONG 0x17bc DEFINED (__PWMInterrupt)?ABSOLUTE (__PWMInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000064          0x4 LONG 0x17bc DEFINED (__QEIInterrupt)?ABSOLUTE (__QEIInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000066          0x4 LONG 0x17bc DEFINED (__DCIInterrupt)?ABSOLUTE (__DCIInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000068          0x4 LONG 0x17bc DEFINED (__LVDInterrupt)?ABSOLUTE (__LVDInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00006a          0x4 LONG 0x17bc DEFINED (__FLTAInterrupt)?ABSOLUTE (__FLTAInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00006c          0x4 LONG 0x17bc DEFINED (__FLTBInterrupt)?ABSOLUTE (__FLTBInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00006e          0x4 LONG 0x17bc DEFINED (__Interrupt45)?ABSOLUTE (__Interrupt45):ABSOLUTE (__DefaultInterrupt)
-                  0x000070          0x4 LONG 0x17bc DEFINED (__Interrupt46)?ABSOLUTE (__Interrupt46):ABSOLUTE (__DefaultInterrupt)
-                  0x000072          0x4 LONG 0x17bc DEFINED (__Interrupt47)?ABSOLUTE (__Interrupt47):ABSOLUTE (__DefaultInterrupt)
-                  0x000074          0x4 LONG 0x17bc DEFINED (__Interrupt48)?ABSOLUTE (__Interrupt48):ABSOLUTE (__DefaultInterrupt)
-                  0x000076          0x4 LONG 0x17bc DEFINED (__Interrupt49)?ABSOLUTE (__Interrupt49):ABSOLUTE (__DefaultInterrupt)
-                  0x000078          0x4 LONG 0x17bc DEFINED (__Interrupt50)?ABSOLUTE (__Interrupt50):ABSOLUTE (__DefaultInterrupt)
-                  0x00007a          0x4 LONG 0x17bc DEFINED (__Interrupt51)?ABSOLUTE (__Interrupt51):ABSOLUTE (__DefaultInterrupt)
-                  0x00007c          0x4 LONG 0x17bc DEFINED (__Interrupt52)?ABSOLUTE (__Interrupt52):ABSOLUTE (__DefaultInterrupt)
-                  0x00007e          0x4 LONG 0x17bc DEFINED (__Interrupt53)?ABSOLUTE (__Interrupt53):ABSOLUTE (__DefaultInterrupt)
+                  0x000062          0x4 LONG 0x17d6 DEFINED (__PWMInterrupt)?ABSOLUTE (__PWMInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000064          0x4 LONG 0x17d6 DEFINED (__QEIInterrupt)?ABSOLUTE (__QEIInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000066          0x4 LONG 0x17d6 DEFINED (__DCIInterrupt)?ABSOLUTE (__DCIInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000068          0x4 LONG 0x17d6 DEFINED (__LVDInterrupt)?ABSOLUTE (__LVDInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00006a          0x4 LONG 0x17d6 DEFINED (__FLTAInterrupt)?ABSOLUTE (__FLTAInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00006c          0x4 LONG 0x17d6 DEFINED (__FLTBInterrupt)?ABSOLUTE (__FLTBInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00006e          0x4 LONG 0x17d6 DEFINED (__Interrupt45)?ABSOLUTE (__Interrupt45):ABSOLUTE (__DefaultInterrupt)
+                  0x000070          0x4 LONG 0x17d6 DEFINED (__Interrupt46)?ABSOLUTE (__Interrupt46):ABSOLUTE (__DefaultInterrupt)
+                  0x000072          0x4 LONG 0x17d6 DEFINED (__Interrupt47)?ABSOLUTE (__Interrupt47):ABSOLUTE (__DefaultInterrupt)
+                  0x000074          0x4 LONG 0x17d6 DEFINED (__Interrupt48)?ABSOLUTE (__Interrupt48):ABSOLUTE (__DefaultInterrupt)
+                  0x000076          0x4 LONG 0x17d6 DEFINED (__Interrupt49)?ABSOLUTE (__Interrupt49):ABSOLUTE (__DefaultInterrupt)
+                  0x000078          0x4 LONG 0x17d6 DEFINED (__Interrupt50)?ABSOLUTE (__Interrupt50):ABSOLUTE (__DefaultInterrupt)
+                  0x00007a          0x4 LONG 0x17d6 DEFINED (__Interrupt51)?ABSOLUTE (__Interrupt51):ABSOLUTE (__DefaultInterrupt)
+                  0x00007c          0x4 LONG 0x17d6 DEFINED (__Interrupt52)?ABSOLUTE (__Interrupt52):ABSOLUTE (__DefaultInterrupt)
+                  0x00007e          0x4 LONG 0x17d6 DEFINED (__Interrupt53)?ABSOLUTE (__Interrupt53):ABSOLUTE (__DefaultInterrupt)
 
 .aivt             0x000084         0x7c
-                  0x000084          0x4 LONG 0x17bc DEFINED (__AltReservedTrap0)?ABSOLUTE (__AltReservedTrap0):DEFINED (__ReservedTrap0)?ABSOLUTE (__ReservedTrap0):ABSOLUTE (__DefaultInterrupt)
-                  0x000086          0x4 LONG 0x17bc DEFINED (__AltOscillatorFail)?ABSOLUTE (__AltOscillatorFail):DEFINED (__OscillatorFail)?ABSOLUTE (__OscillatorFail):ABSOLUTE (__DefaultInterrupt)
-                  0x000088          0x4 LONG 0x17bc DEFINED (__AltAddressError)?ABSOLUTE (__AltAddressError):DEFINED (__AddressError)?ABSOLUTE (__AddressError):ABSOLUTE (__DefaultInterrupt)
-                  0x00008a          0x4 LONG 0x17bc DEFINED (__AltStackError)?ABSOLUTE (__AltStackError):DEFINED (__StackError)?ABSOLUTE (__StackError):ABSOLUTE (__DefaultInterrupt)
-                  0x00008c          0x4 LONG 0x17bc DEFINED (__AltMathError)?ABSOLUTE (__AltMathError):DEFINED (__MathError)?ABSOLUTE (__MathError):ABSOLUTE (__DefaultInterrupt)
-                  0x00008e          0x4 LONG 0x17bc DEFINED (__AltReservedTrap5)?ABSOLUTE (__AltReservedTrap5):DEFINED (__ReservedTrap5)?ABSOLUTE (__ReservedTrap5):ABSOLUTE (__DefaultInterrupt)
-                  0x000090          0x4 LONG 0x17bc DEFINED (__AltReservedTrap6)?ABSOLUTE (__AltReservedTrap6):DEFINED (__ReservedTrap6)?ABSOLUTE (__ReservedTrap6):ABSOLUTE (__DefaultInterrupt)
-                  0x000092          0x4 LONG 0x17bc DEFINED (__AltReservedTrap7)?ABSOLUTE (__AltReservedTrap7):DEFINED (__ReservedTrap7)?ABSOLUTE (__ReservedTrap7):ABSOLUTE (__DefaultInterrupt)
-                  0x000094          0x4 LONG 0x17bc DEFINED (__AltINT0Interrupt)?ABSOLUTE (__AltINT0Interrupt):DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000096          0x4 LONG 0x17bc DEFINED (__AltIC1Interrupt)?ABSOLUTE (__AltIC1Interrupt):DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x000098          0x4 LONG 0x17bc DEFINED (__AltOC1Interrupt)?ABSOLUTE (__AltOC1Interrupt):DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00009a          0x4 LONG 0x17bc DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00009c          0x4 LONG 0x17bc DEFINED (__AltIC2Interrupt)?ABSOLUTE (__AltIC2Interrupt):DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00009e          0x4 LONG 0x17bc DEFINED (__AltOC2Interrupt)?ABSOLUTE (__AltOC2Interrupt):DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a0          0x4 LONG 0x17bc DEFINED (__AltT2Interrupt)?ABSOLUTE (__AltT2Interrupt):DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a2          0x4 LONG 0x17bc DEFINED (__AltT3Interrupt)?ABSOLUTE (__AltT3Interrupt):DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a4          0x4 LONG 0x17bc DEFINED (__AltSPI1Interrupt)?ABSOLUTE (__AltSPI1Interrupt):DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a6          0x4 LONG 0x17bc DEFINED (__AltU1RXInterrupt)?ABSOLUTE (__AltU1RXInterrupt):DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000a8          0x4 LONG 0x17bc DEFINED (__AltU1TXInterrupt)?ABSOLUTE (__AltU1TXInterrupt):DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000aa          0x4 LONG 0x1560 DEFINED (__AltADCInterrupt)?ABSOLUTE (__AltADCInterrupt):DEFINED (__ADCInterrupt)?ABSOLUTE (__ADCInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000ac          0x4 LONG 0x17bc DEFINED (__AltNVMInterrupt)?ABSOLUTE (__AltNVMInterrupt):DEFINED (__NVMInterrupt)?ABSOLUTE (__NVMInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000ae          0x4 LONG 0x17bc DEFINED (__AltSI2CInterrupt)?ABSOLUTE (__AltSI2CInterrupt):DEFINED (__SI2CInterrupt)?ABSOLUTE (__SI2CInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000b0          0x4 LONG 0x17bc DEFINED (__AltMI2CInterrupt)?ABSOLUTE (__AltMI2CInterrupt):DEFINED (__MI2CInterrupt)?ABSOLUTE (__MI2CInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000b2          0x4 LONG 0x17bc DEFINED (__AltCNInterrupt)?ABSOLUTE (__AltCNInterrupt):DEFINED (__CNInterrupt)?ABSOLUTE (__CNInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000b4          0x4 LONG 0x17bc DEFINED (__AltINT1Interrupt)?ABSOLUTE (__AltINT1Interrupt):DEFINED (__INT1Interrupt)?ABSOLUTE (__INT1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000b6          0x4 LONG 0x17bc DEFINED (__AltIC7Interrupt)?ABSOLUTE (__AltIC7Interrupt):DEFINED (__IC7Interrupt)?ABSOLUTE (__IC7Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000b8          0x4 LONG 0x17bc DEFINED (__AltIC8Interrupt)?ABSOLUTE (__AltIC8Interrupt):DEFINED (__IC8Interrupt)?ABSOLUTE (__IC8Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000ba          0x4 LONG 0x17bc DEFINED (__AltOC3Interrupt)?ABSOLUTE (__AltOC3Interrupt):DEFINED (__OC3Interrupt)?ABSOLUTE (__OC3Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000bc          0x4 LONG 0x17bc DEFINED (__AltOC4Interrupt)?ABSOLUTE (__AltOC4Interrupt):DEFINED (__OC4Interrupt)?ABSOLUTE (__OC4Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000be          0x4 LONG 0x17bc DEFINED (__AltT4Interrupt)?ABSOLUTE (__AltT4Interrupt):DEFINED (__T4Interrupt)?ABSOLUTE (__T4Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000c0          0x4 LONG 0x17bc DEFINED (__AltT5Interrupt)?ABSOLUTE (__AltT5Interrupt):DEFINED (__T5Interrupt)?ABSOLUTE (__T5Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000c2          0x4 LONG 0x17bc DEFINED (__AltINT2Interrupt)?ABSOLUTE (__AltINT2Interrupt):DEFINED (__INT2Interrupt)?ABSOLUTE (__INT2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000c4          0x4 LONG 0x17bc DEFINED (__AltU2RXInterrupt)?ABSOLUTE (__AltU2RXInterrupt):DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000c6          0x4 LONG 0x17bc DEFINED (__AltU2TXInterrupt)?ABSOLUTE (__AltU2TXInterrupt):DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000c8          0x4 LONG 0x17bc DEFINED (__AltSPI2Interrupt)?ABSOLUTE (__AltSPI2Interrupt):DEFINED (__SPI2Interrupt)?ABSOLUTE (__SPI2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000084          0x4 LONG 0x17d6 DEFINED (__AltReservedTrap0)?ABSOLUTE (__AltReservedTrap0):DEFINED (__ReservedTrap0)?ABSOLUTE (__ReservedTrap0):ABSOLUTE (__DefaultInterrupt)
+                  0x000086          0x4 LONG 0x17d6 DEFINED (__AltOscillatorFail)?ABSOLUTE (__AltOscillatorFail):DEFINED (__OscillatorFail)?ABSOLUTE (__OscillatorFail):ABSOLUTE (__DefaultInterrupt)
+                  0x000088          0x4 LONG 0x17d6 DEFINED (__AltAddressError)?ABSOLUTE (__AltAddressError):DEFINED (__AddressError)?ABSOLUTE (__AddressError):ABSOLUTE (__DefaultInterrupt)
+                  0x00008a          0x4 LONG 0x17d6 DEFINED (__AltStackError)?ABSOLUTE (__AltStackError):DEFINED (__StackError)?ABSOLUTE (__StackError):ABSOLUTE (__DefaultInterrupt)
+                  0x00008c          0x4 LONG 0x17d6 DEFINED (__AltMathError)?ABSOLUTE (__AltMathError):DEFINED (__MathError)?ABSOLUTE (__MathError):ABSOLUTE (__DefaultInterrupt)
+                  0x00008e          0x4 LONG 0x17d6 DEFINED (__AltReservedTrap5)?ABSOLUTE (__AltReservedTrap5):DEFINED (__ReservedTrap5)?ABSOLUTE (__ReservedTrap5):ABSOLUTE (__DefaultInterrupt)
+                  0x000090          0x4 LONG 0x17d6 DEFINED (__AltReservedTrap6)?ABSOLUTE (__AltReservedTrap6):DEFINED (__ReservedTrap6)?ABSOLUTE (__ReservedTrap6):ABSOLUTE (__DefaultInterrupt)
+                  0x000092          0x4 LONG 0x17d6 DEFINED (__AltReservedTrap7)?ABSOLUTE (__AltReservedTrap7):DEFINED (__ReservedTrap7)?ABSOLUTE (__ReservedTrap7):ABSOLUTE (__DefaultInterrupt)
+                  0x000094          0x4 LONG 0x17d6 DEFINED (__AltINT0Interrupt)?ABSOLUTE (__AltINT0Interrupt):DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000096          0x4 LONG 0x17d6 DEFINED (__AltIC1Interrupt)?ABSOLUTE (__AltIC1Interrupt):DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x000098          0x4 LONG 0x17d6 DEFINED (__AltOC1Interrupt)?ABSOLUTE (__AltOC1Interrupt):DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00009a          0x4 LONG 0x17d6 DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00009c          0x4 LONG 0x17d6 DEFINED (__AltIC2Interrupt)?ABSOLUTE (__AltIC2Interrupt):DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00009e          0x4 LONG 0x17d6 DEFINED (__AltOC2Interrupt)?ABSOLUTE (__AltOC2Interrupt):DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a0          0x4 LONG 0x17d6 DEFINED (__AltT2Interrupt)?ABSOLUTE (__AltT2Interrupt):DEFINED (__T2Interrupt)?ABSOLUTE (__T2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a2          0x4 LONG 0x17d6 DEFINED (__AltT3Interrupt)?ABSOLUTE (__AltT3Interrupt):DEFINED (__T3Interrupt)?ABSOLUTE (__T3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a4          0x4 LONG 0x17d6 DEFINED (__AltSPI1Interrupt)?ABSOLUTE (__AltSPI1Interrupt):DEFINED (__SPI1Interrupt)?ABSOLUTE (__SPI1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a6          0x4 LONG 0x17d6 DEFINED (__AltU1RXInterrupt)?ABSOLUTE (__AltU1RXInterrupt):DEFINED (__U1RXInterrupt)?ABSOLUTE (__U1RXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000a8          0x4 LONG 0x17d6 DEFINED (__AltU1TXInterrupt)?ABSOLUTE (__AltU1TXInterrupt):DEFINED (__U1TXInterrupt)?ABSOLUTE (__U1TXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000aa          0x4 LONG 0x157a DEFINED (__AltADCInterrupt)?ABSOLUTE (__AltADCInterrupt):DEFINED (__ADCInterrupt)?ABSOLUTE (__ADCInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000ac          0x4 LONG 0x17d6 DEFINED (__AltNVMInterrupt)?ABSOLUTE (__AltNVMInterrupt):DEFINED (__NVMInterrupt)?ABSOLUTE (__NVMInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000ae          0x4 LONG 0x17d6 DEFINED (__AltSI2CInterrupt)?ABSOLUTE (__AltSI2CInterrupt):DEFINED (__SI2CInterrupt)?ABSOLUTE (__SI2CInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000b0          0x4 LONG 0x17d6 DEFINED (__AltMI2CInterrupt)?ABSOLUTE (__AltMI2CInterrupt):DEFINED (__MI2CInterrupt)?ABSOLUTE (__MI2CInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000b2          0x4 LONG 0x17d6 DEFINED (__AltCNInterrupt)?ABSOLUTE (__AltCNInterrupt):DEFINED (__CNInterrupt)?ABSOLUTE (__CNInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000b4          0x4 LONG 0x17d6 DEFINED (__AltINT1Interrupt)?ABSOLUTE (__AltINT1Interrupt):DEFINED (__INT1Interrupt)?ABSOLUTE (__INT1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000b6          0x4 LONG 0x17d6 DEFINED (__AltIC7Interrupt)?ABSOLUTE (__AltIC7Interrupt):DEFINED (__IC7Interrupt)?ABSOLUTE (__IC7Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000b8          0x4 LONG 0x17d6 DEFINED (__AltIC8Interrupt)?ABSOLUTE (__AltIC8Interrupt):DEFINED (__IC8Interrupt)?ABSOLUTE (__IC8Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000ba          0x4 LONG 0x17d6 DEFINED (__AltOC3Interrupt)?ABSOLUTE (__AltOC3Interrupt):DEFINED (__OC3Interrupt)?ABSOLUTE (__OC3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000bc          0x4 LONG 0x17d6 DEFINED (__AltOC4Interrupt)?ABSOLUTE (__AltOC4Interrupt):DEFINED (__OC4Interrupt)?ABSOLUTE (__OC4Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000be          0x4 LONG 0x17d6 DEFINED (__AltT4Interrupt)?ABSOLUTE (__AltT4Interrupt):DEFINED (__T4Interrupt)?ABSOLUTE (__T4Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000c0          0x4 LONG 0x17d6 DEFINED (__AltT5Interrupt)?ABSOLUTE (__AltT5Interrupt):DEFINED (__T5Interrupt)?ABSOLUTE (__T5Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000c2          0x4 LONG 0x17d6 DEFINED (__AltINT2Interrupt)?ABSOLUTE (__AltINT2Interrupt):DEFINED (__INT2Interrupt)?ABSOLUTE (__INT2Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000c4          0x4 LONG 0x17d6 DEFINED (__AltU2RXInterrupt)?ABSOLUTE (__AltU2RXInterrupt):DEFINED (__U2RXInterrupt)?ABSOLUTE (__U2RXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000c6          0x4 LONG 0x17d6 DEFINED (__AltU2TXInterrupt)?ABSOLUTE (__AltU2TXInterrupt):DEFINED (__U2TXInterrupt)?ABSOLUTE (__U2TXInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000c8          0x4 LONG 0x17d6 DEFINED (__AltSPI2Interrupt)?ABSOLUTE (__AltSPI2Interrupt):DEFINED (__SPI2Interrupt)?ABSOLUTE (__SPI2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000ca          0x4 LONG 0xb76 DEFINED (__AltC1Interrupt)?ABSOLUTE (__AltC1Interrupt):DEFINED (__C1Interrupt)?ABSOLUTE (__C1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000cc          0x4 LONG 0x17bc DEFINED (__AltIC3Interrupt)?ABSOLUTE (__AltIC3Interrupt):DEFINED (__IC3Interrupt)?ABSOLUTE (__IC3Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000ce          0x4 LONG 0x17bc DEFINED (__AltIC4Interrupt)?ABSOLUTE (__AltIC4Interrupt):DEFINED (__IC4Interrupt)?ABSOLUTE (__IC4Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000d0          0x4 LONG 0x17bc DEFINED (__AltIC5Interrupt)?ABSOLUTE (__AltIC5Interrupt):DEFINED (__IC5Interrupt)?ABSOLUTE (__IC5Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000d2          0x4 LONG 0x17bc DEFINED (__AltIC6Interrupt)?ABSOLUTE (__AltIC6Interrupt):DEFINED (__IC6Interrupt)?ABSOLUTE (__IC6Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000d4          0x4 LONG 0x17bc DEFINED (__AltOC5Interrupt)?ABSOLUTE (__AltOC5Interrupt):DEFINED (__OC5Interrupt)?ABSOLUTE (__OC5Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000d6          0x4 LONG 0x17bc DEFINED (__AltOC6Interrupt)?ABSOLUTE (__AltOC6Interrupt):DEFINED (__OC6Interrupt)?ABSOLUTE (__OC6Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000d8          0x4 LONG 0x17bc DEFINED (__AltOC7Interrupt)?ABSOLUTE (__AltOC7Interrupt):DEFINED (__OC7Interrupt)?ABSOLUTE (__OC7Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000da          0x4 LONG 0x17bc DEFINED (__AltOC8Interrupt)?ABSOLUTE (__AltOC8Interrupt):DEFINED (__OC8Interrupt)?ABSOLUTE (__OC8Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000dc          0x4 LONG 0x17bc DEFINED (__AltINT3Interrupt)?ABSOLUTE (__AltINT3Interrupt):DEFINED (__INT3Interrupt)?ABSOLUTE (__INT3Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000de          0x4 LONG 0x17bc DEFINED (__AltINT4Interrupt)?ABSOLUTE (__AltINT4Interrupt):DEFINED (__INT4Interrupt)?ABSOLUTE (__INT4Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000cc          0x4 LONG 0x17d6 DEFINED (__AltIC3Interrupt)?ABSOLUTE (__AltIC3Interrupt):DEFINED (__IC3Interrupt)?ABSOLUTE (__IC3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000ce          0x4 LONG 0x17d6 DEFINED (__AltIC4Interrupt)?ABSOLUTE (__AltIC4Interrupt):DEFINED (__IC4Interrupt)?ABSOLUTE (__IC4Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000d0          0x4 LONG 0x17d6 DEFINED (__AltIC5Interrupt)?ABSOLUTE (__AltIC5Interrupt):DEFINED (__IC5Interrupt)?ABSOLUTE (__IC5Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000d2          0x4 LONG 0x17d6 DEFINED (__AltIC6Interrupt)?ABSOLUTE (__AltIC6Interrupt):DEFINED (__IC6Interrupt)?ABSOLUTE (__IC6Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000d4          0x4 LONG 0x17d6 DEFINED (__AltOC5Interrupt)?ABSOLUTE (__AltOC5Interrupt):DEFINED (__OC5Interrupt)?ABSOLUTE (__OC5Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000d6          0x4 LONG 0x17d6 DEFINED (__AltOC6Interrupt)?ABSOLUTE (__AltOC6Interrupt):DEFINED (__OC6Interrupt)?ABSOLUTE (__OC6Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000d8          0x4 LONG 0x17d6 DEFINED (__AltOC7Interrupt)?ABSOLUTE (__AltOC7Interrupt):DEFINED (__OC7Interrupt)?ABSOLUTE (__OC7Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000da          0x4 LONG 0x17d6 DEFINED (__AltOC8Interrupt)?ABSOLUTE (__AltOC8Interrupt):DEFINED (__OC8Interrupt)?ABSOLUTE (__OC8Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000dc          0x4 LONG 0x17d6 DEFINED (__AltINT3Interrupt)?ABSOLUTE (__AltINT3Interrupt):DEFINED (__INT3Interrupt)?ABSOLUTE (__INT3Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000de          0x4 LONG 0x17d6 DEFINED (__AltINT4Interrupt)?ABSOLUTE (__AltINT4Interrupt):DEFINED (__INT4Interrupt)?ABSOLUTE (__INT4Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x0000e0          0x4 LONG 0xba8 DEFINED (__AltC2Interrupt)?ABSOLUTE (__AltC2Interrupt):DEFINED (__C2Interrupt)?ABSOLUTE (__C2Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000e2          0x4 LONG 0x17bc DEFINED (__AltPWMInterrupt)?ABSOLUTE (__AltPWMInterrupt):DEFINED (__PWMInterrupt)?ABSOLUTE (__PWMInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000e4          0x4 LONG 0x17bc DEFINED (__AltQEIInterrupt)?ABSOLUTE (__AltQEIInterrupt):DEFINED (__QEIInterrupt)?ABSOLUTE (__QEIInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000e6          0x4 LONG 0x17bc DEFINED (__AltDCIInterrupt)?ABSOLUTE (__AltDCIInterrupt):DEFINED (__DCIInterrupt)?ABSOLUTE (__DCIInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000e8          0x4 LONG 0x17bc DEFINED (__AltLVDInterrupt)?ABSOLUTE (__AltLVDInterrupt):DEFINED (__LVDInterrupt)?ABSOLUTE (__LVDInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000ea          0x4 LONG 0x17bc DEFINED (__AltFLTAInterrupt)?ABSOLUTE (__AltFLTAInterrupt):DEFINED (__FLTAInterrupt)?ABSOLUTE (__FLTAInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000ec          0x4 LONG 0x17bc DEFINED (__AltFLTBInterrupt)?ABSOLUTE (__AltFLTBInterrupt):DEFINED (__FLTBInterrupt)?ABSOLUTE (__FLTBInterrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x0000ee          0x4 LONG 0x17bc DEFINED (__AltInterrupt45)?ABSOLUTE (__AltInterrupt45):DEFINED (__Interrupt45)?ABSOLUTE (__Interrupt45):ABSOLUTE (__DefaultInterrupt)
-                  0x0000f0          0x4 LONG 0x17bc DEFINED (__AltInterrupt46)?ABSOLUTE (__AltInterrupt46):DEFINED (__Interrupt46)?ABSOLUTE (__Interrupt46):ABSOLUTE (__DefaultInterrupt)
-                  0x0000f2          0x4 LONG 0x17bc DEFINED (__AltInterrupt47)?ABSOLUTE (__AltInterrupt47):DEFINED (__Interrupt47)?ABSOLUTE (__Interrupt47):ABSOLUTE (__DefaultInterrupt)
-                  0x0000f4          0x4 LONG 0x17bc DEFINED (__AltInterrupt48)?ABSOLUTE (__AltInterrupt48):DEFINED (__Interrupt48)?ABSOLUTE (__Interrupt48):ABSOLUTE (__DefaultInterrupt)
-                  0x0000f6          0x4 LONG 0x17bc DEFINED (__AltInterrupt49)?ABSOLUTE (__AltInterrupt49):DEFINED (__Interrupt49)?ABSOLUTE (__Interrupt49):ABSOLUTE (__DefaultInterrupt)
-                  0x0000f8          0x4 LONG 0x17bc DEFINED (__AltInterrupt50)?ABSOLUTE (__AltInterrupt50):DEFINED (__Interrupt50)?ABSOLUTE (__Interrupt50):ABSOLUTE (__DefaultInterrupt)
-                  0x0000fa          0x4 LONG 0x17bc DEFINED (__AltInterrupt51)?ABSOLUTE (__AltInterrupt51):DEFINED (__Interrupt51)?ABSOLUTE (__Interrupt51):ABSOLUTE (__DefaultInterrupt)
-                  0x0000fc          0x4 LONG 0x17bc DEFINED (__AltInterrupt52)?ABSOLUTE (__AltInterrupt52):DEFINED (__Interrupt52)?ABSOLUTE (__Interrupt52):ABSOLUTE (__DefaultInterrupt)
-                  0x0000fe          0x4 LONG 0x17bc DEFINED (__AltInterrupt53)?ABSOLUTE (__AltInterrupt53):DEFINED (__Interrupt53)?ABSOLUTE (__Interrupt53):ABSOLUTE (__DefaultInterrupt)
+                  0x0000e2          0x4 LONG 0x17d6 DEFINED (__AltPWMInterrupt)?ABSOLUTE (__AltPWMInterrupt):DEFINED (__PWMInterrupt)?ABSOLUTE (__PWMInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000e4          0x4 LONG 0x17d6 DEFINED (__AltQEIInterrupt)?ABSOLUTE (__AltQEIInterrupt):DEFINED (__QEIInterrupt)?ABSOLUTE (__QEIInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000e6          0x4 LONG 0x17d6 DEFINED (__AltDCIInterrupt)?ABSOLUTE (__AltDCIInterrupt):DEFINED (__DCIInterrupt)?ABSOLUTE (__DCIInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000e8          0x4 LONG 0x17d6 DEFINED (__AltLVDInterrupt)?ABSOLUTE (__AltLVDInterrupt):DEFINED (__LVDInterrupt)?ABSOLUTE (__LVDInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000ea          0x4 LONG 0x17d6 DEFINED (__AltFLTAInterrupt)?ABSOLUTE (__AltFLTAInterrupt):DEFINED (__FLTAInterrupt)?ABSOLUTE (__FLTAInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000ec          0x4 LONG 0x17d6 DEFINED (__AltFLTBInterrupt)?ABSOLUTE (__AltFLTBInterrupt):DEFINED (__FLTBInterrupt)?ABSOLUTE (__FLTBInterrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x0000ee          0x4 LONG 0x17d6 DEFINED (__AltInterrupt45)?ABSOLUTE (__AltInterrupt45):DEFINED (__Interrupt45)?ABSOLUTE (__Interrupt45):ABSOLUTE (__DefaultInterrupt)
+                  0x0000f0          0x4 LONG 0x17d6 DEFINED (__AltInterrupt46)?ABSOLUTE (__AltInterrupt46):DEFINED (__Interrupt46)?ABSOLUTE (__Interrupt46):ABSOLUTE (__DefaultInterrupt)
+                  0x0000f2          0x4 LONG 0x17d6 DEFINED (__AltInterrupt47)?ABSOLUTE (__AltInterrupt47):DEFINED (__Interrupt47)?ABSOLUTE (__Interrupt47):ABSOLUTE (__DefaultInterrupt)
+                  0x0000f4          0x4 LONG 0x17d6 DEFINED (__AltInterrupt48)?ABSOLUTE (__AltInterrupt48):DEFINED (__Interrupt48)?ABSOLUTE (__Interrupt48):ABSOLUTE (__DefaultInterrupt)
+                  0x0000f6          0x4 LONG 0x17d6 DEFINED (__AltInterrupt49)?ABSOLUTE (__AltInterrupt49):DEFINED (__Interrupt49)?ABSOLUTE (__Interrupt49):ABSOLUTE (__DefaultInterrupt)
+                  0x0000f8          0x4 LONG 0x17d6 DEFINED (__AltInterrupt50)?ABSOLUTE (__AltInterrupt50):DEFINED (__Interrupt50)?ABSOLUTE (__Interrupt50):ABSOLUTE (__DefaultInterrupt)
+                  0x0000fa          0x4 LONG 0x17d6 DEFINED (__AltInterrupt51)?ABSOLUTE (__AltInterrupt51):DEFINED (__Interrupt51)?ABSOLUTE (__Interrupt51):ABSOLUTE (__DefaultInterrupt)
+                  0x0000fc          0x4 LONG 0x17d6 DEFINED (__AltInterrupt52)?ABSOLUTE (__AltInterrupt52):DEFINED (__Interrupt52)?ABSOLUTE (__Interrupt52):ABSOLUTE (__DefaultInterrupt)
+                  0x0000fe          0x4 LONG 0x17d6 DEFINED (__AltInterrupt53)?ABSOLUTE (__AltInterrupt53):DEFINED (__Interrupt53)?ABSOLUTE (__Interrupt53):ABSOLUTE (__DefaultInterrupt)
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -1900,9 +1902,9 @@ __c30_signature
                     0x0be8                  _etm_spi1_error_count
                     0x0bea                  _etm_spi2_error_count
 
-_03C0A90056678276
+_03C269605672e544
                     0x0bec          0x4
- _03C0A90056678276
+ _03C269605672e544
                     0x0bec          0x4 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
                     0x0bec                  _etm_can_persistent_data
 
@@ -1919,9 +1921,9 @@ _03C0A90056678276
                     0x0bfc                  _LTC265X_single_channel_error_count
                     0x0bfe                  _LTC265X_all_channel_error_count
 
-_03C3F3C0567098bc
+_037E7420568d9f9f
                     0x0c00          0x2
- _03C3F3C0567098bc
+ _037E7420568d9f9f
                     0x0c00          0x2 build/default/production/A36926_001.o
                     0x0c00                  _running_persistent
 
@@ -1930,8 +1932,8 @@ _03C3F3C0567098bc
                     0x81ba                  _default_calibration_data
                     0x81da                  _default_zero_data
 
-.text             0x0001fa       0x2d1a
- .text            0x0001fa        0xc38 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
+.text             0x0001fa       0x2d34
+ .text            0x0001fa        0xc52 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_SLAVE.o)
                   0x0001fa                  _ETMCanSlaveInitialize
                   0x0004ea                  _ETMCanSlaveLoadConfiguration
                   0x00052a                  _ETMCanSlaveDoCan
@@ -1961,85 +1963,86 @@ _03C3F3C0567098bc
                   0x000d38                  _ETMCanSlaveGetSyncMsgHighSpeedLogging
                   0x000d50                  _ETMCanSlaveGetSyncMsgPulseSyncDisableHV
                   0x000d68                  _ETMCanSlaveGetSyncMsgPulseSyncDisableXray
-                  0x000d80                  _ETMCanSlaveGetSyncMsgCoolingFault
-                  0x000d98                  _ETMCanSlaveGetSyncMsgClearDebug
-                  0x000db2                  _ETMCanSlaveGetSyncMsgPulseSyncWarmupLED
-                  0x000dcc                  _ETMCanSlaveGetSyncMsgPulseSyncStandbyLED
-                  0x000de6                  _ETMCanSlaveGetSyncMsgPulseSyncReadyLED
-                  0x000e00                  _ETMCanSlaveGetSyncMsgPulseSyncFaultLED
-                  0x000e1a                  _ETMCanSlaveGetSyncMsgECBState
-                  0x000e26                  _ETMCanSlaveIncrementInvalidIndex
- .text            0x000e32        0x996 build/default/production/A36926_001.o
-                  0x000e32                  _main
-                  0x000e3c                  _DoStateMachine
-                  0x001024                  _DisableHeaterMagnetOutputs
-                  0x001034                  _EnableHeaterMagnetOutputs
-                  0x001044                  _DoA36926_001
-                  0x001256                  _InitializeA36926_001
-                  0x001496                  _Reset_EEPROM_I2C
-                  0x001560                  __ADCInterrupt
-                  0x00178e                  _ETMCanSlaveExecuteCMDBoardSpecific
-                  0x0017bc                  __DefaultInterrupt
- .text            0x0017c8        0x5d2 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
-                  0x0017c8                  _ETMEEPromConfigureExternalDevice
-                  0x0017f8                  _ETMEEPromWriteWord
-                  0x001902                  _ETMEEPromReadWord
-                  0x001a52                  _ETMEEPromWritePage
-                  0x001b8e                  _ETMEEPromReadPage
- .text            0x001d9a        0x4dc ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
-                  0x001d9a                  _SetupLTC265X
-                  0x001e56                  _ClearOutputsLTC265X
-                  0x001e7a                  _WriteLTC265X
-                  0x001f7c                  _WriteLTC265XTwoChannels
-                  0x002104                  _WriteLTC2656AllDacChannels
- .text            0x002276        0x494 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
-                  0x002276                  _ETMAnalogInitializeInput
-                  0x002350                  _ETMAnalogInitializeOutput
-                  0x0023ea                  _ETMAnalogScaleCalibrateDACSetting
-                  0x00246e                  _ETMAnalogScaleCalibrateADCReading
-                  0x0024bc                  _ETMAnalogSetOutput
-                  0x0024ec                  _ETMAnalogCheckOverAbsolute
-                  0x002540                  _ETMAnalogCheckUnderAbsolute
-                  0x002594                  _ETMAnalogCheckOverRelative
-                  0x00261e                  _ETMAnalogCheckUnderRelative
-                  0x0026a4                  _ETMAnalogCheckEEPromInitialized
-                  0x0026be                  _ETMAnalogLoadDefaultCalibration
- .text            0x00270a        0x2f8 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
-                  0x00270a                  _ConfigureSPI
-                  0x0028a0                  _SendAndReceiveSPI
- .text            0x002a02        0x2ec ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
-                  0x002a02                  _ConfigureI2C
-                  0x002a7e                  _WaitForI2CBusIdle
-                  0x002ac0                  _GenerateI2CStart
-                  0x002b02                  _GenerateI2CRestart
-                  0x002b44                  _WriteByteI2C
-                  0x002bb2                  _ReadByteI2C
-                  0x002c24                  _GenerateI2CStop
-                  0x002c66                  _GenerateACK
-                  0x002caa                  _GenerateNACK
- .text            0x002cee        0x124 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_CORE.o)
-                  0x002cee                  _ETMCanBufferRowsAvailable
-                  0x002cfa                  _ETMCanBufferNotEmpty
-                  0x002d04                  _ETMCanRXMessageBuffer
-                  0x002d3e                  _ETMCanRXMessage
-                  0x002d66                  _ETMCanAddMessageToBuffer
-                  0x002d96                  _ETMCanReadMessageFromBuffer
-                  0x002dc8                  _ETMCanTXMessageBuffer
-                  0x002df4                  _ETMCanTXMessage
-                  0x002e08                  _ETMCanBufferInitialize
- .text            0x002e12         0xae ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_IO_PORTS.o)
-                  0x002e12                  _ETMSetPin
-                  0x002e34                  _ETMClearPin
-                  0x002e58                  _ETMPinTrisInput
-                  0x002e7a                  _ETMPinTrisOutput
-                  0x002e9e                  _ETMReadPinLatch
- .text            0x002ec0         0x54 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SCALE.o)
-                  0x002ec0                  _ETMScaleFactor2
-                  0x002eea                  _ETMScaleFactor16
+                  0x000d80                  _ETMCanSlaveGetSyncMsgSystemHVDisable
+                  0x000d9a                  _ETMCanSlaveGetSyncMsgCoolingFault
+                  0x000db2                  _ETMCanSlaveGetSyncMsgClearDebug
+                  0x000dcc                  _ETMCanSlaveGetSyncMsgPulseSyncWarmupLED
+                  0x000de6                  _ETMCanSlaveGetSyncMsgPulseSyncStandbyLED
+                  0x000e00                  _ETMCanSlaveGetSyncMsgPulseSyncReadyLED
+                  0x000e1a                  _ETMCanSlaveGetSyncMsgPulseSyncFaultLED
+                  0x000e34                  _ETMCanSlaveGetSyncMsgECBState
+                  0x000e40                  _ETMCanSlaveIncrementInvalidIndex
+ .text            0x000e4c        0x996 build/default/production/A36926_001.o
+                  0x000e4c                  _main
+                  0x000e56                  _DoStateMachine
+                  0x00103e                  _DisableHeaterMagnetOutputs
+                  0x00104e                  _EnableHeaterMagnetOutputs
+                  0x00105e                  _DoA36926_001
+                  0x001270                  _InitializeA36926_001
+                  0x0014b0                  _Reset_EEPROM_I2C
+                  0x00157a                  __ADCInterrupt
+                  0x0017a8                  _ETMCanSlaveExecuteCMDBoardSpecific
+                  0x0017d6                  __DefaultInterrupt
+ .text            0x0017e2        0x5d2 ..\..\ETM_LIBRARY\Version_01\lib\ETM_EEPROM_EXTERNAL.a(ETM_EEPROM_EXTERNAL.o)
+                  0x0017e2                  _ETMEEPromConfigureExternalDevice
+                  0x001812                  _ETMEEPromWriteWord
+                  0x00191c                  _ETMEEPromReadWord
+                  0x001a6c                  _ETMEEPromWritePage
+                  0x001ba8                  _ETMEEPromReadPage
+ .text            0x001db4        0x4dc ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(LTC265X.o)
+                  0x001db4                  _SetupLTC265X
+                  0x001e70                  _ClearOutputsLTC265X
+                  0x001e94                  _WriteLTC265X
+                  0x001f96                  _WriteLTC265XTwoChannels
+                  0x00211e                  _WriteLTC2656AllDacChannels
+ .text            0x002290        0x494 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_ANALOG.o)
+                  0x002290                  _ETMAnalogInitializeInput
+                  0x00236a                  _ETMAnalogInitializeOutput
+                  0x002404                  _ETMAnalogScaleCalibrateDACSetting
+                  0x002488                  _ETMAnalogScaleCalibrateADCReading
+                  0x0024d6                  _ETMAnalogSetOutput
+                  0x002506                  _ETMAnalogCheckOverAbsolute
+                  0x00255a                  _ETMAnalogCheckUnderAbsolute
+                  0x0025ae                  _ETMAnalogCheckOverRelative
+                  0x002638                  _ETMAnalogCheckUnderRelative
+                  0x0026be                  _ETMAnalogCheckEEPromInitialized
+                  0x0026d8                  _ETMAnalogLoadDefaultCalibration
+ .text            0x002724        0x2f8 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SPI.o)
+                  0x002724                  _ConfigureSPI
+                  0x0028ba                  _SendAndReceiveSPI
+ .text            0x002a1c        0x2ec ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_I2C.o)
+                  0x002a1c                  _ConfigureI2C
+                  0x002a98                  _WaitForI2CBusIdle
+                  0x002ada                  _GenerateI2CStart
+                  0x002b1c                  _GenerateI2CRestart
+                  0x002b5e                  _WriteByteI2C
+                  0x002bcc                  _ReadByteI2C
+                  0x002c3e                  _GenerateI2CStop
+                  0x002c80                  _GenerateACK
+                  0x002cc4                  _GenerateNACK
+ .text            0x002d08        0x124 ..\..\ETM_LIBRARY\Version_01\lib\ETM_LINAC_CAN.a(P1395_CAN_CORE.o)
+                  0x002d08                  _ETMCanBufferRowsAvailable
+                  0x002d14                  _ETMCanBufferNotEmpty
+                  0x002d1e                  _ETMCanRXMessageBuffer
+                  0x002d58                  _ETMCanRXMessage
+                  0x002d80                  _ETMCanAddMessageToBuffer
+                  0x002db0                  _ETMCanReadMessageFromBuffer
+                  0x002de2                  _ETMCanTXMessageBuffer
+                  0x002e0e                  _ETMCanTXMessage
+                  0x002e22                  _ETMCanBufferInitialize
+ .text            0x002e2c         0xae ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_IO_PORTS.o)
+                  0x002e2c                  _ETMSetPin
+                  0x002e4e                  _ETMClearPin
+                  0x002e72                  _ETMPinTrisInput
+                  0x002e94                  _ETMPinTrisOutput
+                  0x002eb8                  _ETMReadPinLatch
+ .text            0x002eda         0x54 ..\..\ETM_LIBRARY\Version_01\lib\ETM_CORE.a(ETM_SCALE.o)
+                  0x002eda                  _ETMScaleFactor2
+                  0x002f04                  _ETMScaleFactor16
 
-.dinit            0x002f14         0x2c
- .dinit           0x002f14         0x2c data_init
+.dinit            0x002f2e         0x2c
+ .dinit           0x002f2e         0x2c data_init
 
-.init.delay32     0x002f40         0x1c
- .init.delay32    0x002f40         0x1c c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libpic30-elf.a(delay32.eo)
-                  0x002f40                  ___delay32
+.init.delay32     0x002f5a         0x1c
+ .init.delay32    0x002f5a         0x1c c:/program files (x86)/microchip/xc16/v1.23/bin/bin/../../lib\libpic30-elf.a(delay32.eo)
+                  0x002f5a                  ___delay32
