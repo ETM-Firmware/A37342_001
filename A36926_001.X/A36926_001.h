@@ -19,9 +19,6 @@
 
 #define FCY_CLK     10000000
 
-extern ETMCanSyncMessage    etm_can_master_sync_message;
-
-
 /*
   Hardware Module Resource Usage
 
@@ -29,10 +26,10 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
   Timer4 - Used/Configured by ETM CAN - Used to Time sending of messages (status update / logging data and such)
   Timer5 - Used/Configured by ETM CAN - Used for detecting error on can bus
 
-  SPI2   - Used/Configured by LTC265X Module    -----> change to bus 2 in code
+  SPI2   - Used/Configured by LTC265X Module
   I2C    - Used/Configured by EEPROM Module
 
-  Timer3 - Used for 10msTicToc   -----> change to 3 in code
+  Timer3 - Used for 10msTicToc
 
   ADC Module - See Below For Specifics
 
@@ -51,8 +48,6 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
 
 #define AUTO_INHIBIT_DETECT          _RA14   // This is INT3
 #define RESET_DETECT                 _RG14
-
-
 
 #define PIC_RELAY_OUT                _LATD3
 #define PIC_OUTPUT_LAMBDA_SELECT     _LATD2
@@ -190,17 +185,12 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
 // -------- Digital Input Pins ----------//
 
 #define PIN_PIC_INPUT_TEMPERATURE_OK          PIC_DIG_IN_6
-#define PIN_PIC_INPUT_HEATER_OV_OK            PIC_DIG_IN_7
-#define PIN_PIC_INPUT_CROWBAR_UP              PIC_DIG_IN_8
+#define ILL_TEMP_SWITCH_FAULT                 0
 
+#define PIN_PIC_INPUT_CROWBAR_UP              PIC_DIG_IN_8
+#define ILL_RELAY_OPEN                        1
 
 #define PIN_RESET_DETECT                      RESET_DETECT
-
-#define ILL_HEATER_OV                         0
-#define ILL_TEMP_SWITCH_FAULT                 0
-#define ILL_RELAY_OPEN                        1
-#define ILL_ENERGY_SELECT_WATER_FLOW_OK       1
-
 
 
 // ------- Digital Output Pins ---------//
@@ -220,12 +210,10 @@ extern ETMCanSyncMessage    etm_can_master_sync_message;
 #define PIN_OUT_TP_F                          TEST_POINT_F
 
 #define OLL_LED_ON                            0
-//#define OLL_CLOSE_RELAY                       0
-#define OLL_CLOSE_RELAY                       1 // for new board
+#define OLL_CLOSE_RELAY                       1
 #define OLL_SELECT_DAC_C                      1
 
 
-//change below hkw
 // ------------------------ CONFIGURE ADC MODULE ------------------- //
 
 // ----------------- ANALOG INPUT PINS ---------------- //
@@ -298,30 +286,35 @@ typedef struct {
   AnalogOutput analog_output_heater_current;
   AnalogOutput analog_output_electromagnet_current;
 
+  TYPE_DIGITAL_INPUT digital_input_temp_switch;
+  TYPE_DIGITAL_INPUT digital_input_crowbar_up;
+
   unsigned int can_magnet_current_set_point;         // This is the magnet current set point set over the can interface
-  unsigned int can_heater_current_set_point;    // This is the heater current set point set over the can interface
+  unsigned int can_heater_current_set_point;         // This is the heater current set point set over the can interface
 
   unsigned int  accumulator_counter;
-
-  unsigned int  adc_ignore_current_sample;
-
-  unsigned int startup_count;
-  unsigned int fault_active;
+  unsigned int heater_over_current_counter;
+  unsigned int heater_over_current_hold_timer;
   unsigned int power_up_test_timer;
 
   unsigned int control_state;
 
-} HeaterMagnetControlData;
+} TYPE_HEATER_MAGNET_CONTROL_DATA;
 
 
-extern HeaterMagnetControlData global_data_A36926_001;
+#define STATE_HEATER_OVER_CURRENT    10
+#define STATE_OVER_TEMP              20
+#define STATE_FAULT_NO_RECOVERY      30
+#define STATE_STARTUP                40
+#define STATE_WAITING_FOR_CONFIG     50
+#define STATE_POWER_TEST             60
+#define STATE_OPERATE                70
 
 
-
-#define _STATUS_MAGNET_OFF_READBACK                     _WARNING_0     //Should these be warnings? -hkw
+#define _STATUS_MAGNET_OFF_READBACK                     _WARNING_0
 #define _STATUS_HEATER_OFF_READBACK                     _WARNING_1
-#define _STATUS_OUTPUT_RELAY_OPEN                       _NOT_LOGGED_0
-#define _STATUS_PERMA_FAULTED                           _NOT_LOGGED_1
+#define _STATUS_PERMA_FAULTED                           _WARNING_2
+#define _STATUS_OUTPUT_RELAY_OPEN                       _WARNING_3
 
 #define _FAULT_HEATER_OVER_CURRENT_ABSOLUTE             _FAULT_0
 #define _FAULT_HEATER_OVER_CURRENT_RELATIVE             _FAULT_1
@@ -334,7 +327,7 @@ extern HeaterMagnetControlData global_data_A36926_001;
 
 #define _FAULT_COOLANT_FAULT                            _FAULT_7
 #define _FAULT_CAN_COMMUNICATION_LATCHED                _FAULT_8
-
+#define _FAULT_OVER_TEMP                                _FAULT_9
 
 
 #endif	/* A36926_001_H */

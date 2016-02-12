@@ -66,6 +66,11 @@
 
 
 
+#define TIME_POWER_TEST                    5000   // 5 seconds
+#define MAX_HEATER_OVER_CURRENT_EVENTS     5
+#define HEATER_OVER_CURRENT_OFF_TIME       10000  // 10 Seconds
+
+
 
 #endif	/* A36926_001_SETTINGS_H */
 
