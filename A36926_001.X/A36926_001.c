@@ -137,10 +137,10 @@ void DoStateMachine(void) {
     _CONTROL_NOT_READY = 1;
     DisableHeaterMagnetOutputs();
     running_persistent = 0;
-    while (global_data_A36926_001.control_state == STATE_HEATER_OVER_CURRENT) {
+    while (global_data_A36926_001.control_state == STATE_OVER_TEMP) {
       DoA36926_001();
 
-      if (global_data_A36926_001.heater_over_current_hold_timer > HEATER_OVER_CURRENT_OFF_TIME) {
+      if (ETMDigitalFilteredOutput(&global_data_A36926_001.digital_input_temp_switch) == !ILL_TEMP_SWITCH_FAULT) {
 	global_data_A36926_001.control_state = STATE_POWER_TEST;
       }
     }
@@ -213,8 +213,8 @@ void DoA36926_001(void) {
     _T3IF = 0;
 
 
-    ETMCanSlaveSetDebugRegister(0x0, 0);
-    ETMCanSlaveSetDebugRegister(0x1, 0);
+    ETMCanSlaveSetDebugRegister(0x0, global_data_A36926_001.heater_over_current_counter);
+    ETMCanSlaveSetDebugRegister(0x1, global_data_A36926_001.heater_over_current_hold_timer);
     ETMCanSlaveSetDebugRegister(0x2, global_data_A36926_001.power_up_test_timer);
     ETMCanSlaveSetDebugRegister(0x3, global_data_A36926_001.control_state);
     ETMCanSlaveSetDebugRegister(0x4, ETMCanSlaveGetSyncMsgECBState());
@@ -224,7 +224,7 @@ void DoA36926_001(void) {
     ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.can_heater_current_set_point);
     ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.can_magnet_current_set_point);
     ETMCanSlaveSetDebugRegister(0xA, etm_i2c1_error_count);
-    ETMCanSlaveSetDebugRegister(0xB, 0);
+    ETMCanSlaveSetDebugRegister(0xB, global_data_A36926_001.heater_over_current_hold_timer);
     ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xD, global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xE, global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated);
@@ -243,6 +243,10 @@ void DoA36926_001(void) {
 
     if (global_data_A36926_001.control_state == STATE_POWER_TEST) {
       global_data_A36926_001.power_up_test_timer++;
+    }
+
+    if (global_data_A36926_001.control_state == STATE_HEATER_OVER_CURRENT) {
+      global_data_A36926_001.heater_over_current_hold_timer++;
     }
 
     // If the system is faulted or inhibited set the red LED
@@ -298,7 +302,13 @@ void DoA36926_001(void) {
     }
 
     // ------------------------  Update Analog Heater Faults ---------------------- //
+    if ((global_data_A36926_001.control_state == STATE_POWER_TEST) || (global_data_A36926_001.control_state == STATE_OPERATE)) {
+      _STATUS_HEATER_OK_READBACK = 1;
+    } else {
+      _STATUS_HEATER_OK_READBACK = 0;
+    }
     if (ETMAnalogCheckOverAbsolute(&global_data_A36926_001.analog_input_heater_current)) {
+      _STATUS_HEATER_OK_READBACK = 0;
       _FAULT_HEATER_OVER_CURRENT_ABSOLUTE = 1;
     } else {
       if (ETMCanSlaveGetSyncMsgResetEnable()) {
@@ -307,6 +317,7 @@ void DoA36926_001(void) {
     }
 
     if (ETMAnalogCheckOverRelative(&global_data_A36926_001.analog_input_heater_current)) {
+      _STATUS_HEATER_OK_READBACK = 0;
       _FAULT_HEATER_OVER_CURRENT_RELATIVE = 1;
     } else {
       if (ETMCanSlaveGetSyncMsgResetEnable()) {
@@ -315,6 +326,7 @@ void DoA36926_001(void) {
     }
   
     if (ETMAnalogCheckUnderRelative(&global_data_A36926_001.analog_input_heater_current)) {
+      _STATUS_HEATER_OK_READBACK = 0;
       if ((global_data_A36926_001.control_state == STATE_POWER_TEST) || (global_data_A36926_001.control_state == STATE_OPERATE)) {
 	_FAULT_HEATER_UNDER_CURRENT_RELATIVE = 1;
       }
@@ -325,6 +337,7 @@ void DoA36926_001(void) {
     }
 
     if (ETMAnalogCheckUnderRelative(&global_data_A36926_001.analog_input_heater_voltage)) {
+      _STATUS_HEATER_OK_READBACK = 0;
       if ((global_data_A36926_001.control_state == STATE_POWER_TEST) || (global_data_A36926_001.control_state == STATE_OPERATE)) {
 	_FAULT_HEATER_UNDER_VOLTAGE_RELATIVE = 1;
       }
@@ -337,7 +350,13 @@ void DoA36926_001(void) {
 
 
     // ------------------------  Update Analog Magnet Faults ---------------------- //
+    if ((global_data_A36926_001.control_state == STATE_POWER_TEST) || (global_data_A36926_001.control_state == STATE_OPERATE)) {
+      _STATUS_MAGNET_OK_READBACK = 1;
+    } else {
+      _STATUS_MAGNET_OK_READBACK = 0;
+    }
     if (ETMAnalogCheckOverAbsolute(&global_data_A36926_001.analog_input_electromagnet_current)) {
+      _STATUS_MAGNET_OK_READBACK = 0;
       _FAULT_MAGNET_OVER_CURRENT_ABSOLUTE = 1;
     } else {
       if (ETMCanSlaveGetSyncMsgResetEnable()) {
@@ -346,6 +365,7 @@ void DoA36926_001(void) {
     }
 
     if (ETMAnalogCheckUnderAbsolute(&global_data_A36926_001.analog_input_electromagnet_current)) {
+      _STATUS_MAGNET_OK_READBACK = 0;
       if ((global_data_A36926_001.control_state == STATE_POWER_TEST) || (global_data_A36926_001.control_state == STATE_OPERATE)) {
 	_FAULT_MAGNET_UNDER_CURRENT_ABSOLUTE = 1;
       }
@@ -356,6 +376,7 @@ void DoA36926_001(void) {
     }
     
     if (ETMAnalogCheckUnderAbsolute(&global_data_A36926_001.analog_input_electromagnet_voltage)) {
+      _STATUS_MAGNET_OK_READBACK = 0;
       if ((global_data_A36926_001.control_state == STATE_POWER_TEST) || (global_data_A36926_001.control_state == STATE_OPERATE)) {
 	_FAULT_MAGNET_UNDER_VOLTAGE_ABSOLUTE = 1;
       }

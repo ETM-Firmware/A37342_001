@@ -188,7 +188,7 @@
 #define ILL_TEMP_SWITCH_FAULT                 0
 
 #define PIN_PIC_INPUT_CROWBAR_UP              PIC_DIG_IN_8
-#define ILL_RELAY_OPEN                        1
+#define ILL_RELAY_OPEN                        0
 
 #define PIN_RESET_DETECT                      RESET_DETECT
 
@@ -311,8 +311,8 @@ typedef struct {
 #define STATE_OPERATE                70
 
 
-#define _STATUS_MAGNET_OFF_READBACK                     _WARNING_0
-#define _STATUS_HEATER_OFF_READBACK                     _WARNING_1
+#define _STATUS_MAGNET_OK_READBACK                      _WARNING_0
+#define _STATUS_HEATER_OK_READBACK                      _WARNING_1
 #define _STATUS_PERMA_FAULTED                           _WARNING_2
 #define _STATUS_OUTPUT_RELAY_OPEN                       _WARNING_3
 

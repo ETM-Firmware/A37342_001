@@ -66,9 +66,9 @@
 
 
 
-#define TIME_POWER_TEST                    5000   // 5 seconds
+#define TIME_POWER_TEST                    500   // 5 seconds
 #define MAX_HEATER_OVER_CURRENT_EVENTS     5
-#define HEATER_OVER_CURRENT_OFF_TIME       10000  // 10 Seconds
+#define HEATER_OVER_CURRENT_OFF_TIME       1000  // 10 Seconds
 
 
 
