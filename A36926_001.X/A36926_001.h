@@ -294,7 +294,7 @@ typedef struct {
 
   unsigned int  accumulator_counter;
   unsigned int heater_over_current_counter;
-  unsigned int heater_over_current_hold_timer;
+  unsigned int fault_hold_timer;
   unsigned int power_up_test_timer;
 
   unsigned int control_state;
@@ -302,11 +302,11 @@ typedef struct {
 } TYPE_HEATER_MAGNET_CONTROL_DATA;
 
 
-#define STATE_HEATER_OVER_CURRENT    10
-#define STATE_OVER_TEMP              20
-#define STATE_FAULT_NO_RECOVERY      30
-#define STATE_STARTUP                40
-#define STATE_WAITING_FOR_CONFIG     50
+
+#define STATE_FAULT_NO_RECOVERY      10
+#define STATE_FAULT                  20
+#define STATE_STARTUP                30
+#define STATE_WAITING_FOR_CONFIG     40
 #define STATE_POWER_TEST             60
 #define STATE_OPERATE                70
 
@@ -315,6 +315,8 @@ typedef struct {
 #define _STATUS_HEATER_OK_READBACK                      _WARNING_1
 #define _STATUS_PERMA_FAULTED                           _WARNING_2
 #define _STATUS_OUTPUT_RELAY_OPEN                       _WARNING_3
+#define _STATUS_HEATER_OVER_CURRENT_ACTIVE              _WARNING_4
+#define _STATUS_HW_OVER_TEMP_ACTIVE                     _WARNING_5
 
 #define _FAULT_HEATER_OVER_CURRENT_ABSOLUTE             _FAULT_0
 #define _FAULT_HEATER_OVER_CURRENT_RELATIVE             _FAULT_1

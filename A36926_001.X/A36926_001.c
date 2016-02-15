@@ -87,14 +87,19 @@ void DoStateMachine(void) {
 	global_data_A36926_001.control_state = STATE_OPERATE;
       }
       
-      if (_FAULT_HEATER_OVER_CURRENT_ABSOLUTE) {
-	global_data_A36926_001.control_state = STATE_HEATER_OVER_CURRENT;
+      if (_STATUS_HW_OVER_TEMP_ACTIVE) {
+	global_data_A36926_001.control_state = STATE_FAULT;
       }
       
-      if (_FAULT_OVER_TEMP) {
-	global_data_A36926_001.control_state = STATE_OVER_TEMP;
+      if (_STATUS_HEATER_OVER_CURRENT_ACTIVE) {
+	global_data_A36926_001.heater_over_current_counter++;
+    	global_data_A36926_001.control_state = STATE_FAULT;
       }
       
+      if (ETMCanSlaveGetSyncMsgCoolingFault()) {
+	global_data_A36926_001.control_state = STATE_FAULT;
+      }
+
     }
     break;
 
@@ -113,35 +118,22 @@ void DoStateMachine(void) {
     break;
 
 
-  case STATE_HEATER_OVER_CURRENT:
+  case STATE_FAULT:
     _CONTROL_NOT_READY = 1;
     DisableHeaterMagnetOutputs();
     running_persistent = 0;
-    global_data_A36926_001.heater_over_current_counter++;
-    global_data_A36926_001.heater_over_current_hold_timer = 0;
-    while (global_data_A36926_001.control_state == STATE_HEATER_OVER_CURRENT) {
+    global_data_A36926_001.fault_hold_timer = 0;
+    while (global_data_A36926_001.control_state == STATE_FAULT) {
       DoA36926_001();
 
       if (global_data_A36926_001.heater_over_current_counter > MAX_HEATER_OVER_CURRENT_EVENTS) {
 	global_data_A36926_001.control_state = STATE_FAULT_NO_RECOVERY;
       }
       
-      if (global_data_A36926_001.heater_over_current_hold_timer > HEATER_OVER_CURRENT_OFF_TIME) {
-	global_data_A36926_001.control_state = STATE_POWER_TEST;
-      }
-    }
-    break;
-
-
-  case STATE_OVER_TEMP:
-    _CONTROL_NOT_READY = 1;
-    DisableHeaterMagnetOutputs();
-    running_persistent = 0;
-    while (global_data_A36926_001.control_state == STATE_OVER_TEMP) {
-      DoA36926_001();
-
-      if (ETMDigitalFilteredOutput(&global_data_A36926_001.digital_input_temp_switch) == !ILL_TEMP_SWITCH_FAULT) {
-	global_data_A36926_001.control_state = STATE_POWER_TEST;
+      if (global_data_A36926_001.fault_hold_timer > FAULT_OFF_TIME) {
+	if ((!_STATUS_HW_OVER_TEMP_ACTIVE) && (!ETMCanSlaveGetSyncMsgCoolingFault())) {
+	  global_data_A36926_001.control_state = STATE_POWER_TEST;
+	}
       }
     }
     break;
@@ -214,7 +206,7 @@ void DoA36926_001(void) {
 
 
     ETMCanSlaveSetDebugRegister(0x0, global_data_A36926_001.heater_over_current_counter);
-    ETMCanSlaveSetDebugRegister(0x1, global_data_A36926_001.heater_over_current_hold_timer);
+    ETMCanSlaveSetDebugRegister(0x1, global_data_A36926_001.fault_hold_timer);
     ETMCanSlaveSetDebugRegister(0x2, global_data_A36926_001.power_up_test_timer);
     ETMCanSlaveSetDebugRegister(0x3, global_data_A36926_001.control_state);
     ETMCanSlaveSetDebugRegister(0x4, ETMCanSlaveGetSyncMsgECBState());
@@ -224,7 +216,7 @@ void DoA36926_001(void) {
     ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.can_heater_current_set_point);
     ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.can_magnet_current_set_point);
     ETMCanSlaveSetDebugRegister(0xA, etm_i2c1_error_count);
-    ETMCanSlaveSetDebugRegister(0xB, global_data_A36926_001.heater_over_current_hold_timer);
+    ETMCanSlaveSetDebugRegister(0xB, global_data_A36926_001.fault_hold_timer);
     ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xD, global_data_A36926_001.analog_input_heater_current.reading_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0xE, global_data_A36926_001.analog_input_electromagnet_voltage.reading_scaled_and_calibrated);
@@ -241,14 +233,9 @@ void DoA36926_001(void) {
     slave_board_data.log_data[7] = global_data_A36926_001.analog_output_heater_current.set_point;
     slave_board_data.log_data[8] = ETMCanSlaveGetPulseCount();
 
-    if (global_data_A36926_001.control_state == STATE_POWER_TEST) {
-      global_data_A36926_001.power_up_test_timer++;
-    }
-
-    if (global_data_A36926_001.control_state == STATE_HEATER_OVER_CURRENT) {
-      global_data_A36926_001.heater_over_current_hold_timer++;
-    }
-
+    global_data_A36926_001.power_up_test_timer++;
+    global_data_A36926_001.fault_hold_timer++;
+    
     // If the system is faulted or inhibited set the red LED
     if (_CONTROL_NOT_READY) {
       PIN_LED_A_RED = OLL_LED_ON;
@@ -267,8 +254,10 @@ void DoA36926_001(void) {
     
     ETMDigitalUpdateInput(&global_data_A36926_001.digital_input_temp_switch, PIN_PIC_INPUT_TEMPERATURE_OK);
     if (ETMDigitalFilteredOutput(&global_data_A36926_001.digital_input_temp_switch) == ILL_TEMP_SWITCH_FAULT) {
+      _STATUS_HW_OVER_TEMP_ACTIVE = 1;
       _FAULT_OVER_TEMP = 1;
     } else {
+      _STATUS_HW_OVER_TEMP_ACTIVE = 0;
       if (ETMCanSlaveGetSyncMsgResetEnable()) {
 	_FAULT_OVER_TEMP = 0;
       }
@@ -308,9 +297,11 @@ void DoA36926_001(void) {
       _STATUS_HEATER_OK_READBACK = 0;
     }
     if (ETMAnalogCheckOverAbsolute(&global_data_A36926_001.analog_input_heater_current)) {
+      _STATUS_HEATER_OVER_CURRENT_ACTIVE = 1;
       _STATUS_HEATER_OK_READBACK = 0;
       _FAULT_HEATER_OVER_CURRENT_ABSOLUTE = 1;
     } else {
+      _STATUS_HEATER_OVER_CURRENT_ACTIVE = 0;
       if (ETMCanSlaveGetSyncMsgResetEnable()) {
 	_FAULT_HEATER_OVER_CURRENT_ABSOLUTE = 0;
       }
