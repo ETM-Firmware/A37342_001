@@ -179,7 +179,7 @@ void DoRecoveryStartup(void) {
     DoA36926_001();
   }
   ETMAnalogSetOutput(&global_data_A36926_001.analog_output_heater_current, global_data_A36926_001.can_heater_current_set_point);
-  ETMAnalogSetOutput(&global_data_A36926_001.analog_output_electromagnet_current, global_data_A36926_001.can_magnet_current_set_point);
+  ETMAnalogSetOutput(&global_data_A36926_001.analog_output_electromagnet_current, global_data_A36926_001.can_magnet_current_set_point_high_energy);
   ETMAnalogScaleCalibrateDACSetting(&global_data_A36926_001.analog_output_heater_current);
   ETMAnalogScaleCalibrateDACSetting(&global_data_A36926_001.analog_output_electromagnet_current);	  
   SetupLTC265X(&U14_LTC2654, ETM_SPI_PORT_2, FCY_CLK, LTC265X_SPI_2_5_M_BIT, _PIN_RG15, _PIN_RC1);
@@ -214,7 +214,7 @@ void DoA36926_001(void) {
     ETMCanSlaveSetDebugRegister(0x6, global_data_A36926_001.analog_output_heater_current.dac_setting_scaled_and_calibrated);
     ETMCanSlaveSetDebugRegister(0x7, global_data_A36926_001.accumulator_counter);
     ETMCanSlaveSetDebugRegister(0x8, global_data_A36926_001.can_heater_current_set_point);
-    ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.can_magnet_current_set_point);
+    ETMCanSlaveSetDebugRegister(0x9, global_data_A36926_001.can_magnet_current_set_point_high_energy);
     ETMCanSlaveSetDebugRegister(0xA, etm_i2c1_error_count);
     ETMCanSlaveSetDebugRegister(0xB, global_data_A36926_001.fault_hold_timer);
     ETMCanSlaveSetDebugRegister(0xC, global_data_A36926_001.analog_input_electromagnet_current.reading_scaled_and_calibrated);
@@ -391,8 +391,11 @@ void DoA36926_001(void) {
     // Set DAC outputs
     if ((global_data_A36926_001.control_state == STATE_OPERATE) || (global_data_A36926_001.control_state == STATE_POWER_TEST)) {
       ETMAnalogSetOutput(&global_data_A36926_001.analog_output_heater_current, global_data_A36926_001.can_heater_current_set_point);
-      ETMAnalogSetOutput(&global_data_A36926_001.analog_output_electromagnet_current, global_data_A36926_001.can_magnet_current_set_point);
-
+      if (ETMCanSlaveIsNextPulseLevelHigh()) {
+	ETMAnalogSetOutput(&global_data_A36926_001.analog_output_electromagnet_current, global_data_A36926_001.can_magnet_current_set_point_high_energy);
+      } else {
+	ETMAnalogSetOutput(&global_data_A36926_001.analog_output_electromagnet_current, global_data_A36926_001.can_magnet_current_set_point_low_energy);
+      }
       ETMAnalogScaleCalibrateDACSetting(&global_data_A36926_001.analog_output_heater_current);
       ETMAnalogScaleCalibrateDACSetting(&global_data_A36926_001.analog_output_electromagnet_current);
 
@@ -753,9 +756,9 @@ void ETMCanSlaveExecuteCMDBoardSpecific(ETMCanMessage* message_ptr) {
   switch (index_word)
     {
     case ETM_CAN_REGISTER_HEATER_MAGNET_SET_1_CURRENT_SET_POINT:
-      // DPARKER consider setting outputs directly here
       global_data_A36926_001.can_heater_current_set_point = message_ptr->word1;  // heater
-      global_data_A36926_001.can_magnet_current_set_point = message_ptr->word0;  // magnet
+      global_data_A36926_001.can_magnet_current_set_point_high_energy = message_ptr->word0;  // magnet
+      global_data_A36926_001.can_magnet_current_set_point_low_energy = message_ptr->word2; // magnet low energy
       _CONTROL_NOT_CONFIGURED = 0;
       setup_done = 1;
       break;

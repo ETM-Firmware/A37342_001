@@ -289,8 +289,9 @@ typedef struct {
   TYPE_DIGITAL_INPUT digital_input_temp_switch;
   TYPE_DIGITAL_INPUT digital_input_crowbar_up;
 
-  unsigned int can_magnet_current_set_point;         // This is the magnet current set point set over the can interface
-  unsigned int can_heater_current_set_point;         // This is the heater current set point set over the can interface
+  unsigned int can_magnet_current_set_point_high_energy; // This is the magnet current set point set over the can interface
+  unsigned int can_magnet_current_set_point_low_energy;  // This is the magnet current set point set over the can interface
+  unsigned int can_heater_current_set_point;             // This is the heater current set point set over the can interface
 
   unsigned int  accumulator_counter;
   unsigned int heater_over_current_counter;
