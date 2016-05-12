@@ -506,6 +506,7 @@ void InitializeA36926_001(void) {
   // DPARKER REMOVE FOR NOW Reset_EEPROM_I2C(_PIN_RG2, _PIN_RG3);
 
   // Initialize the External EEprom
+  ETMEEPromUseExternal();
   ETMEEPromConfigureExternalDevice(EEPROM_SIZE_8K_BYTES, FCY_CLK, 400000, EEPROM_I2C_ADDRESS_0, 1);
  
   // Initialize the Can module
