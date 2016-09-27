@@ -1,12 +1,12 @@
 /* 
- * File:   A36926_001.h
+ * File:   A37342_001.h
  * Author: hwanetick
  *
  * Created on October 22, 2015, 11:04 AM
  */
 
-#ifndef __A36926_001_H
-#define	__A36926_001_H
+#ifndef __A37342_001_H
+#define	__A37342_001_H
 
 
 #include <xc.h>
@@ -15,7 +15,7 @@
 #include <timer.h>
 #include "ETM.h"
 #include "P1395_CAN_SLAVE.h"
-#include "A36926_001_SETTINGS.h"
+#include "A37342_001_SETTINGS.h"
 
 #define FCY_CLK     10000000
 
@@ -35,7 +35,7 @@
 
 */
 
-// ---------- BASE A36926 I/O CONFIGURATION ----------------- //
+// ---------- BASE A37342 I/O CONFIGURATION ----------------- //
 
 #define PIC_DIG_IN_1      _RD8      
 #define PIC_DIG_IN_2      _RD9      
@@ -164,21 +164,21 @@
 */
 
 
-#define A36926_001_TRISA_VALUE 0b1111111101111111    
-#define A36926_001_TRISB_VALUE 0b1111111111111111
-#define A36926_001_TRISC_VALUE 0b1111111111111111
-#define A36926_001_TRISD_VALUE 0b1111111111110100
-#define A36926_001_TRISF_VALUE 0b1111111111111111
-#define A36926_001_TRISG_VALUE 0b1100111111111111
+#define A37342_001_TRISA_VALUE 0b1111111101111111    
+#define A37342_001_TRISB_VALUE 0b1111111111111111
+#define A37342_001_TRISC_VALUE 0b1111111111111111
+#define A37342_001_TRISD_VALUE 0b1111111111110100
+#define A37342_001_TRISF_VALUE 0b1111111111111111
+#define A37342_001_TRISG_VALUE 0b1100111111111111
 
 // x-> not connected  o-> used outputs  u-> unused output  n-> unused input  i-> inputs  h-> hw module  s-> sw module
 
-//#define A36926_001_TRISA_VALUE 0bxnxx 1hh1 oo11 1111
-//#define A36926_001_TRISB_VALUE 0bxuxx xxii iiii iihh
-//#define A36926_001_TRISC_VALUE 0buxx1 1111 111x xxs1
-//#define A36926_001_TRISD_VALUE 0biiin nnnn xxxx oxuu
-//#define A36926_001_TRISF_VALUE 0b1111 111u uuxx uuhh
-//#define A36926_001_TRISG_VALUE 0bsuoo 11xh hh11 hhxx
+//#define A37342_001_TRISA_VALUE 0bxnxx 1hh1 oo11 1111
+//#define A37342_001_TRISB_VALUE 0bxuxx xxii iiii iihh
+//#define A37342_001_TRISC_VALUE 0buxx1 1111 111x xxs1
+//#define A37342_001_TRISD_VALUE 0biiin nnnn xxxx oxuu
+//#define A37342_001_TRISF_VALUE 0b1111 111u uuxx uuhh
+//#define A37342_001_TRISG_VALUE 0bsuoo 11xh hh11 hhxx
 
 
 
@@ -333,5 +333,5 @@ typedef struct {
 #define _FAULT_OVER_TEMP                                _FAULT_9
 
 
-#endif	/* A36926_001_H */
+#endif	/* A37342_001_H */
 

@@ -1,12 +1,12 @@
 /* 
- * File:   A36926_001_SETTINGS.h
+ * File:   A37342_001_SETTINGS.h
  * Author: hwanetick
  *
  * Created on October 22, 2015, 11:08 AM
  */
 
-#ifndef __A36926_001_SETTINGS_H
-#define	__A36926_001_SETTINGS_H
+#ifndef __A37342_001_SETTINGS_H
+#define	__A37342_001_SETTINGS_H
 
 
 // Configuration Settings for the Electromagnet Supply
@@ -72,5 +72,5 @@
 
 
 
-#endif	/* A36926_001_SETTINGS_H */
+#endif	/* A37342_001_SETTINGS_H */
 
