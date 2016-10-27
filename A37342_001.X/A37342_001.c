@@ -1,6 +1,9 @@
 #include "A37342_001.h"
 #include "FIRMWARE_VERSION.h"
 
+#define __TEST_CART_MODE
+
+
 // This is firmware for the Magnet Supply Test Board
 
 _FOSC(ECIO & CSW_FSCM_OFF);
@@ -255,7 +258,9 @@ void DoA37342_001(void) {
     ETMDigitalUpdateInput(&global_data_A37342_001.digital_input_temp_switch, PIN_PIC_INPUT_TEMPERATURE_OK);
     if (ETMDigitalFilteredOutput(&global_data_A37342_001.digital_input_temp_switch) == ILL_TEMP_SWITCH_FAULT) {
       _STATUS_HW_OVER_TEMP_ACTIVE = 1;
+#ifndef __TEST_CART_MODE
       _FAULT_OVER_TEMP = 1;
+#endif
     } else {
       _STATUS_HW_OVER_TEMP_ACTIVE = 0;
       if (ETMCanSlaveGetSyncMsgResetEnable()) {
@@ -299,7 +304,9 @@ void DoA37342_001(void) {
     if (ETMAnalogCheckOverAbsolute(&global_data_A37342_001.analog_input_heater_current)) {
       _STATUS_HEATER_OVER_CURRENT_ACTIVE = 1;
       _STATUS_HEATER_OK_READBACK = 0;
+#ifndef __TEST_CART_MODE
       _FAULT_HEATER_OVER_CURRENT_ABSOLUTE = 1;
+#endif
     } else {
       _STATUS_HEATER_OVER_CURRENT_ACTIVE = 0;
       if (ETMCanSlaveGetSyncMsgResetEnable()) {
@@ -309,7 +316,9 @@ void DoA37342_001(void) {
 
     if (ETMAnalogCheckOverRelative(&global_data_A37342_001.analog_input_heater_current)) {
       _STATUS_HEATER_OK_READBACK = 0;
+#ifndef __TEST_CART_MODE
       _FAULT_HEATER_OVER_CURRENT_RELATIVE = 1;
+#endif
     } else {
       if (ETMCanSlaveGetSyncMsgResetEnable()) {
 	_FAULT_HEATER_OVER_CURRENT_RELATIVE = 0;
@@ -319,7 +328,9 @@ void DoA37342_001(void) {
     if (ETMAnalogCheckUnderRelative(&global_data_A37342_001.analog_input_heater_current)) {
       _STATUS_HEATER_OK_READBACK = 0;
       if ((global_data_A37342_001.control_state == STATE_POWER_TEST) || (global_data_A37342_001.control_state == STATE_OPERATE)) {
+#ifndef __TEST_CART_MODE
 	_FAULT_HEATER_UNDER_CURRENT_RELATIVE = 1;
+#endif
       }
     } else {
       if (ETMCanSlaveGetSyncMsgResetEnable()) {
@@ -330,7 +341,9 @@ void DoA37342_001(void) {
     if (ETMAnalogCheckUnderRelative(&global_data_A37342_001.analog_input_heater_voltage)) {
       _STATUS_HEATER_OK_READBACK = 0;
       if ((global_data_A37342_001.control_state == STATE_POWER_TEST) || (global_data_A37342_001.control_state == STATE_OPERATE)) {
+#ifndef __TEST_CART_MODE
 	_FAULT_HEATER_UNDER_VOLTAGE_RELATIVE = 1;
+#endif
       }
     } else {
       if (ETMCanSlaveGetSyncMsgResetEnable()) {
