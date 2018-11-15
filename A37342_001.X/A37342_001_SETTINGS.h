@@ -9,11 +9,22 @@
 #define	__A37342_001_SETTINGS_H
 
 
+#define __P1500_SETTINGS
+
+
 // Configuration Settings for the Electromagnet Supply
+
+#ifdef __P1500_SETTINGS
+#define ELECTROMAGNET_MAX_IPROG                 25000
+#define ELECTROMAGNET_CURRENT_OVER_TRIP         27000                                 // 27 Amps
+#else
 #define ELECTROMAGNET_MAX_IPROG                 22000
+#define ELECTROMAGNET_CURRENT_OVER_TRIP         24000                                 // 24 Amps
+#endif
+
 #define ELECTROMAGNET_MIN_IPROG                 9500
 
-#define ELECTROMAGNET_CURRENT_OVER_TRIP         24000                                 // 24 Amps
+
 #define ELECTROMAGNET_CURRENT_UNDER_TRIP        8000                                  // 8 Amps
 #define ELECTROMAGNET_CURRENT_RELATIVE_TRIP     MACRO_DEC_TO_CAL_FACTOR_2(.25)        // 25%
 #define ELECTROMAGNET_CURRENT_RELATIVE_FLOOR    2000                                  // 2 Amps
